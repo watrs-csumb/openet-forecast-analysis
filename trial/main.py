@@ -1,7 +1,7 @@
 import requests
 from dotenv import dotenv_values
 
-keys = dotenv_values(".env")
+keys = dotenv_values("../.env")
 header = {"Authorization": keys.get('ET_KEY')}
 
 # Timeseries Actual

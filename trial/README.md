@@ -3,3 +3,4 @@ Week 1 Goals
 - [ ] Research terms
 - [x] Data set exploration (through code)
 - [ ] Experiment with data types
+- [ ] Experiment with sample point data
