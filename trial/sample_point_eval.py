@@ -77,7 +77,15 @@ for point in sample_points.index:
         except:
             print("Reattempt failed.")
 
+# Remove errored fields before converting to DataFrame
+for k, v in list(sample_points_timeseries.items()):
+    if type(v) is dict:
+        sample_points_timeseries.pop(k)
 sample_points_timeseries = pandas.DataFrame(sample_points_timeseries)
+
+for k, v in list(sample_points_forecast.items()):
+    if type(v) is dict:
+        sample_points_forecast.pop(k)
 sample_points_forecast = pandas.DataFrame(sample_points_forecast)
 
 print("Job Done!")
