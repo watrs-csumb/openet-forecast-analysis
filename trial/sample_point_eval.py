@@ -82,10 +82,12 @@ for k, v in list(sample_points_timeseries.items()):
     if type(v) is dict:
         sample_points_timeseries.pop(k)
 sample_points_timeseries = pandas.DataFrame(sample_points_timeseries)
+sample_points_timeseries.to_csv('sample_points_timeseries.csv')
 
 for k, v in list(sample_points_forecast.items()):
     if type(v) is dict:
         sample_points_forecast.pop(k)
 sample_points_forecast = pandas.DataFrame(sample_points_forecast)
+sample_points_forecast.to_csv("sample_points_forecast.csv")
 
 print("Job Done!")

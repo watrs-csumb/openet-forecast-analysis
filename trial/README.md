@@ -1,9 +1,6 @@
-## Week 1 Goals
-- [x] Install software
-- [ ] Research terms
-- [x] Data set exploration (through code)
-- [ ] Experiment with data types
-- [ ] Experiment with sample point data
+## Week 2 Goals
+- [ ] Experiment with data formatting
+- [ ] Look into redundancy checks. For events like power outage, internet loss, etc.
 
 ## Why does sample_points_processing exist?
 Running the eval script takes up to half an hour depending on network conditions so taking the data I could gather and putting it in a csv
