@@ -4,13 +4,12 @@ Created on Thu Jun  13 10:06:44 2024
 
 @author: Robin Fishman
 """
-import ast
 from dotenv import dotenv_values
+
+import ast
 import json
 import pandas as pd
 import requests
-
-sample_points = pd.read_csv('sample_points.csv', low_memory=False)
 
 sample_points_timeseries = {}
 sample_points_forecast = {}
@@ -36,3 +35,6 @@ Concurrency approaches:
 		a) Start an HTTP Session
 		b) Create a retry strategy and mount it to the session
 """ 
+
+# DataFrame: k(OPENET_ID), v(CROP_2020, .geo)
+sample_points_reference = pd.read_csv('sample_points.csv', low_memory=False)
