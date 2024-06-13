@@ -1,4 +1,6 @@
+*.cfg
 *.env
 Include/
 Lib/
 Scripts/
+.vscode/
