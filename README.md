@@ -1,4 +1,5 @@
 # openet
 Libraries list:
-- Pandas
-- Numpy / Scipy
+- dotenv
+- pandas
+- requests
