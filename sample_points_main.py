@@ -39,3 +39,4 @@ Concurrency approaches:
 
 # DataFrame: k(OPENET_ID), v(CROP_2020, .geo)
 sample_points_reference = pd.read_csv('sample_points.csv', low_memory=False)
+sample_points_queue = Queue(sample_points_reference.index)

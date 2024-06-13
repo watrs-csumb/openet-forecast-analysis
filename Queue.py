@@ -4,11 +4,19 @@ from collections import deque
 class Queue:
     # Constructor
     def __init__(self) -> None:
-        self.items = deque();
+        self.items = deque()
+    
+    def __init__(self, values) -> None:
+        self.items = deque()
+        self.enqueue(values)
 
 	# Modifiers
     def enqueue(self, value):
-        self.items.appendleft(value)
+        if value is not list:
+            self.items.appendleft(value)
+        else:
+            for item in value:
+                self.enqueue(item)
         
     def dequeue(self):
         return self.items.pop()
