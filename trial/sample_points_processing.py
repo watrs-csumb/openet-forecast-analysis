@@ -54,3 +54,5 @@ for entry in spt_dict:
         sample_timeseries_df['et_actual_mm'].append(data['et'])
 
 sample_timeseries_df = pd.DataFrame(sample_timeseries_df)
+
+df_by_join = sample_timeseries_df.set_index(['field_id', 'time']).join(sample_forecast_df.set_index(['field_id', 'time']))
