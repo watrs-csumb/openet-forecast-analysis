@@ -30,8 +30,8 @@ class ETRequest:
 				json=self.request_params
 			)
    
-		except requests.exceptions.ConnectionError:
-			while cur_retry < num_retries:
+		except:
+			while cur_retry <= num_retries:
 				time.sleep(2 ** cur_retry)
 				print('reattempting..')
 				self.response = self.send(num_retries, cur_retry=cur_retry+1)
