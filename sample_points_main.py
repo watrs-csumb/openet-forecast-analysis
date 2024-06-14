@@ -40,3 +40,20 @@ Concurrency approaches:
 # DataFrame: k(OPENET_ID), v(CROP_2020, .geo)
 sample_points_reference = pd.read_csv('sample_points.csv', low_memory=False)
 sample_points_queue = Queue(sample_points_reference.index)
+
+while sample_points_queue.is_empty() is False:
+    timeseries_success = False
+    forecast_succuess = False
+    current_field_id = sample_points_queue.front()
+    
+    # Fetch timeseries data
+    
+    
+    # Fetch forecasted data
+    
+    
+    # If both are successful, store it!
+    if timeseries_success and forecast_succuess:
+        # etc..
+        
+        sample_points_queue.dequeue()
