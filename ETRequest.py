@@ -14,6 +14,12 @@ class ETRequest:
 		self.request_params = request_params
 		
 		self.send(num_retries)
+  
+	def set_endpoint(self, request_endpoint=''):
+		self.request_endpoint = request_endpoint
+
+	def set_request_params(self, request_params={}):
+		self.request_params = request_params
 		
 	def send(self, num_retries=3, cur_retry=1):
 		ignore_fails = False
