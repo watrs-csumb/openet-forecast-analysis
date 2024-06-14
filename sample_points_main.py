@@ -43,7 +43,7 @@ sample_points_queue = Queue(sample_points_reference.index)
 
 while sample_points_queue.is_empty() is False:
     timeseries_success = False
-    forecast_succuess = False
+    forecast_success = False
     current_field_id = sample_points_queue.front()
     
     # Fetch timeseries data
@@ -53,7 +53,7 @@ while sample_points_queue.is_empty() is False:
     
     
     # If both are successful, store it!
-    if timeseries_success and forecast_succuess:
+    if timeseries_success and forecast_success:
         # etc..
         
         sample_points_queue.dequeue()
