@@ -21,8 +21,7 @@ class ETRequest:
 	def set_request_params(self, request_params={}):
 		self.request_params = request_params
 		
-	def send(self, num_retries=3, cur_retry=1):
-		ignore_fails = False
+	def send(self, num_retries=3, cur_retry=1, ignore_fails=False):
 		try:
 			self.response = requests.post(
 				headers=header,
@@ -41,6 +40,8 @@ class ETRequest:
 				reattempt_prompt = input("Fetch for " + " failed (" + str(self.response.status_code) + "): " + str(self.response.content) + "\nWould you like to reattempt (Y/n)?")
 				if reattempt_prompt in ["y", ""]:
 					return self.send()
+				if reattempt_prompt == "yi":
+					return self.send(ignore_fails=True)
 			return self.response
 
 	def success(self):
