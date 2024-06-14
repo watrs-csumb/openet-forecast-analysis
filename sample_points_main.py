@@ -4,7 +4,7 @@ Created on Thu Jun  13 10:06:44 2024
 
 @author: Robin Fishman
 """
-from dotenv import dotenv_values
+from ETRequest import ETRequest
 from Queue import Queue
 
 import ast
@@ -18,8 +18,6 @@ sample_points_forecast = {}
 timeseries_endpoint = "https://developer.openet-api.org/raster/timeseries/point"
 forecast_endpoint = "https://developer.openet-api.org/experimental/raster/timeseries/forecasting/seasonal"
 
-header = {"Authorization": dotenv_values(".env").get("ET_KEY")}
-
 """
 Concurrency approaches:
 	1) Simplest: in a while loop for each attempt, use try-except statement until loop ends
@@ -32,28 +30,64 @@ Concurrency approaches:
 			- Prompt in terminal or GUI
 		d) Reattempts fetch from a queue of field IDs
 			- A field ID is only removed *after* a successful attempt
-    3) Researched: using HTTPAdapter & urllib3 Retry libraries
+	3) Researched: using HTTPAdapter & urllib3 Retry libraries
 		a) Start an HTTP Session
 		b) Create a retry strategy and mount it to the session
 """ 
 
 # DataFrame: k(OPENET_ID), v(CROP_2020, .geo)
-sample_points_reference = pd.read_csv('sample_points.csv', low_memory=False)
-sample_points_queue = Queue(sample_points_reference.index)
+sample_points_reference = pd.read_csv('sample_points.csv', low_memory=False).set_index('OPENET_ID')
+sample_points_queue = Queue(sample_points_reference.index.to_list())
 
-while sample_points_queue.is_empty() is False:
-    timeseries_success = False
-    forecast_success = False
-    current_field_id = sample_points_queue.front()
-    
-    # Fetch timeseries data
-    
-    
-    # Fetch forecasted data
-    
-    
-    # If both are successful, store it!
-    if timeseries_success and forecast_success:
-        # etc..
-        
-        sample_points_queue.dequeue()
+def EvalSampleData():
+	failed_fields = 0
+	while sample_points_queue.is_empty() is False:
+		timeseries_success = False
+		forecast_success = False
+		current_field_id = sample_points_queue.front()
+		current_point_coordinates = json.loads(sample_points_reference['.geo'][current_field_id])['coordinates']
+		pass 
+		# Fetch timeseries data
+		timeseries_arg = {
+				"date_range": [
+					"2023-01-01", "2023-12-31"
+				],
+				"interval": "monthly",
+				"geometry": current_point_coordinates,
+				"model": "Ensemble",
+				"units": "mm",
+				"variable": "ET",
+				"reference_et": "gridMET",
+				"file_format": "JSON"
+			}
+		
+		timeseries_res = ETRequest(timeseries_endpoint, timeseries_arg)
+		timeseries_success = timeseries_res.success()
+		# Fetch forecasted data
+		forecast_arg = {
+				"date_range": [
+					"2016-01-01", "2023-12-31"
+				],
+				"interval": "monthly",
+				"geometry": current_point_coordinates,
+				"model": "Ensemble",
+				"units": "mm",
+				"variable": "ET",
+				"reference_et": "gridMET",
+				"file_format": "JSON"
+			}
+	
+		forecast_res = ETRequest(forecast_endpoint, forecast_arg)
+		forecast_success = forecast_res.success()
+		# If both are successful, store it!
+		if timeseries_success and forecast_success:
+			# etc..
+			continue
+		else:
+			failed_fields+=1
+   
+		sample_points_queue.dequeue()
+
+	return failed_fields
+
+print(EvalSampleData())

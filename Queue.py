@@ -12,7 +12,7 @@ class Queue:
 
 	# Modifiers
     def enqueue(self, value):
-        if value is not list:
+        if type(value) is not list:
             self.items.appendleft(value)
         else:
             for item in value:
