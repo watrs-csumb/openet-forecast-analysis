@@ -32,7 +32,7 @@ class ETRequest:
 		except:
 			while cur_retry <= num_retries:
 				time.sleep(2 ** cur_retry)
-				print('reattempting..')
+				print("[WARN] Reattempting request..")
 				self.response = self.send(num_retries, cur_retry=cur_retry+1)
 	
 		finally:
@@ -46,9 +46,7 @@ class ETRequest:
 
 	def success(self):
 		if self.response.status_code not in [200]:
-			print('failed.. did it ask??')
 			return False
-		print('success!')
 		return True
 
 

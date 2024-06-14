@@ -46,7 +46,8 @@ def EvalSampleData():
 		forecast_success = False
 		current_field_id = sample_points_queue.front()
 		current_point_coordinates = json.loads(sample_points_reference['.geo'][current_field_id])['coordinates']
-		pass 
+		
+		print("[LOG] Now analyzing field ID " + current_field_id)
 		# Fetch timeseries data
 		timeseries_arg = {
 				"date_range": [
@@ -81,13 +82,14 @@ def EvalSampleData():
 		forecast_success = forecast_res.success()
 		# If both are successful, store it!
 		if timeseries_success and forecast_success:
-			# etc..
-			continue
+			print("[LOG] Successful")
 		else:
+			print("[WARN] Analyzing for " + current_field_id + " failed")
 			failed_fields+=1
    
 		sample_points_queue.dequeue()
+		print("[LOG] " + str(sample_points_queue.size()) + " fields remaining")
 
 	return failed_fields
 
-print(EvalSampleData())
+print("[LOG] Finished processing. " + str(EvalSampleData()) + " fields failed.")

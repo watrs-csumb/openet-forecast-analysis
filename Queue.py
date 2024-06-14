@@ -19,7 +19,7 @@ class Queue:
                 self.enqueue(item)
         
     def dequeue(self):
-        return self.items.pop()
+        return self.items.popleft()
     
     # Capacity
     def is_empty(self):
