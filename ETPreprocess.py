@@ -18,6 +18,7 @@ class ETPreprocess:
 		self.points_ref = ref
 	
 	def start(self, ts_endpoint: str, fc_endpoint: str) -> int:
+		'''Begins gathering ET data from timeseries and forecast endpoints'''
 		failed_fields = 0
 		while self.fields_queue.is_empty() is False:
 			timeseries_success = False

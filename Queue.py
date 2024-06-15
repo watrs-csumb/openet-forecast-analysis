@@ -7,11 +7,13 @@ class Queue:
         self.items = deque()
     
     def __init__(self, values: list) -> None:
+        '''Creates Queue object and adds each item from the list to the queue individually.'''
         self.items = deque()
         self.enqueue(values)
 
 	# Modifiers
     def enqueue(self, value: any) -> None:
+        '''Adds value to queue. If the value is a list, it will add each item individually to the queue.'''
         if type(value) is not list:
             self.items.appendleft(value)
         else:

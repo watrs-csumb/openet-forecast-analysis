@@ -10,6 +10,7 @@ class ETRequest:
 		pass
 	
 	def __init__(self, request_endpoint: str ='', request_params: dict ={}, num_retries: int =3) -> None:
+		'''Creates ETRequest object and sends POST request to specified request_endpoint'''
 		self.request_endpoint = request_endpoint
 		self.request_params = request_params
 		
@@ -22,6 +23,8 @@ class ETRequest:
 		self.request_params = request_params
 		
 	def send(self, num_retries: int = 3, cur_retry: int = 1, ignore_fails: bool = False) -> any:
+		'''Sends POST request and returns response. Will make num_retries reattempts if it fails. 
+  			If failures are meant to be ignored, set ignore_fails to True. It is not recommended to modify cur_retry'''
 		try:
 			self.response = requests.post(
 				headers=header,
@@ -47,6 +50,7 @@ class ETRequest:
 			return self.response
 
 	def success(self) -> bool:
+		'''Returns boolean depending on if the request succeeded or not'''
 		if self.response.status_code != 200:
 			return False
 		return True
