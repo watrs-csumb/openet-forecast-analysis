@@ -39,7 +39,7 @@ class ETRequest:
 	
 		finally:
 			if self.response.status_code != 200 and ignore_fails is False:
-				reattempt_prompt = input("Fetch failed (" + str(self.response.status_code) + "): " + str(self.response.content) + "\nWould you like to reattempt (Y/n)?")
+				reattempt_prompt = input(f"Fetch failed [{str(self.response.status_code)}]: {str(self.response.content)}\nWould you like to reattempt (Y/n)?")
 				if reattempt_prompt in ["y", ""]:
 					return self.send()
 				if reattempt_prompt == "yi":

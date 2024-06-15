@@ -25,7 +25,7 @@ class ETPreprocess:
 			current_field_id = self.fields_queue.front()
 			current_point_coordinates = json.loads(self.points_ref['.geo'][current_field_id])['coordinates']
 			
-			print("[LOG] Now analyzing field ID " + current_field_id)
+			print(f"[LOG] Now analyzing field ID {current_field_id}")
 			# Fetch timeseries data
 			timeseries_arg = {
 					"date_range": [
@@ -62,10 +62,10 @@ class ETPreprocess:
 			if timeseries_success and forecast_success:
 				print("[LOG] Successful")
 			else:
-				print("[WARN] Analyzing for " + current_field_id + " failed")
+				print(f"[WARN] Analyzing for {current_field_id} failed")
 				failed_fields+=1
 	
 			self.fields_queue.dequeue()
-			print("[LOG] " + str(self.fields_queue.size()) + " fields remaining")
+			print(f"[LOG] {str(self.fields_queue.size())} fields remaining")
 
 		return failed_fields

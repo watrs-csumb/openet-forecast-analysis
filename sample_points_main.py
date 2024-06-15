@@ -20,7 +20,7 @@ def main():
 	sample_data = ETPreprocess(sample_points_queue, sample_points_reference)
 	failed_attempts = sample_data.start(timeseries_endpoint, forecast_endpoint)
  
-	print("[LOG] Finished processing. " + str(failed_attempts) + " fields failed.")
+	print(f"[LOG] Finished processing. {str(failed_attempts)} fields failed.")
 
 if __name__ == '__main__':
 	main()	
