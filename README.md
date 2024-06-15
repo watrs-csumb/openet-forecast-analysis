@@ -10,6 +10,8 @@ Libraries list:
 - [ ] Debug ETRequest connection loop
 - [ ] Finish ETPreprocess data compilation
 - [ ] Convert to proper Python logging
+- [ ] Begin statistical analysis
+- [ ] Look into testing approaches for ETRequest and ETPreprocess
 
 ### Week 2
 - [x] Experiment with data formatting
