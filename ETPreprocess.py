@@ -86,5 +86,7 @@ class ETPreprocess:
 	
 			self.fields_queue.dequeue()
 			print(f"[LOG] {str(self.fields_queue.size())} fields remaining")
-
+		
+  		# Wierdly enough, presetting the index will cause a failure. So set index after completion.
+		self.data_table.set_index('field_id', inplace=True)
 		return failed_fields
