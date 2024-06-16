@@ -8,7 +8,7 @@ Libraries list:
 ## Goals
 ### Week 3
 - [ ] Debug ETRequest connection loop
-- [ ] Finish ETPreprocess data compilation
+- [x] Finish ETPreprocess data compilation
 - [ ] Convert to proper Python logging
 - [ ] Begin statistical analysis
 - [ ] Look into testing approaches for ETRequest and ETPreprocess
