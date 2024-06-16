@@ -2,6 +2,7 @@ from ETRequest import ETRequest
 from Queue import Queue
 
 import json
+import logging
 import pandas as pd
 
 class ETPreprocess:
@@ -19,7 +20,7 @@ class ETPreprocess:
 	def set_reference(self, ref: any) -> None:
 		self.points_ref = ref
 	
-	def start(self, ts_endpoint: str, fc_endpoint: str) -> int:
+	def start(self, ts_endpoint: str, fc_endpoint: str, logger: logging.Logger = None) -> int:
 		'''Begins gathering ET data from timeseries and forecast endpoints'''
 		failed_fields = 0
 		while self.fields_queue.is_empty() is False:
@@ -28,7 +29,7 @@ class ETPreprocess:
 			current_field_id = self.fields_queue.front()
 			current_point_coordinates = json.loads(self.points_ref['.geo'][current_field_id])['coordinates']
 			
-			print(f"[LOG] Now analyzing field ID {current_field_id}")
+			if logger is not None: logger.info(f"Now analyzing field ID {current_field_id}")
 			# Fetch timeseries data
 			timeseries_arg = {
 					"date_range": [
@@ -78,13 +79,13 @@ class ETPreprocess:
      
 					self.data_table = pd.concat([pd.DataFrame([[current_field_id, entry_time, entry_et_actual, entry_et_forecast]], columns=self.data_table.columns), self.data_table], ignore_index=True)
      
-				print("[LOG] Successful")
+				if logger is not None: logger.info("Successful")
 			else:
-				print(f"[WARN] Analyzing for {current_field_id} failed")
+				if logger is not None: logger.warning(f"Analyzing for {current_field_id} failed")
 				failed_fields+=1
 	
 			self.fields_queue.dequeue()
-			print(f"[LOG] {str(self.fields_queue.size())} fields remaining")
+			if logger is not None: logger.info(f"{str(self.fields_queue.size())} fields remaining")
 		
   		# Wierdly enough, presetting the index will cause a failure. So set index after completion.
 		self.data_table.set_index('field_id', inplace=True)

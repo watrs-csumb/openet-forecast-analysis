@@ -1,5 +1,6 @@
 from dotenv import dotenv_values
 
+import logging
 import requests
 import time
 
@@ -9,12 +10,12 @@ class ETRequest:
 	def __init__(self) -> None:
 		pass
 	
-	def __init__(self, request_endpoint: str ='', request_params: dict ={}, num_retries: int =3) -> None:
+	def __init__(self, request_endpoint: str = '', request_params: dict = {}, num_retries: int = 3, logger: logging.Logger = None) -> None:
 		'''Creates ETRequest object and sends POST request to specified request_endpoint'''
 		self.request_endpoint = request_endpoint
 		self.request_params = request_params
 		
-		self.send(num_retries)
+		self.send(num_retries, logger)
   
 	def set_endpoint(self, request_endpoint: str ='') -> None:
 		self.request_endpoint = request_endpoint
@@ -22,7 +23,7 @@ class ETRequest:
 	def set_request_params(self, request_params: dict = {}) -> None:
 		self.request_params = request_params
 		
-	def send(self, num_retries: int = 3, cur_retry: int = 1, ignore_fails: bool = False) -> any:
+	def send(self, num_retries: int = 3, cur_retry: int = 1, ignore_fails: bool = False, logger: logging.Logger = None) -> any:
 		'''Sends POST request and returns response. Will make num_retries reattempts if it fails. 
   			If failures are meant to be ignored, set ignore_fails to True. It is not recommended to modify cur_retry'''
 		try:
@@ -36,7 +37,8 @@ class ETRequest:
    
 		except:
 			while cur_retry <= num_retries:
-				print("[WARN] Reattempting request..")
+				if logger is not None: logger.warning("Reattempting request..")
+    
 				time.sleep(2 ** cur_retry)
 				self.response = self.send(cur_retry=cur_retry+1)
 	
