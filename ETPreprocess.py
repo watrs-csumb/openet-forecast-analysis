@@ -1,7 +1,9 @@
 from ETRequest import ETRequest
 from Queue import Queue
 
+import ast
 import json
+import pandas as pd
 
 class ETPreprocess:
 	def __init__(self) -> None:
@@ -10,6 +12,7 @@ class ETPreprocess:
 	def __init__(self, fields_queue: Queue, points_ref: any) -> None:
 		self.fields_queue = fields_queue
 		self.points_ref = points_ref
+		self.data_table = pd.DataFrame(columns=['field_id', 'time', 'et_actual', 'et_forecast'])
 	
 	def set_queue(self, queue: Queue) -> None:
 		self.fields_queue = queue
@@ -46,7 +49,7 @@ class ETPreprocess:
 			# Fetch forecasted data
 			forecast_arg = {
 					"date_range": [
-						"2016-01-01", "2023-12-31"
+						"2016-01-01", "2023-06-03"
 					],
 					"interval": "monthly",
 					"geometry": current_point_coordinates,
@@ -61,6 +64,21 @@ class ETPreprocess:
 			forecast_success = forecast_res.success()
 			# If both are successful, store it!
 			if timeseries_success and forecast_success:
+				# Data returns as a list[12] for each
+				# Each item is of dict{'time': str, 'et': float}
+				timeseries_content = json.loads(timeseries_res.response.content.decode('utf-8'))
+				timeseries_data = [data for data in timeseries_content]
+
+				forecast_content = json.loads(forecast_res.response.content.decode('utf-8'))
+				forecast_data = [data for data in forecast_content]
+    
+				for item in timeseries_data:
+					entry_time = item['time']
+					entry_et_actual = item['et']
+					entry_et_forecast = forecast_data[timeseries_data.index(item)]['et']
+     
+					self.data_table = pd.concat([pd.DataFrame([[current_field_id, entry_time, entry_et_actual, entry_et_forecast]], columns=self.data_table.columns), self.data_table], ignore_index=True)
+     
 				print("[LOG] Successful")
 			else:
 				print(f"[WARN] Analyzing for {current_field_id} failed")

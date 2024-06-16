@@ -31,8 +31,8 @@ class ETRequest:
 				url=self.request_endpoint,
 				json=self.request_params
 			)
-			if self.response.status_code != 200:
-				raise Exception("[ERROR] Response not valid.")
+			# if self.response.status_code != 200:
+			# 	raise Exception("[ERROR] Response not valid.")
    
 		except:
 			while cur_retry <= num_retries:
