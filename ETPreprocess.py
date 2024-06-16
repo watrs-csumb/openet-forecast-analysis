@@ -1,7 +1,6 @@
 from ETRequest import ETRequest
 from Queue import Queue
 
-import ast
 import json
 import pandas as pd
 
