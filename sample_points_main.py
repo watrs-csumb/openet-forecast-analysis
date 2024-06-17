@@ -20,14 +20,15 @@ forecast_endpoint = "https://developer.openet-api.org/experimental/raster/timese
 
 # DataFrame: k(OPENET_ID), v(CROP_2020, .geo)
 sample_points_reference = pd.read_csv('sample_points.csv', low_memory=False).set_index('OPENET_ID')
-sample_points_queue = Queue(sample_points_reference.index.to_list()[:1])
+sample_points_queue = Queue(sample_points_reference.index.to_list())
 
 def main():
 	sample_data = ETPreprocess(sample_points_queue, sample_points_reference)
 	failed_attempts = sample_data.start(timeseries_endpoint, forecast_endpoint, logger=logger)
  
 	logger.info(f"Finished processing. {str(failed_attempts)} fields failed.")
-	logger.info("\n" + sample_data.data_table.to_string().replace('\n', '\n\t'))
+	# logger.info("\n" + sample_data.data_table.to_string().replace('\n', '\n\t'))
+	sample_data.data_table.to_csv("samples_data_table.csv")
 
 if __name__ == '__main__':
 	main()
