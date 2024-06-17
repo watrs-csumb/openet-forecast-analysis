@@ -3,5 +3,6 @@
 Include/
 Lib/
 Scripts/
+.ipy*/
 .vscode/
 __pycache__/*
