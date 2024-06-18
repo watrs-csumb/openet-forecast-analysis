@@ -12,7 +12,7 @@ class ETPreprocess:
 	def __init__(self, fields_queue: Queue, points_ref: any) -> None:
 		self.fields_queue = fields_queue
 		self.points_ref = points_ref
-		self.data_table = pd.DataFrame(columns=['field_id', 'time', 'et_actual', 'et_forecast'])
+		self.data_table = pd.DataFrame(columns=['field_id', 'crop', 'time', 'et_actual', 'et_forecast'])
 	
 	def set_queue(self, queue: Queue) -> None:
 		self.fields_queue = queue
@@ -28,6 +28,7 @@ class ETPreprocess:
 			forecast_success = False
 			current_field_id = self.fields_queue.front()
 			current_point_coordinates = json.loads(self.points_ref['.geo'][current_field_id])['coordinates']
+			current_crop = self.points_ref['CROP_2020'][current_field_id]
 			
 			if logger is not None: logger.info(f"Now analyzing field ID {current_field_id}")
 			# Fetch timeseries data
@@ -77,7 +78,7 @@ class ETPreprocess:
 					entry_et_actual = item['et']
 					entry_et_forecast = forecast_data[timeseries_data.index(item)]['et']
      
-					self.data_table = pd.concat([pd.DataFrame([[current_field_id, entry_time, entry_et_actual, entry_et_forecast]], columns=self.data_table.columns), self.data_table], ignore_index=True)
+					self.data_table = pd.concat([pd.DataFrame([[current_field_id, current_crop, entry_time, entry_et_actual, entry_et_forecast]], columns=self.data_table.columns), self.data_table], ignore_index=True)
      
 				if logger is not None: logger.info("Successful")
 			else:
