@@ -3,6 +3,7 @@
 Include/
 Lib/
 Scripts/
+share/
 .ipy*/
 .vscode/
 __pycache__/*
