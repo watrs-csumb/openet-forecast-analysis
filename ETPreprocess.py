@@ -48,7 +48,7 @@ class ETPreprocess:
 			# Fetch forecasted data
 			forecast_arg = {
 					"date_range": [
-						"1980-01-01", "2023-06-03"
+						"2014-01-01", "2023-06-03"
 					],
 					"interval": "monthly",
 					"geometry": current_point_coordinates,

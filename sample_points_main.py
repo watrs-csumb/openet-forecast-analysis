@@ -39,7 +39,7 @@ def main():
  
 	logger.info(f"Finished processing. {str(failed_attempts)} fields failed.")
 	# logger.info("\n" + sample_data.data_table.to_string().replace('\n', '\n\t'))
-	# sample_data.data_table.to_csv("samples_data_table.csv")
+	sample_data.data_table.to_csv("samples_data_table_2014.csv")
 
 if __name__ == '__main__':
 	main()
