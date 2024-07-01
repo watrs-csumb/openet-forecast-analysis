@@ -35,6 +35,8 @@ sample_points_queue = Queue(sample_points_reference.index.to_list())
 
 def main():
 	sample_data = ETPreprocess(sample_points_queue, sample_points_reference)
+	sample_data.set_table(columns=['field', 'time', 'actual_et_mm', 'expected_et_mm'])
+ 
 	failed_attempts = sample_data.start(timeseries_endpoint, forecast_endpoint, logger=logger)
  
 	logger.info(f"Finished processing. {str(failed_attempts)} fields failed.")
