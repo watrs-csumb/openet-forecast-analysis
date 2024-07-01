@@ -6,9 +6,6 @@ import logging
 import pandas as pd
 
 class ETPreprocess:
-	def __init__(self) -> None:
-		pass
-	
 	def __init__(self, fields_queue: Queue, points_ref: any) -> None:
 		self.fields_queue = fields_queue
 		self.points_ref = points_ref
@@ -46,6 +43,7 @@ class ETPreprocess:
 				}
 			
 			timeseries_res = ETRequest(ts_endpoint, timeseries_arg)
+			timeseries_res.send(logger=logger)
 			timeseries_success = timeseries_res.success()
 			# Fetch forecasted data
 			forecast_arg = {
@@ -62,6 +60,7 @@ class ETPreprocess:
 				}
 		
 			forecast_res = ETRequest(fc_endpoint, forecast_arg)
+			forecast_res.send(logger=logger)
 			forecast_success = forecast_res.success()
 			# If both are successful, store it!
 			if timeseries_success and forecast_success:

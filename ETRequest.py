@@ -4,26 +4,25 @@ import logging
 import requests
 import time
 
+# ONLY CHANGE IF YOU KNOW WHAT YOU ARE DOING
+status_whitelist = [200]
+
 header = {"Authorization": dotenv_values(".env").get("ET_KEY")}
 
 class ETRequest:
-	def __init__(self) -> None:
-		pass
-	
-	def __init__(self, request_endpoint: str = '', request_params: dict = {}, num_retries: int = 3, logger: logging.Logger = None) -> None:
-		'''Creates ETRequest object and sends POST request to specified request_endpoint'''
+	def __init__(self, request_endpoint: str = '', request_params: dict = {}) -> None:
+		'''Creates ETRequest object'''
 		self.request_endpoint = request_endpoint
 		self.request_params = request_params
-		
-		self.send(num_retries, logger)
+		self._current_attempt = 0
   
 	def set_endpoint(self, request_endpoint: str ='') -> None:
 		self.request_endpoint = request_endpoint
 
 	def set_request_params(self, request_params: dict = {}) -> None:
 		self.request_params = request_params
-		
-	def send(self, num_retries: int = 3, cur_retry: int = 1, ignore_fails: bool = False, logger: logging.Logger = None) -> any:
+ 
+	def send(self, *, num_retries: int = 3, ignore_fails: bool = False, logger: logging.Logger = None) -> any:
 		'''Sends POST request and returns response. Will make num_retries reattempts if it fails. 
   			If failures are meant to be ignored, set ignore_fails to True. It is not recommended to modify cur_retry'''
 		try:
@@ -32,28 +31,35 @@ class ETRequest:
 				url=self.request_endpoint,
 				json=self.request_params
 			)
-			# if self.response.status_code != 200:
-			# 	raise Exception("[ERROR] Response not valid.")
-   
+			
+			# Only a 200 Response will return the right data
+			if ignore_fails is False and self.success() is False:
+				raise ValueError
+
 		except:
-			while cur_retry <= num_retries:
+			# Bug: loop continues after succession. the loop is not checking success again
+			while self._current_attempt < num_retries and self.success() is False:
 				if logger is not None: logger.warning("Reattempting request..")
     
-				time.sleep(2 ** cur_retry)
-				self.response = self.send(cur_retry=cur_retry+1)
+				time.sleep(2 ** self._current_attempt)
+				self._current_attempt += 1
+				self.response = self.send(logger=logger)
 	
 		finally:
-			if self.response.status_code != 200 and ignore_fails is False:
-				reattempt_prompt = input(f"Fetch failed [{str(self.response.status_code)}]: {str(self.response.content)}\nWould you like to reattempt (Y/n)?")
-				if reattempt_prompt in ["y", ""]:
-					return self.send()
-				if reattempt_prompt == "yi":
-					return self.send(ignore_fails=True)
+			# This branch will only happen if all reattempts failed. Likely due to an outage.
+			if self.success() is False and ignore_fails is False:
+				reattempt_prompt = input(f"Fetch failed [{str(self.response.status_code)}]: {str(self.response.content)}\nWould you like to reattempt (Y/n)? ")
+				if reattempt_prompt.lower() in ["y", ""]:
+					return self.send(logger=logger)
+				# In this case, yi means "yes and ignore"
+				if reattempt_prompt.lower() == "yi":
+					return self.send(logger=logger, ignore_fails=True)
+ 
 			return self.response
 
 	def success(self) -> bool:
 		'''Returns boolean depending on if the request succeeded or not'''
-		if self.response.status_code != 200:
+		if self.response.status_code not in status_whitelist:
 			return False
 		return True
 
