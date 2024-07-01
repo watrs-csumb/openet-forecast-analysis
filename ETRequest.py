@@ -37,7 +37,6 @@ class ETRequest:
 				raise ValueError
 
 		except:
-			# Bug: loop continues after succession. the loop is not checking success again
 			while self._current_attempt < num_retries and self.success() is False:
 				if logger is not None: logger.warning("Reattempting request..")
     
