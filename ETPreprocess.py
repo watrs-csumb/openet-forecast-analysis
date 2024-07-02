@@ -33,7 +33,7 @@ class ETPreprocess:
 					"date_range": [
 						"2023-01-01", "2023-12-31"
 					],
-					"interval": "monthly",
+					"interval": "daily",
 					"geometry": current_point_coordinates,
 					"model": "Ensemble",
 					"units": "mm",
@@ -48,9 +48,9 @@ class ETPreprocess:
 			# Fetch forecasted data
 			forecast_arg = {
 					"date_range": [
-						"2014-01-01", "2023-06-03"
+						"1980-01-01", "2023-06-03"
 					],
-					"interval": "monthly",
+					"interval": "daily",
 					"geometry": current_point_coordinates,
 					"model": "Ensemble",
 					"units": "mm",
@@ -73,12 +73,18 @@ class ETPreprocess:
 				forecast_data = [data for data in forecast_content]
     
 				for item in timeseries_data:
-					entry_time = item['time']
-					entry_et_actual = item['et']
-					entry_et_forecast = forecast_data[timeseries_data.index(item)]['et']
-     
-					self.data_table = pd.concat([pd.DataFrame([[current_field_id, current_crop, entry_time, entry_et_actual, entry_et_forecast]], columns=self.data_table.columns), self.data_table], ignore_index=True)
-     
+					try:
+						entry_time = item['time']
+						entry_et_actual = item['et']
+						entry_et_forecast = forecast_data[timeseries_data.index(item)]['et']
+		
+						self.data_table = pd.concat([pd.DataFrame([[current_field_id, current_crop, entry_time, entry_et_actual, entry_et_forecast]], columns=self.data_table.columns), self.data_table], ignore_index=True)
+					except:
+						forecast_index = timeseries_data.index(item)
+						print(f'field: {current_field_id}')
+						print(f'ts: {len(timeseries_data)}; fc: {len(forecast_data)}')
+						print(f'{forecast_index}/{len(forecast_data)}')
+						exit()
 				if logger is not None: logger.info("Successful")
 			else:
 				if logger is not None: logger.warning(f"Analyzing for {current_field_id} failed")

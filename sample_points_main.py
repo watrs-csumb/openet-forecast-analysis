@@ -38,8 +38,8 @@ def main():
 	failed_attempts = sample_data.start(timeseries_endpoint, forecast_endpoint, logger=logger)
  
 	logger.info(f"Finished processing. {str(failed_attempts)} fields failed.")
-	# logger.info("\n" + sample_data.data_table.to_string().replace('\n', '\n\t'))
-	sample_data.data_table.to_csv("samples_data_table_2014.csv")
+	# logger.warning("\n" + sample_data.data_table.to_string().replace('\n', '\n\t'))
+	sample_data.data_table.to_csv("samples_data_table_daily.csv")
 
 if __name__ == '__main__':
 	main()
