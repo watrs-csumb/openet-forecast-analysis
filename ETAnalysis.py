@@ -5,7 +5,7 @@ import pandas as pd
 import scipy
 
 def calculate_metrics(data: pd.DataFrame) -> pd.Series:
-    if ['et_actual', 'et_forecast'] not in data.columns:
+    if data.columns.isin(['et_actual', 'et_expected']):
         raise ValueError
     mae = mean_absolute_error(data['et_actual'], data['et_forecast'])
     mse = mean_squared_error(data['et_actual'], data['et_forecast'])
