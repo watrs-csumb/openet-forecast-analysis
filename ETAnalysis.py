@@ -16,11 +16,11 @@ def calculate_metrics(data: pd.DataFrame) -> pd.Series:
     skill_score = 1 - (mse / mean_squared_error(data['et_actual'], [np.mean(data['et_forecast'])] * len(data)))
     
     return pd.Series({
-		'mae': mae,
-		'rmse': rmse,
-		'corr': cor,
-		'bias': bias,
-		'skill_score': skill_score
+		'mae': mae.round(2),
+		'rmse': rmse.round(2),
+		'corr': cor.round(2),
+		'bias': bias.round(2),
+		'skill_score': skill_score.round(2)
 })
 
 def to_weekly(data: pd.DataFrame, *, index:str|list, on:str) -> any:
