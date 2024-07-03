@@ -6,7 +6,8 @@ import scipy
 
 def calculate_metrics(data: pd.DataFrame) -> pd.Series:
     if ~pd.Series(['et_actual', 'et_forecast']).isin(data.columns).all():
-        raise ValueError
+        raise ValueError("DataFrame not eligible for metrics. Missing columns 'et_actual' or 'et_forecast'")
+    
     mae = mean_absolute_error(data['et_actual'], data['et_forecast'])
     mse = mean_squared_error(data['et_actual'], data['et_forecast'])
     rmse = np.sqrt(mse)
