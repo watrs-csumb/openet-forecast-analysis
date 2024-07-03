@@ -21,4 +21,9 @@ def calculate_metrics(data: pd.DataFrame) -> pd.Series:
 		'corr': cor,
 		'bias': bias,
 		'skill_score': skill_score
-	})
+})
+
+def to_weekly(data: pd.DataFrame, *, index:str|list, on:str) -> any:
+    resampler = data.groupby(index).resample('w', on=on)
+    
+    return resampler
