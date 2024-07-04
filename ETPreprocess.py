@@ -33,7 +33,7 @@ class ETPreprocess:
 					"date_range": [
 						"2023-01-01", "2023-12-31"
 					],
-					"interval": "daily",
+					"interval": "monthly",
 					"geometry": current_point_coordinates,
 					"model": "Ensemble",
 					"units": "mm",
@@ -50,7 +50,7 @@ class ETPreprocess:
 					"date_range": [
 						"2014-01-01", "2023-06-03"
 					],
-					"interval": "daily",
+					"interval": "monthly",
 					"geometry": current_point_coordinates,
 					"model": "Ensemble",
 					"units": "mm",
