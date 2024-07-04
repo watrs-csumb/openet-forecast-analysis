@@ -37,7 +37,7 @@ class ETPreprocess:
 					"geometry": current_point_coordinates,
 					"model": "Ensemble",
 					"units": "mm",
-					"variable": "ET",
+					"variable": "ETo",
 					"reference_et": "gridMET",
 					"file_format": "JSON"
 				}
@@ -48,13 +48,13 @@ class ETPreprocess:
 			# Fetch forecasted data
 			forecast_arg = {
 					"date_range": [
-						"1980-01-01", "2023-06-03"
+						"2014-01-01", "2023-06-03"
 					],
 					"interval": "daily",
 					"geometry": current_point_coordinates,
 					"model": "Ensemble",
 					"units": "mm",
-					"variable": "ET",
+					"variable": "ETo",
 					"reference_et": "gridMET",
 					"file_format": "JSON"
 				}
@@ -75,15 +75,16 @@ class ETPreprocess:
 				for item in timeseries_data:
 					try:
 						entry_time = item['time']
-						entry_et_actual = item['et']
-						entry_et_forecast = forecast_data[timeseries_data.index(item)]['et']
+						entry_et_actual = item['eto']
+						entry_et_forecast = forecast_data[timeseries_data.index(item)]['eto']
 		
 						self.data_table = pd.concat([pd.DataFrame([[current_field_id, current_crop, entry_time, entry_et_actual, entry_et_forecast]], columns=self.data_table.columns), self.data_table], ignore_index=True)
-					except:
+					except Exception as err:
 						forecast_index = timeseries_data.index(item)
 						print(f'field: {current_field_id}')
 						print(f'ts: {len(timeseries_data)}; fc: {len(forecast_data)}')
 						print(f'{forecast_index}/{len(forecast_data)}')
+						print(err)
 						exit()
 				if logger is not None: logger.info("Successful")
 			else:

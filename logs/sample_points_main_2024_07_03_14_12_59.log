@@ -1,0 +1,1635 @@
+2024-07-03 14:12:59,995 - INFO - Now analyzing field ID CA_74902
+2024-07-03 14:13:29,868 - INFO - Successful
+2024-07-03 14:13:29,868 - INFO - 543 fields remaining
+2024-07-03 14:13:29,868 - INFO - Now analyzing field ID CA_74707
+2024-07-03 14:13:39,642 - INFO - Successful
+2024-07-03 14:13:39,643 - INFO - 542 fields remaining
+2024-07-03 14:13:39,643 - INFO - Now analyzing field ID CA_18496
+2024-07-03 14:13:48,928 - INFO - Successful
+2024-07-03 14:13:48,928 - INFO - 541 fields remaining
+2024-07-03 14:13:48,928 - INFO - Now analyzing field ID CA_21795
+2024-07-03 14:13:57,889 - INFO - Successful
+2024-07-03 14:13:57,889 - INFO - 540 fields remaining
+2024-07-03 14:13:57,889 - INFO - Now analyzing field ID CA_21636
+2024-07-03 14:14:06,678 - INFO - Successful
+2024-07-03 14:14:06,678 - INFO - 539 fields remaining
+2024-07-03 14:14:06,678 - INFO - Now analyzing field ID CA_20111
+2024-07-03 14:14:15,855 - INFO - Successful
+2024-07-03 14:14:15,855 - INFO - 538 fields remaining
+2024-07-03 14:14:15,855 - INFO - Now analyzing field ID CA_18177
+2024-07-03 14:14:24,508 - INFO - Successful
+2024-07-03 14:14:24,508 - INFO - 537 fields remaining
+2024-07-03 14:14:24,508 - INFO - Now analyzing field ID CA_17644
+2024-07-03 14:14:32,159 - INFO - Successful
+2024-07-03 14:14:32,159 - INFO - 536 fields remaining
+2024-07-03 14:14:32,159 - INFO - Now analyzing field ID CA_17368
+2024-07-03 14:14:40,985 - INFO - Successful
+2024-07-03 14:14:40,985 - INFO - 535 fields remaining
+2024-07-03 14:14:40,985 - INFO - Now analyzing field ID CA_16847
+2024-07-03 14:14:50,407 - INFO - Successful
+2024-07-03 14:14:50,407 - INFO - 534 fields remaining
+2024-07-03 14:14:50,407 - INFO - Now analyzing field ID CA_16602
+2024-07-03 14:14:58,620 - INFO - Successful
+2024-07-03 14:14:58,620 - INFO - 533 fields remaining
+2024-07-03 14:14:58,620 - INFO - Now analyzing field ID CA_15309
+2024-07-03 14:15:06,858 - INFO - Successful
+2024-07-03 14:15:06,858 - INFO - 532 fields remaining
+2024-07-03 14:15:06,858 - INFO - Now analyzing field ID CA_18461
+2024-07-03 14:15:16,053 - INFO - Successful
+2024-07-03 14:15:16,053 - INFO - 531 fields remaining
+2024-07-03 14:15:16,053 - INFO - Now analyzing field ID CA_16061
+2024-07-03 14:15:24,319 - INFO - Successful
+2024-07-03 14:15:24,320 - INFO - 530 fields remaining
+2024-07-03 14:15:24,320 - INFO - Now analyzing field ID CA_90023
+2024-07-03 14:15:32,293 - INFO - Successful
+2024-07-03 14:15:32,293 - INFO - 529 fields remaining
+2024-07-03 14:15:32,293 - INFO - Now analyzing field ID CA_17091
+2024-07-03 14:15:41,664 - INFO - Successful
+2024-07-03 14:15:41,665 - INFO - 528 fields remaining
+2024-07-03 14:15:41,665 - INFO - Now analyzing field ID CA_90562
+2024-07-03 14:15:50,287 - INFO - Successful
+2024-07-03 14:15:50,287 - INFO - 527 fields remaining
+2024-07-03 14:15:50,287 - INFO - Now analyzing field ID CA_12062
+2024-07-03 14:15:56,358 - INFO - Successful
+2024-07-03 14:15:56,358 - INFO - 526 fields remaining
+2024-07-03 14:15:56,359 - INFO - Now analyzing field ID CA_90738
+2024-07-03 14:16:04,293 - INFO - Successful
+2024-07-03 14:16:04,293 - INFO - 525 fields remaining
+2024-07-03 14:16:04,293 - INFO - Now analyzing field ID CA_285142
+2024-07-03 14:16:11,766 - INFO - Successful
+2024-07-03 14:16:11,766 - INFO - 524 fields remaining
+2024-07-03 14:16:11,766 - INFO - Now analyzing field ID CA_282438
+2024-07-03 14:16:20,395 - INFO - Successful
+2024-07-03 14:16:20,395 - INFO - 523 fields remaining
+2024-07-03 14:16:20,395 - INFO - Now analyzing field ID CA_262871
+2024-07-03 14:16:28,484 - INFO - Successful
+2024-07-03 14:16:28,484 - INFO - 522 fields remaining
+2024-07-03 14:16:28,484 - INFO - Now analyzing field ID CA_254138
+2024-07-03 14:16:36,081 - INFO - Successful
+2024-07-03 14:16:36,081 - INFO - 521 fields remaining
+2024-07-03 14:16:36,081 - INFO - Now analyzing field ID CA_251657
+2024-07-03 14:16:43,786 - INFO - Successful
+2024-07-03 14:16:43,787 - INFO - 520 fields remaining
+2024-07-03 14:16:43,787 - INFO - Now analyzing field ID CA_89481
+2024-07-03 14:16:50,876 - INFO - Successful
+2024-07-03 14:16:50,876 - INFO - 519 fields remaining
+2024-07-03 14:16:50,876 - INFO - Now analyzing field ID CA_286837
+2024-07-03 14:16:57,274 - INFO - Successful
+2024-07-03 14:16:57,274 - INFO - 518 fields remaining
+2024-07-03 14:16:57,274 - INFO - Now analyzing field ID CA_280097
+2024-07-03 14:17:05,555 - INFO - Successful
+2024-07-03 14:17:05,555 - INFO - 517 fields remaining
+2024-07-03 14:17:05,555 - INFO - Now analyzing field ID CA_259742
+2024-07-03 14:17:13,573 - INFO - Successful
+2024-07-03 14:17:13,573 - INFO - 516 fields remaining
+2024-07-03 14:17:13,573 - INFO - Now analyzing field ID CA_253114
+2024-07-03 14:17:21,902 - INFO - Successful
+2024-07-03 14:17:21,902 - INFO - 515 fields remaining
+2024-07-03 14:17:21,902 - INFO - Now analyzing field ID CA_251751
+2024-07-03 14:17:28,784 - INFO - Successful
+2024-07-03 14:17:28,784 - INFO - 514 fields remaining
+2024-07-03 14:17:28,785 - INFO - Now analyzing field ID CA_320339
+2024-07-03 14:17:35,193 - INFO - Successful
+2024-07-03 14:17:35,193 - INFO - 513 fields remaining
+2024-07-03 14:17:35,193 - INFO - Now analyzing field ID CA_262885
+2024-07-03 14:17:42,700 - INFO - Successful
+2024-07-03 14:17:42,701 - INFO - 512 fields remaining
+2024-07-03 14:17:42,701 - INFO - Now analyzing field ID CA_259701
+2024-07-03 14:17:50,553 - INFO - Successful
+2024-07-03 14:17:50,553 - INFO - 511 fields remaining
+2024-07-03 14:17:50,553 - INFO - Now analyzing field ID CA_87308
+2024-07-03 14:17:58,143 - INFO - Successful
+2024-07-03 14:17:58,143 - INFO - 510 fields remaining
+2024-07-03 14:17:58,143 - INFO - Now analyzing field ID CA_86773
+2024-07-03 14:18:05,386 - INFO - Successful
+2024-07-03 14:18:05,386 - INFO - 509 fields remaining
+2024-07-03 14:18:05,386 - INFO - Now analyzing field ID CA_67187
+2024-07-03 14:18:12,672 - INFO - Successful
+2024-07-03 14:18:12,672 - INFO - 508 fields remaining
+2024-07-03 14:18:12,672 - INFO - Now analyzing field ID CA_253591
+2024-07-03 14:18:20,825 - INFO - Successful
+2024-07-03 14:18:20,825 - INFO - 507 fields remaining
+2024-07-03 14:18:20,825 - INFO - Now analyzing field ID CA_263796
+2024-07-03 14:18:29,547 - INFO - Successful
+2024-07-03 14:18:29,547 - INFO - 506 fields remaining
+2024-07-03 14:18:29,547 - INFO - Now analyzing field ID CA_89335
+2024-07-03 14:18:36,778 - INFO - Successful
+2024-07-03 14:18:36,779 - INFO - 505 fields remaining
+2024-07-03 14:18:36,779 - INFO - Now analyzing field ID CA_230025
+2024-07-03 14:18:44,646 - INFO - Successful
+2024-07-03 14:18:44,646 - INFO - 504 fields remaining
+2024-07-03 14:18:44,647 - INFO - Now analyzing field ID CA_251273
+2024-07-03 14:18:51,190 - INFO - Successful
+2024-07-03 14:18:51,190 - INFO - 503 fields remaining
+2024-07-03 14:18:51,190 - INFO - Now analyzing field ID CA_275163
+2024-07-03 14:18:58,998 - INFO - Successful
+2024-07-03 14:18:58,998 - INFO - 502 fields remaining
+2024-07-03 14:18:58,998 - INFO - Now analyzing field ID CA_244021
+2024-07-03 14:19:05,724 - INFO - Successful
+2024-07-03 14:19:05,724 - INFO - 501 fields remaining
+2024-07-03 14:19:05,724 - INFO - Now analyzing field ID CA_275122
+2024-07-03 14:19:12,750 - INFO - Successful
+2024-07-03 14:19:12,750 - INFO - 500 fields remaining
+2024-07-03 14:19:12,750 - INFO - Now analyzing field ID CA_265694
+2024-07-03 14:19:19,825 - INFO - Successful
+2024-07-03 14:19:19,826 - INFO - 499 fields remaining
+2024-07-03 14:19:19,826 - INFO - Now analyzing field ID CA_21410
+2024-07-03 14:19:26,862 - INFO - Successful
+2024-07-03 14:19:26,862 - INFO - 498 fields remaining
+2024-07-03 14:19:26,862 - INFO - Now analyzing field ID CA_249396
+2024-07-03 14:19:34,578 - INFO - Successful
+2024-07-03 14:19:34,578 - INFO - 497 fields remaining
+2024-07-03 14:19:34,578 - INFO - Now analyzing field ID CA_231410
+2024-07-03 14:19:41,651 - INFO - Successful
+2024-07-03 14:19:41,651 - INFO - 496 fields remaining
+2024-07-03 14:19:41,651 - INFO - Now analyzing field ID CA_100873
+2024-07-03 14:19:48,711 - INFO - Successful
+2024-07-03 14:19:48,711 - INFO - 495 fields remaining
+2024-07-03 14:19:48,711 - INFO - Now analyzing field ID CA_282524
+2024-07-03 14:19:57,877 - INFO - Successful
+2024-07-03 14:19:57,877 - INFO - 494 fields remaining
+2024-07-03 14:19:57,877 - INFO - Now analyzing field ID CA_251494
+2024-07-03 14:20:07,474 - INFO - Successful
+2024-07-03 14:20:07,474 - INFO - 493 fields remaining
+2024-07-03 14:20:07,474 - INFO - Now analyzing field ID CA_90393
+2024-07-03 14:20:18,966 - INFO - Successful
+2024-07-03 14:20:18,966 - INFO - 492 fields remaining
+2024-07-03 14:20:18,966 - INFO - Now analyzing field ID CA_88706
+2024-07-03 14:20:26,656 - INFO - Successful
+2024-07-03 14:20:26,656 - INFO - 491 fields remaining
+2024-07-03 14:20:26,656 - INFO - Now analyzing field ID CA_89459
+2024-07-03 14:20:34,400 - INFO - Successful
+2024-07-03 14:20:34,400 - INFO - 490 fields remaining
+2024-07-03 14:20:34,400 - INFO - Now analyzing field ID CA_281208
+2024-07-03 14:20:42,916 - INFO - Successful
+2024-07-03 14:20:42,916 - INFO - 489 fields remaining
+2024-07-03 14:20:42,916 - INFO - Now analyzing field ID CA_258631
+2024-07-03 14:20:49,491 - INFO - Successful
+2024-07-03 14:20:49,491 - INFO - 488 fields remaining
+2024-07-03 14:20:49,491 - INFO - Now analyzing field ID CA_258472
+2024-07-03 14:20:58,039 - INFO - Successful
+2024-07-03 14:20:58,039 - INFO - 487 fields remaining
+2024-07-03 14:20:58,040 - INFO - Now analyzing field ID CA_258127
+2024-07-03 14:21:05,666 - INFO - Successful
+2024-07-03 14:21:05,666 - INFO - 486 fields remaining
+2024-07-03 14:21:05,666 - INFO - Now analyzing field ID CA_256986
+2024-07-03 14:21:13,840 - INFO - Successful
+2024-07-03 14:21:13,840 - INFO - 485 fields remaining
+2024-07-03 14:21:13,840 - INFO - Now analyzing field ID CA_256200
+2024-07-03 14:21:20,932 - INFO - Successful
+2024-07-03 14:21:20,932 - INFO - 484 fields remaining
+2024-07-03 14:21:20,932 - INFO - Now analyzing field ID CA_250892
+2024-07-03 14:21:28,277 - INFO - Successful
+2024-07-03 14:21:28,277 - INFO - 483 fields remaining
+2024-07-03 14:21:28,277 - INFO - Now analyzing field ID CA_264899
+2024-07-03 14:21:36,206 - INFO - Successful
+2024-07-03 14:21:36,206 - INFO - 482 fields remaining
+2024-07-03 14:21:36,206 - INFO - Now analyzing field ID CA_257302
+2024-07-03 14:21:44,234 - INFO - Successful
+2024-07-03 14:21:44,234 - INFO - 481 fields remaining
+2024-07-03 14:21:44,234 - INFO - Now analyzing field ID CA_257116
+2024-07-03 14:21:51,655 - INFO - Successful
+2024-07-03 14:21:51,655 - INFO - 480 fields remaining
+2024-07-03 14:21:51,655 - INFO - Now analyzing field ID CA_320038
+2024-07-03 14:22:01,660 - INFO - Successful
+2024-07-03 14:22:01,660 - INFO - 479 fields remaining
+2024-07-03 14:22:01,660 - INFO - Now analyzing field ID CA_285559
+2024-07-03 14:22:08,759 - INFO - Successful
+2024-07-03 14:22:08,759 - INFO - 478 fields remaining
+2024-07-03 14:22:08,759 - INFO - Now analyzing field ID CA_278205
+2024-07-03 14:22:16,186 - INFO - Successful
+2024-07-03 14:22:16,186 - INFO - 477 fields remaining
+2024-07-03 14:22:16,187 - INFO - Now analyzing field ID CA_278176
+2024-07-03 14:22:23,860 - INFO - Successful
+2024-07-03 14:22:23,860 - INFO - 476 fields remaining
+2024-07-03 14:22:23,860 - INFO - Now analyzing field ID CA_259153
+2024-07-03 14:22:32,829 - INFO - Successful
+2024-07-03 14:22:32,829 - INFO - 475 fields remaining
+2024-07-03 14:22:32,829 - INFO - Now analyzing field ID CA_250091
+2024-07-03 14:22:40,361 - INFO - Successful
+2024-07-03 14:22:40,361 - INFO - 474 fields remaining
+2024-07-03 14:22:40,362 - INFO - Now analyzing field ID CA_245541
+2024-07-03 14:22:48,245 - INFO - Successful
+2024-07-03 14:22:48,245 - INFO - 473 fields remaining
+2024-07-03 14:22:48,245 - INFO - Now analyzing field ID CA_245311
+2024-07-03 14:22:56,597 - INFO - Successful
+2024-07-03 14:22:56,597 - INFO - 472 fields remaining
+2024-07-03 14:22:56,597 - INFO - Now analyzing field ID CA_231117
+2024-07-03 14:23:05,174 - INFO - Successful
+2024-07-03 14:23:05,174 - INFO - 471 fields remaining
+2024-07-03 14:23:05,174 - INFO - Now analyzing field ID CA_229991
+2024-07-03 14:23:13,659 - INFO - Successful
+2024-07-03 14:23:13,659 - INFO - 470 fields remaining
+2024-07-03 14:23:13,659 - INFO - Now analyzing field ID CA_260826
+2024-07-03 14:23:20,691 - INFO - Successful
+2024-07-03 14:23:20,691 - INFO - 469 fields remaining
+2024-07-03 14:23:20,691 - INFO - Now analyzing field ID CA_283420
+2024-07-03 14:23:28,417 - INFO - Successful
+2024-07-03 14:23:28,417 - INFO - 468 fields remaining
+2024-07-03 14:23:28,418 - INFO - Now analyzing field ID CA_99201
+2024-07-03 14:23:35,696 - INFO - Successful
+2024-07-03 14:23:35,696 - INFO - 467 fields remaining
+2024-07-03 14:23:35,696 - INFO - Now analyzing field ID CA_261291
+2024-07-03 14:23:43,459 - INFO - Successful
+2024-07-03 14:23:43,459 - INFO - 466 fields remaining
+2024-07-03 14:23:43,459 - INFO - Now analyzing field ID CA_99220
+2024-07-03 14:23:51,066 - INFO - Successful
+2024-07-03 14:23:51,066 - INFO - 465 fields remaining
+2024-07-03 14:23:51,066 - INFO - Now analyzing field ID CA_249272
+2024-07-03 14:23:58,362 - INFO - Successful
+2024-07-03 14:23:58,362 - INFO - 464 fields remaining
+2024-07-03 14:23:58,362 - INFO - Now analyzing field ID CA_94118
+2024-07-03 14:24:06,629 - INFO - Successful
+2024-07-03 14:24:06,629 - INFO - 463 fields remaining
+2024-07-03 14:24:06,629 - INFO - Now analyzing field ID CA_264465
+2024-07-03 14:24:13,653 - INFO - Successful
+2024-07-03 14:24:13,653 - INFO - 462 fields remaining
+2024-07-03 14:24:13,653 - INFO - Now analyzing field ID CA_249018
+2024-07-03 14:24:23,100 - INFO - Successful
+2024-07-03 14:24:23,100 - INFO - 461 fields remaining
+2024-07-03 14:24:23,100 - INFO - Now analyzing field ID CA_91730
+2024-07-03 14:24:31,598 - INFO - Successful
+2024-07-03 14:24:31,598 - INFO - 460 fields remaining
+2024-07-03 14:24:31,598 - INFO - Now analyzing field ID CA_289545
+2024-07-03 14:24:46,525 - INFO - Successful
+2024-07-03 14:24:46,525 - INFO - 459 fields remaining
+2024-07-03 14:24:46,525 - INFO - Now analyzing field ID CA_289337
+2024-07-03 14:24:57,481 - INFO - Successful
+2024-07-03 14:24:57,482 - INFO - 458 fields remaining
+2024-07-03 14:24:57,482 - INFO - Now analyzing field ID CA_77693
+2024-07-03 14:25:05,444 - INFO - Successful
+2024-07-03 14:25:05,444 - INFO - 457 fields remaining
+2024-07-03 14:25:05,444 - INFO - Now analyzing field ID CA_328974
+2024-07-03 14:25:13,122 - INFO - Successful
+2024-07-03 14:25:13,122 - INFO - 456 fields remaining
+2024-07-03 14:25:13,122 - INFO - Now analyzing field ID CA_231654
+2024-07-03 14:25:22,023 - INFO - Successful
+2024-07-03 14:25:22,023 - INFO - 455 fields remaining
+2024-07-03 14:25:22,023 - INFO - Now analyzing field ID CA_104862
+2024-07-03 14:25:29,623 - INFO - Successful
+2024-07-03 14:25:29,623 - INFO - 454 fields remaining
+2024-07-03 14:25:29,623 - INFO - Now analyzing field ID CA_101797
+2024-07-03 14:25:37,642 - INFO - Successful
+2024-07-03 14:25:37,642 - INFO - 453 fields remaining
+2024-07-03 14:25:37,642 - INFO - Now analyzing field ID CA_101679
+2024-07-03 14:25:45,674 - INFO - Successful
+2024-07-03 14:25:45,675 - INFO - 452 fields remaining
+2024-07-03 14:25:45,675 - INFO - Now analyzing field ID CA_92898
+2024-07-03 14:25:53,119 - INFO - Successful
+2024-07-03 14:25:53,119 - INFO - 451 fields remaining
+2024-07-03 14:25:53,119 - INFO - Now analyzing field ID CA_98963
+2024-07-03 14:25:53,290 - WARNING - Reattempting request..
+2024-07-03 14:26:02,305 - INFO - Successful
+2024-07-03 14:26:02,305 - INFO - 450 fields remaining
+2024-07-03 14:26:02,305 - INFO - Now analyzing field ID CA_329212
+2024-07-03 14:26:18,374 - INFO - Successful
+2024-07-03 14:26:18,374 - INFO - 449 fields remaining
+2024-07-03 14:26:18,374 - INFO - Now analyzing field ID CA_233234
+2024-07-03 14:26:29,604 - INFO - Successful
+2024-07-03 14:26:29,604 - INFO - 448 fields remaining
+2024-07-03 14:26:29,604 - INFO - Now analyzing field ID CA_103875
+2024-07-03 14:26:37,200 - INFO - Successful
+2024-07-03 14:26:37,201 - INFO - 447 fields remaining
+2024-07-03 14:26:37,201 - INFO - Now analyzing field ID CA_341013
+2024-07-03 14:26:45,629 - INFO - Successful
+2024-07-03 14:26:45,629 - INFO - 446 fields remaining
+2024-07-03 14:26:45,629 - INFO - Now analyzing field ID CA_322633
+2024-07-03 14:26:55,655 - INFO - Successful
+2024-07-03 14:26:55,655 - INFO - 445 fields remaining
+2024-07-03 14:26:55,655 - INFO - Now analyzing field ID CA_102689
+2024-07-03 14:27:02,909 - INFO - Successful
+2024-07-03 14:27:02,909 - INFO - 444 fields remaining
+2024-07-03 14:27:02,909 - INFO - Now analyzing field ID CA_108094
+2024-07-03 14:27:10,371 - INFO - Successful
+2024-07-03 14:27:10,371 - INFO - 443 fields remaining
+2024-07-03 14:27:10,371 - INFO - Now analyzing field ID CA_98479
+2024-07-03 14:27:17,442 - INFO - Successful
+2024-07-03 14:27:17,442 - INFO - 442 fields remaining
+2024-07-03 14:27:17,442 - INFO - Now analyzing field ID CA_99657
+2024-07-03 14:27:25,900 - INFO - Successful
+2024-07-03 14:27:25,901 - INFO - 441 fields remaining
+2024-07-03 14:27:25,901 - INFO - Now analyzing field ID CA_106984
+2024-07-03 14:27:33,993 - INFO - Successful
+2024-07-03 14:27:33,993 - INFO - 440 fields remaining
+2024-07-03 14:27:33,994 - INFO - Now analyzing field ID CA_107269
+2024-07-03 14:27:41,504 - INFO - Successful
+2024-07-03 14:27:41,504 - INFO - 439 fields remaining
+2024-07-03 14:27:41,504 - INFO - Now analyzing field ID CA_107192
+2024-07-03 14:27:49,667 - INFO - Successful
+2024-07-03 14:27:49,667 - INFO - 438 fields remaining
+2024-07-03 14:27:49,667 - INFO - Now analyzing field ID CA_107963
+2024-07-03 14:27:57,527 - INFO - Successful
+2024-07-03 14:27:57,527 - INFO - 437 fields remaining
+2024-07-03 14:27:57,527 - INFO - Now analyzing field ID CA_325880
+2024-07-03 14:28:05,596 - INFO - Successful
+2024-07-03 14:28:05,596 - INFO - 436 fields remaining
+2024-07-03 14:28:05,596 - INFO - Now analyzing field ID CA_102128
+2024-07-03 14:28:14,617 - INFO - Successful
+2024-07-03 14:28:14,617 - INFO - 435 fields remaining
+2024-07-03 14:28:14,617 - INFO - Now analyzing field ID CA_328830
+2024-07-03 14:28:21,805 - INFO - Successful
+2024-07-03 14:28:21,805 - INFO - 434 fields remaining
+2024-07-03 14:28:21,806 - INFO - Now analyzing field ID CA_100310
+2024-07-03 14:28:30,113 - INFO - Successful
+2024-07-03 14:28:30,113 - INFO - 433 fields remaining
+2024-07-03 14:28:30,113 - INFO - Now analyzing field ID CA_97925
+2024-07-03 14:28:37,320 - INFO - Successful
+2024-07-03 14:28:37,320 - INFO - 432 fields remaining
+2024-07-03 14:28:37,320 - INFO - Now analyzing field ID CA_97508
+2024-07-03 14:28:45,234 - INFO - Successful
+2024-07-03 14:28:45,234 - INFO - 431 fields remaining
+2024-07-03 14:28:45,234 - INFO - Now analyzing field ID CA_232673
+2024-07-03 14:28:53,038 - INFO - Successful
+2024-07-03 14:28:53,038 - INFO - 430 fields remaining
+2024-07-03 14:28:53,038 - INFO - Now analyzing field ID CA_105521
+2024-07-03 14:29:00,266 - INFO - Successful
+2024-07-03 14:29:00,266 - INFO - 429 fields remaining
+2024-07-03 14:29:00,266 - INFO - Now analyzing field ID CA_330488
+2024-07-03 14:29:07,943 - INFO - Successful
+2024-07-03 14:29:07,943 - INFO - 428 fields remaining
+2024-07-03 14:29:07,943 - INFO - Now analyzing field ID CA_330672
+2024-07-03 14:29:15,253 - INFO - Successful
+2024-07-03 14:29:15,253 - INFO - 427 fields remaining
+2024-07-03 14:29:15,253 - INFO - Now analyzing field ID CA_81102
+2024-07-03 14:29:22,522 - INFO - Successful
+2024-07-03 14:29:22,523 - INFO - 426 fields remaining
+2024-07-03 14:29:22,523 - INFO - Now analyzing field ID CA_327307
+2024-07-03 14:29:29,870 - INFO - Successful
+2024-07-03 14:29:29,870 - INFO - 425 fields remaining
+2024-07-03 14:29:29,870 - INFO - Now analyzing field ID CA_105986
+2024-07-03 14:29:38,379 - INFO - Successful
+2024-07-03 14:29:38,379 - INFO - 424 fields remaining
+2024-07-03 14:29:38,379 - INFO - Now analyzing field ID CA_105749
+2024-07-03 14:29:45,979 - INFO - Successful
+2024-07-03 14:29:45,979 - INFO - 423 fields remaining
+2024-07-03 14:29:45,979 - INFO - Now analyzing field ID CA_332205
+2024-07-03 14:29:54,070 - INFO - Successful
+2024-07-03 14:29:54,070 - INFO - 422 fields remaining
+2024-07-03 14:29:54,070 - INFO - Now analyzing field ID CA_327150
+2024-07-03 14:30:01,186 - INFO - Successful
+2024-07-03 14:30:01,186 - INFO - 421 fields remaining
+2024-07-03 14:30:01,186 - INFO - Now analyzing field ID CA_327198
+2024-07-03 14:30:08,577 - INFO - Successful
+2024-07-03 14:30:08,577 - INFO - 420 fields remaining
+2024-07-03 14:30:08,577 - INFO - Now analyzing field ID CA_96321
+2024-07-03 14:30:15,556 - INFO - Successful
+2024-07-03 14:30:15,556 - INFO - 419 fields remaining
+2024-07-03 14:30:15,556 - INFO - Now analyzing field ID CA_322353
+2024-07-03 14:30:23,920 - INFO - Successful
+2024-07-03 14:30:23,920 - INFO - 418 fields remaining
+2024-07-03 14:30:23,920 - INFO - Now analyzing field ID CA_326575
+2024-07-03 14:30:31,549 - INFO - Successful
+2024-07-03 14:30:31,549 - INFO - 417 fields remaining
+2024-07-03 14:30:31,549 - INFO - Now analyzing field ID CA_340795
+2024-07-03 14:30:39,337 - INFO - Successful
+2024-07-03 14:30:39,337 - INFO - 416 fields remaining
+2024-07-03 14:30:39,337 - INFO - Now analyzing field ID CA_326564
+2024-07-03 14:30:47,555 - INFO - Successful
+2024-07-03 14:30:47,555 - INFO - 415 fields remaining
+2024-07-03 14:30:47,555 - INFO - Now analyzing field ID CA_100588
+2024-07-03 14:30:55,681 - INFO - Successful
+2024-07-03 14:30:55,681 - INFO - 414 fields remaining
+2024-07-03 14:30:55,681 - INFO - Now analyzing field ID CA_94012
+2024-07-03 14:31:03,961 - INFO - Successful
+2024-07-03 14:31:03,961 - INFO - 413 fields remaining
+2024-07-03 14:31:03,961 - INFO - Now analyzing field ID CA_81905
+2024-07-03 14:31:12,065 - INFO - Successful
+2024-07-03 14:31:12,065 - INFO - 412 fields remaining
+2024-07-03 14:31:12,065 - INFO - Now analyzing field ID CA_77158
+2024-07-03 14:31:21,336 - INFO - Successful
+2024-07-03 14:31:21,336 - INFO - 411 fields remaining
+2024-07-03 14:31:21,337 - INFO - Now analyzing field ID CA_218312
+2024-07-03 14:31:30,036 - INFO - Successful
+2024-07-03 14:31:30,036 - INFO - 410 fields remaining
+2024-07-03 14:31:30,036 - INFO - Now analyzing field ID CA_204345
+2024-07-03 14:31:38,711 - INFO - Successful
+2024-07-03 14:31:38,712 - INFO - 409 fields remaining
+2024-07-03 14:31:38,712 - INFO - Now analyzing field ID CA_203945
+2024-07-03 14:31:46,684 - INFO - Successful
+2024-07-03 14:31:46,684 - INFO - 408 fields remaining
+2024-07-03 14:31:46,684 - INFO - Now analyzing field ID CA_155560
+2024-07-03 14:31:54,254 - INFO - Successful
+2024-07-03 14:31:54,254 - INFO - 407 fields remaining
+2024-07-03 14:31:54,254 - INFO - Now analyzing field ID CA_183602
+2024-07-03 14:32:01,286 - INFO - Successful
+2024-07-03 14:32:01,286 - INFO - 406 fields remaining
+2024-07-03 14:32:01,286 - INFO - Now analyzing field ID CA_76432
+2024-07-03 14:32:09,305 - INFO - Successful
+2024-07-03 14:32:09,305 - INFO - 405 fields remaining
+2024-07-03 14:32:09,305 - INFO - Now analyzing field ID CA_77101
+2024-07-03 14:32:17,201 - INFO - Successful
+2024-07-03 14:32:17,201 - INFO - 404 fields remaining
+2024-07-03 14:32:17,201 - INFO - Now analyzing field ID CA_184177
+2024-07-03 14:32:24,556 - INFO - Successful
+2024-07-03 14:32:24,556 - INFO - 403 fields remaining
+2024-07-03 14:32:24,556 - INFO - Now analyzing field ID CA_155889
+2024-07-03 14:32:32,239 - INFO - Successful
+2024-07-03 14:32:32,239 - INFO - 402 fields remaining
+2024-07-03 14:32:32,239 - INFO - Now analyzing field ID CA_155363
+2024-07-03 14:32:40,569 - INFO - Successful
+2024-07-03 14:32:40,569 - INFO - 401 fields remaining
+2024-07-03 14:32:40,569 - INFO - Now analyzing field ID CA_154810
+2024-07-03 14:32:48,213 - INFO - Successful
+2024-07-03 14:32:48,215 - INFO - 400 fields remaining
+2024-07-03 14:32:48,215 - INFO - Now analyzing field ID CA_154135
+2024-07-03 14:32:56,099 - INFO - Successful
+2024-07-03 14:32:56,099 - INFO - 399 fields remaining
+2024-07-03 14:32:56,099 - INFO - Now analyzing field ID CA_324613
+2024-07-03 14:33:03,063 - INFO - Successful
+2024-07-03 14:33:03,064 - INFO - 398 fields remaining
+2024-07-03 14:33:03,064 - INFO - Now analyzing field ID CA_153430
+2024-07-03 14:33:10,587 - INFO - Successful
+2024-07-03 14:33:10,587 - INFO - 397 fields remaining
+2024-07-03 14:33:10,587 - INFO - Now analyzing field ID CA_109738
+2024-07-03 14:33:17,145 - INFO - Successful
+2024-07-03 14:33:17,145 - INFO - 396 fields remaining
+2024-07-03 14:33:17,145 - INFO - Now analyzing field ID CA_92455
+2024-07-03 14:33:27,205 - INFO - Successful
+2024-07-03 14:33:27,205 - INFO - 395 fields remaining
+2024-07-03 14:33:27,205 - INFO - Now analyzing field ID CA_81739
+2024-07-03 14:33:35,455 - INFO - Successful
+2024-07-03 14:33:35,455 - INFO - 394 fields remaining
+2024-07-03 14:33:35,455 - INFO - Now analyzing field ID CA_92493
+2024-07-03 14:33:44,195 - INFO - Successful
+2024-07-03 14:33:44,195 - INFO - 393 fields remaining
+2024-07-03 14:33:44,195 - INFO - Now analyzing field ID CA_81937
+2024-07-03 14:33:52,129 - INFO - Successful
+2024-07-03 14:33:52,129 - INFO - 392 fields remaining
+2024-07-03 14:33:52,129 - INFO - Now analyzing field ID CA_229866
+2024-07-03 14:34:00,643 - INFO - Successful
+2024-07-03 14:34:00,643 - INFO - 391 fields remaining
+2024-07-03 14:34:00,643 - INFO - Now analyzing field ID CA_80450
+2024-07-03 14:34:08,873 - INFO - Successful
+2024-07-03 14:34:08,873 - INFO - 390 fields remaining
+2024-07-03 14:34:08,873 - INFO - Now analyzing field ID CA_145664
+2024-07-03 14:34:17,874 - INFO - Successful
+2024-07-03 14:34:17,874 - INFO - 389 fields remaining
+2024-07-03 14:34:17,875 - INFO - Now analyzing field ID CA_75872
+2024-07-03 14:34:25,261 - INFO - Successful
+2024-07-03 14:34:25,262 - INFO - 388 fields remaining
+2024-07-03 14:34:25,262 - INFO - Now analyzing field ID CA_323029
+2024-07-03 14:34:33,179 - INFO - Successful
+2024-07-03 14:34:33,179 - INFO - 387 fields remaining
+2024-07-03 14:34:33,179 - INFO - Now analyzing field ID CA_215978
+2024-07-03 14:34:41,205 - INFO - Successful
+2024-07-03 14:34:41,205 - INFO - 386 fields remaining
+2024-07-03 14:34:41,206 - INFO - Now analyzing field ID CA_92436
+2024-07-03 14:34:50,976 - INFO - Successful
+2024-07-03 14:34:50,976 - INFO - 385 fields remaining
+2024-07-03 14:34:50,976 - INFO - Now analyzing field ID CA_145027
+2024-07-03 14:34:59,110 - INFO - Successful
+2024-07-03 14:34:59,110 - INFO - 384 fields remaining
+2024-07-03 14:34:59,111 - INFO - Now analyzing field ID CA_154042
+2024-07-03 14:35:07,167 - INFO - Successful
+2024-07-03 14:35:07,167 - INFO - 383 fields remaining
+2024-07-03 14:35:07,167 - INFO - Now analyzing field ID CA_153285
+2024-07-03 14:35:15,660 - INFO - Successful
+2024-07-03 14:35:15,660 - INFO - 382 fields remaining
+2024-07-03 14:35:15,660 - INFO - Now analyzing field ID CA_144104
+2024-07-03 14:35:24,099 - INFO - Successful
+2024-07-03 14:35:24,099 - INFO - 381 fields remaining
+2024-07-03 14:35:24,100 - INFO - Now analyzing field ID CA_143271
+2024-07-03 14:35:32,127 - INFO - Successful
+2024-07-03 14:35:32,127 - INFO - 380 fields remaining
+2024-07-03 14:35:32,127 - INFO - Now analyzing field ID CA_143092
+2024-07-03 14:35:39,912 - INFO - Successful
+2024-07-03 14:35:39,912 - INFO - 379 fields remaining
+2024-07-03 14:35:39,912 - INFO - Now analyzing field ID CA_77257
+2024-07-03 14:35:48,372 - INFO - Successful
+2024-07-03 14:35:48,372 - INFO - 378 fields remaining
+2024-07-03 14:35:48,372 - INFO - Now analyzing field ID CA_174086
+2024-07-03 14:35:56,101 - INFO - Successful
+2024-07-03 14:35:56,101 - INFO - 377 fields remaining
+2024-07-03 14:35:56,102 - INFO - Now analyzing field ID CA_137908
+2024-07-03 14:36:06,022 - INFO - Successful
+2024-07-03 14:36:06,022 - INFO - 376 fields remaining
+2024-07-03 14:36:06,022 - INFO - Now analyzing field ID CA_140665
+2024-07-03 14:36:14,033 - INFO - Successful
+2024-07-03 14:36:14,033 - INFO - 375 fields remaining
+2024-07-03 14:36:14,034 - INFO - Now analyzing field ID CA_287245
+2024-07-03 14:36:21,132 - INFO - Successful
+2024-07-03 14:36:21,132 - INFO - 374 fields remaining
+2024-07-03 14:36:21,132 - INFO - Now analyzing field ID CA_286468
+2024-07-03 14:36:29,808 - INFO - Successful
+2024-07-03 14:36:29,808 - INFO - 373 fields remaining
+2024-07-03 14:36:29,808 - INFO - Now analyzing field ID CA_239486
+2024-07-03 14:36:37,677 - INFO - Successful
+2024-07-03 14:36:37,677 - INFO - 372 fields remaining
+2024-07-03 14:36:37,677 - INFO - Now analyzing field ID CA_269957
+2024-07-03 14:36:46,138 - INFO - Successful
+2024-07-03 14:36:46,138 - INFO - 371 fields remaining
+2024-07-03 14:36:46,138 - INFO - Now analyzing field ID CA_174849
+2024-07-03 14:36:53,561 - INFO - Successful
+2024-07-03 14:36:53,561 - INFO - 370 fields remaining
+2024-07-03 14:36:53,561 - INFO - Now analyzing field ID CA_137260
+2024-07-03 14:37:00,872 - INFO - Successful
+2024-07-03 14:37:00,872 - INFO - 369 fields remaining
+2024-07-03 14:37:00,872 - INFO - Now analyzing field ID CA_138089
+2024-07-03 14:37:08,905 - INFO - Successful
+2024-07-03 14:37:08,905 - INFO - 368 fields remaining
+2024-07-03 14:37:08,906 - INFO - Now analyzing field ID CA_269493
+2024-07-03 14:37:17,414 - INFO - Successful
+2024-07-03 14:37:17,414 - INFO - 367 fields remaining
+2024-07-03 14:37:17,415 - INFO - Now analyzing field ID CA_278287
+2024-07-03 14:37:25,979 - INFO - Successful
+2024-07-03 14:37:25,979 - INFO - 366 fields remaining
+2024-07-03 14:37:25,980 - INFO - Now analyzing field ID CA_269369
+2024-07-03 14:37:35,521 - INFO - Successful
+2024-07-03 14:37:35,522 - INFO - 365 fields remaining
+2024-07-03 14:37:35,522 - INFO - Now analyzing field ID CA_269189
+2024-07-03 14:37:44,079 - INFO - Successful
+2024-07-03 14:37:44,079 - INFO - 364 fields remaining
+2024-07-03 14:37:44,079 - INFO - Now analyzing field ID CA_274062
+2024-07-03 14:37:53,014 - INFO - Successful
+2024-07-03 14:37:53,014 - INFO - 363 fields remaining
+2024-07-03 14:37:53,014 - INFO - Now analyzing field ID CA_276203
+2024-07-03 14:38:00,962 - INFO - Successful
+2024-07-03 14:38:00,962 - INFO - 362 fields remaining
+2024-07-03 14:38:00,962 - INFO - Now analyzing field ID CA_275841
+2024-07-03 14:38:09,466 - INFO - Successful
+2024-07-03 14:38:09,466 - INFO - 361 fields remaining
+2024-07-03 14:38:09,466 - INFO - Now analyzing field ID CA_270478
+2024-07-03 14:38:19,026 - INFO - Successful
+2024-07-03 14:38:19,026 - INFO - 360 fields remaining
+2024-07-03 14:38:19,027 - INFO - Now analyzing field ID CA_269527
+2024-07-03 14:38:28,282 - INFO - Successful
+2024-07-03 14:38:28,282 - INFO - 359 fields remaining
+2024-07-03 14:38:28,282 - INFO - Now analyzing field ID CA_245360
+2024-07-03 14:38:36,420 - INFO - Successful
+2024-07-03 14:38:36,420 - INFO - 358 fields remaining
+2024-07-03 14:38:36,420 - INFO - Now analyzing field ID CA_172607
+2024-07-03 14:38:44,113 - INFO - Successful
+2024-07-03 14:38:44,114 - INFO - 357 fields remaining
+2024-07-03 14:38:44,114 - INFO - Now analyzing field ID CA_127382
+2024-07-03 14:38:54,181 - INFO - Successful
+2024-07-03 14:38:54,181 - INFO - 356 fields remaining
+2024-07-03 14:38:54,181 - INFO - Now analyzing field ID CA_126375
+2024-07-03 14:39:02,668 - INFO - Successful
+2024-07-03 14:39:02,669 - INFO - 355 fields remaining
+2024-07-03 14:39:02,669 - INFO - Now analyzing field ID CA_126031
+2024-07-03 14:39:11,464 - INFO - Successful
+2024-07-03 14:39:11,464 - INFO - 354 fields remaining
+2024-07-03 14:39:11,464 - INFO - Now analyzing field ID CA_125759
+2024-07-03 14:39:28,763 - INFO - Successful
+2024-07-03 14:39:28,763 - INFO - 353 fields remaining
+2024-07-03 14:39:28,763 - INFO - Now analyzing field ID CA_140561
+2024-07-03 14:39:37,324 - INFO - Successful
+2024-07-03 14:39:37,324 - INFO - 352 fields remaining
+2024-07-03 14:39:37,324 - INFO - Now analyzing field ID CA_266040
+2024-07-03 14:39:46,179 - INFO - Successful
+2024-07-03 14:39:46,179 - INFO - 351 fields remaining
+2024-07-03 14:39:46,179 - INFO - Now analyzing field ID CA_273256
+2024-07-03 14:39:54,097 - INFO - Successful
+2024-07-03 14:39:54,097 - INFO - 350 fields remaining
+2024-07-03 14:39:54,097 - INFO - Now analyzing field ID CA_120258
+2024-07-03 14:40:02,338 - INFO - Successful
+2024-07-03 14:40:02,338 - INFO - 349 fields remaining
+2024-07-03 14:40:02,338 - INFO - Now analyzing field ID CA_173176
+2024-07-03 14:40:10,847 - INFO - Successful
+2024-07-03 14:40:10,847 - INFO - 348 fields remaining
+2024-07-03 14:40:10,847 - INFO - Now analyzing field ID CA_139701
+2024-07-03 14:40:19,529 - INFO - Successful
+2024-07-03 14:40:19,529 - INFO - 347 fields remaining
+2024-07-03 14:40:19,529 - INFO - Now analyzing field ID CA_120425
+2024-07-03 14:40:29,599 - INFO - Successful
+2024-07-03 14:40:29,599 - INFO - 346 fields remaining
+2024-07-03 14:40:29,599 - INFO - Now analyzing field ID CA_117699
+2024-07-03 14:40:38,222 - INFO - Successful
+2024-07-03 14:40:38,222 - INFO - 345 fields remaining
+2024-07-03 14:40:38,222 - INFO - Now analyzing field ID CA_123169
+2024-07-03 14:40:45,739 - INFO - Successful
+2024-07-03 14:40:45,739 - INFO - 344 fields remaining
+2024-07-03 14:40:45,739 - INFO - Now analyzing field ID CA_150456
+2024-07-03 14:40:53,931 - INFO - Successful
+2024-07-03 14:40:53,931 - INFO - 343 fields remaining
+2024-07-03 14:40:53,931 - INFO - Now analyzing field ID CA_141887
+2024-07-03 14:41:02,540 - INFO - Successful
+2024-07-03 14:41:02,541 - INFO - 342 fields remaining
+2024-07-03 14:41:02,541 - INFO - Now analyzing field ID CA_274575
+2024-07-03 14:41:10,848 - INFO - Successful
+2024-07-03 14:41:10,848 - INFO - 341 fields remaining
+2024-07-03 14:41:10,848 - INFO - Now analyzing field ID CA_274127
+2024-07-03 14:41:21,286 - INFO - Successful
+2024-07-03 14:41:21,286 - INFO - 340 fields remaining
+2024-07-03 14:41:21,286 - INFO - Now analyzing field ID CA_68010
+2024-07-03 14:41:29,708 - INFO - Successful
+2024-07-03 14:41:29,708 - INFO - 339 fields remaining
+2024-07-03 14:41:29,708 - INFO - Now analyzing field ID CA_339856
+2024-07-03 14:41:38,682 - INFO - Successful
+2024-07-03 14:41:38,682 - INFO - 338 fields remaining
+2024-07-03 14:41:38,682 - INFO - Now analyzing field ID CA_306194
+2024-07-03 14:41:47,635 - INFO - Successful
+2024-07-03 14:41:47,635 - INFO - 337 fields remaining
+2024-07-03 14:41:47,635 - INFO - Now analyzing field ID CA_267269
+2024-07-03 14:41:55,859 - INFO - Successful
+2024-07-03 14:41:55,859 - INFO - 336 fields remaining
+2024-07-03 14:41:55,859 - INFO - Now analyzing field ID CA_273411
+2024-07-03 14:42:04,473 - INFO - Successful
+2024-07-03 14:42:04,473 - INFO - 335 fields remaining
+2024-07-03 14:42:04,473 - INFO - Now analyzing field ID CA_272200
+2024-07-03 14:42:13,254 - INFO - Successful
+2024-07-03 14:42:13,254 - INFO - 334 fields remaining
+2024-07-03 14:42:13,254 - INFO - Now analyzing field ID CA_67740
+2024-07-03 14:42:22,032 - INFO - Successful
+2024-07-03 14:42:22,032 - INFO - 333 fields remaining
+2024-07-03 14:42:22,033 - INFO - Now analyzing field ID CA_308326
+2024-07-03 14:42:32,253 - INFO - Successful
+2024-07-03 14:42:32,253 - INFO - 332 fields remaining
+2024-07-03 14:42:32,253 - INFO - Now analyzing field ID CA_279297
+2024-07-03 14:42:40,461 - INFO - Successful
+2024-07-03 14:42:40,461 - INFO - 331 fields remaining
+2024-07-03 14:42:40,462 - INFO - Now analyzing field ID CA_339336
+2024-07-03 14:42:49,058 - INFO - Successful
+2024-07-03 14:42:49,058 - INFO - 330 fields remaining
+2024-07-03 14:42:49,058 - INFO - Now analyzing field ID CA_304101
+2024-07-03 14:43:01,003 - INFO - Successful
+2024-07-03 14:43:01,004 - INFO - 329 fields remaining
+2024-07-03 14:43:01,004 - INFO - Now analyzing field ID CA_279979
+2024-07-03 14:43:09,083 - INFO - Successful
+2024-07-03 14:43:09,083 - INFO - 328 fields remaining
+2024-07-03 14:43:09,083 - INFO - Now analyzing field ID CA_279069
+2024-07-03 14:43:17,606 - INFO - Successful
+2024-07-03 14:43:17,606 - INFO - 327 fields remaining
+2024-07-03 14:43:17,606 - INFO - Now analyzing field ID CA_274791
+2024-07-03 14:43:27,287 - INFO - Successful
+2024-07-03 14:43:27,287 - INFO - 326 fields remaining
+2024-07-03 14:43:27,287 - INFO - Now analyzing field ID CA_268366
+2024-07-03 14:43:36,485 - INFO - Successful
+2024-07-03 14:43:36,486 - INFO - 325 fields remaining
+2024-07-03 14:43:36,486 - INFO - Now analyzing field ID CA_333756
+2024-07-03 14:43:57,696 - INFO - Successful
+2024-07-03 14:43:57,696 - INFO - 324 fields remaining
+2024-07-03 14:43:57,696 - INFO - Now analyzing field ID CA_308694
+2024-07-03 14:44:05,477 - INFO - Successful
+2024-07-03 14:44:05,477 - INFO - 323 fields remaining
+2024-07-03 14:44:05,477 - INFO - Now analyzing field ID CA_339570
+2024-07-03 14:44:14,736 - INFO - Successful
+2024-07-03 14:44:14,737 - INFO - 322 fields remaining
+2024-07-03 14:44:14,737 - INFO - Now analyzing field ID CA_336306
+2024-07-03 14:44:30,394 - INFO - Successful
+2024-07-03 14:44:30,395 - INFO - 321 fields remaining
+2024-07-03 14:44:30,395 - INFO - Now analyzing field ID CA_306530
+2024-07-03 14:44:46,271 - INFO - Successful
+2024-07-03 14:44:46,273 - INFO - 320 fields remaining
+2024-07-03 14:44:46,273 - INFO - Now analyzing field ID CA_271915
+2024-07-03 14:44:56,227 - INFO - Successful
+2024-07-03 14:44:56,227 - INFO - 319 fields remaining
+2024-07-03 14:44:56,227 - INFO - Now analyzing field ID CA_293035
+2024-07-03 14:45:05,012 - INFO - Successful
+2024-07-03 14:45:05,012 - INFO - 318 fields remaining
+2024-07-03 14:45:05,012 - INFO - Now analyzing field ID CA_312714
+2024-07-03 14:45:15,810 - INFO - Successful
+2024-07-03 14:45:15,810 - INFO - 317 fields remaining
+2024-07-03 14:45:15,810 - INFO - Now analyzing field ID CA_340477
+2024-07-03 14:45:26,688 - INFO - Successful
+2024-07-03 14:45:26,688 - INFO - 316 fields remaining
+2024-07-03 14:45:26,688 - INFO - Now analyzing field ID CA_71718
+2024-07-03 14:45:35,213 - INFO - Successful
+2024-07-03 14:45:35,213 - INFO - 315 fields remaining
+2024-07-03 14:45:35,213 - INFO - Now analyzing field ID CA_274108
+2024-07-03 14:45:45,545 - INFO - Successful
+2024-07-03 14:45:45,545 - INFO - 314 fields remaining
+2024-07-03 14:45:45,545 - INFO - Now analyzing field ID CA_71587
+2024-07-03 14:45:55,522 - INFO - Successful
+2024-07-03 14:45:55,523 - INFO - 313 fields remaining
+2024-07-03 14:45:55,523 - INFO - Now analyzing field ID CA_317355
+2024-07-03 14:46:06,833 - INFO - Successful
+2024-07-03 14:46:06,833 - INFO - 312 fields remaining
+2024-07-03 14:46:06,833 - INFO - Now analyzing field ID CA_246113
+2024-07-03 14:46:14,707 - INFO - Successful
+2024-07-03 14:46:14,708 - INFO - 311 fields remaining
+2024-07-03 14:46:14,708 - INFO - Now analyzing field ID CA_338036
+2024-07-03 14:46:23,085 - INFO - Successful
+2024-07-03 14:46:23,085 - INFO - 310 fields remaining
+2024-07-03 14:46:23,085 - INFO - Now analyzing field ID CA_302451
+2024-07-03 14:46:31,608 - INFO - Successful
+2024-07-03 14:46:31,608 - INFO - 309 fields remaining
+2024-07-03 14:46:31,608 - INFO - Now analyzing field ID CA_32722
+2024-07-03 14:46:40,151 - INFO - Successful
+2024-07-03 14:46:40,151 - INFO - 308 fields remaining
+2024-07-03 14:46:40,151 - INFO - Now analyzing field ID CA_66272
+2024-07-03 14:46:49,445 - INFO - Successful
+2024-07-03 14:46:49,445 - INFO - 307 fields remaining
+2024-07-03 14:46:49,446 - INFO - Now analyzing field ID CA_294569
+2024-07-03 14:46:58,121 - INFO - Successful
+2024-07-03 14:46:58,122 - INFO - 306 fields remaining
+2024-07-03 14:46:58,122 - INFO - Now analyzing field ID CA_293119
+2024-07-03 14:47:07,164 - INFO - Successful
+2024-07-03 14:47:07,165 - INFO - 305 fields remaining
+2024-07-03 14:47:07,165 - INFO - Now analyzing field ID CA_340098
+2024-07-03 14:47:15,905 - INFO - Successful
+2024-07-03 14:47:15,905 - INFO - 304 fields remaining
+2024-07-03 14:47:15,905 - INFO - Now analyzing field ID CA_314026
+2024-07-03 14:47:23,915 - INFO - Successful
+2024-07-03 14:47:23,916 - INFO - 303 fields remaining
+2024-07-03 14:47:23,916 - INFO - Now analyzing field ID CA_311936
+2024-07-03 14:47:34,005 - INFO - Successful
+2024-07-03 14:47:34,005 - INFO - 302 fields remaining
+2024-07-03 14:47:34,006 - INFO - Now analyzing field ID CA_311929
+2024-07-03 14:47:42,747 - INFO - Successful
+2024-07-03 14:47:42,747 - INFO - 301 fields remaining
+2024-07-03 14:47:42,748 - INFO - Now analyzing field ID CA_311324
+2024-07-03 14:47:53,994 - INFO - Successful
+2024-07-03 14:47:53,994 - INFO - 300 fields remaining
+2024-07-03 14:47:53,994 - INFO - Now analyzing field ID CA_308483
+2024-07-03 14:48:03,103 - INFO - Successful
+2024-07-03 14:48:03,103 - INFO - 299 fields remaining
+2024-07-03 14:48:03,104 - INFO - Now analyzing field ID CA_304949
+2024-07-03 14:48:12,659 - INFO - Successful
+2024-07-03 14:48:12,660 - INFO - 298 fields remaining
+2024-07-03 14:48:12,660 - INFO - Now analyzing field ID CA_304900
+2024-07-03 14:48:23,005 - INFO - Successful
+2024-07-03 14:48:23,005 - INFO - 297 fields remaining
+2024-07-03 14:48:23,005 - INFO - Now analyzing field ID CA_302754
+2024-07-03 14:48:31,537 - INFO - Successful
+2024-07-03 14:48:31,537 - INFO - 296 fields remaining
+2024-07-03 14:48:31,537 - INFO - Now analyzing field ID CA_312570
+2024-07-03 14:48:39,996 - INFO - Successful
+2024-07-03 14:48:39,996 - INFO - 295 fields remaining
+2024-07-03 14:48:39,996 - INFO - Now analyzing field ID CA_311666
+2024-07-03 14:48:49,748 - INFO - Successful
+2024-07-03 14:48:49,748 - INFO - 294 fields remaining
+2024-07-03 14:48:49,748 - INFO - Now analyzing field ID CA_307107
+2024-07-03 14:48:59,318 - INFO - Successful
+2024-07-03 14:48:59,318 - INFO - 293 fields remaining
+2024-07-03 14:48:59,319 - INFO - Now analyzing field ID CA_301044
+2024-07-03 14:49:09,282 - INFO - Successful
+2024-07-03 14:49:09,282 - INFO - 292 fields remaining
+2024-07-03 14:49:09,282 - INFO - Now analyzing field ID CA_62356
+2024-07-03 14:49:18,580 - INFO - Successful
+2024-07-03 14:49:18,580 - INFO - 291 fields remaining
+2024-07-03 14:49:18,580 - INFO - Now analyzing field ID CA_63548
+2024-07-03 14:49:27,481 - INFO - Successful
+2024-07-03 14:49:27,481 - INFO - 290 fields remaining
+2024-07-03 14:49:27,481 - INFO - Now analyzing field ID CA_60928
+2024-07-03 14:49:35,966 - INFO - Successful
+2024-07-03 14:49:35,966 - INFO - 289 fields remaining
+2024-07-03 14:49:35,967 - INFO - Now analyzing field ID CA_305219
+2024-07-03 14:49:44,858 - INFO - Successful
+2024-07-03 14:49:44,858 - INFO - 288 fields remaining
+2024-07-03 14:49:44,858 - INFO - Now analyzing field ID CA_268680
+2024-07-03 14:49:54,311 - INFO - Successful
+2024-07-03 14:49:54,311 - INFO - 287 fields remaining
+2024-07-03 14:49:54,311 - INFO - Now analyzing field ID CA_293386
+2024-07-03 14:50:07,908 - INFO - Successful
+2024-07-03 14:50:07,908 - INFO - 286 fields remaining
+2024-07-03 14:50:07,908 - INFO - Now analyzing field ID CA_292155
+2024-07-03 14:50:17,997 - INFO - Successful
+2024-07-03 14:50:17,997 - INFO - 285 fields remaining
+2024-07-03 14:50:17,997 - INFO - Now analyzing field ID CA_72592
+2024-07-03 14:50:26,933 - INFO - Successful
+2024-07-03 14:50:26,933 - INFO - 284 fields remaining
+2024-07-03 14:50:26,933 - INFO - Now analyzing field ID CA_72468
+2024-07-03 14:50:35,135 - INFO - Successful
+2024-07-03 14:50:35,135 - INFO - 283 fields remaining
+2024-07-03 14:50:35,135 - INFO - Now analyzing field ID CA_71776
+2024-07-03 14:50:44,893 - INFO - Successful
+2024-07-03 14:50:44,894 - INFO - 282 fields remaining
+2024-07-03 14:50:44,894 - INFO - Now analyzing field ID CA_70028
+2024-07-03 14:50:53,770 - INFO - Successful
+2024-07-03 14:50:53,770 - INFO - 281 fields remaining
+2024-07-03 14:50:53,770 - INFO - Now analyzing field ID CA_293711
+2024-07-03 14:51:03,834 - INFO - Successful
+2024-07-03 14:51:03,834 - INFO - 280 fields remaining
+2024-07-03 14:51:03,834 - INFO - Now analyzing field ID CA_246529
+2024-07-03 14:51:13,601 - INFO - Successful
+2024-07-03 14:51:13,602 - INFO - 279 fields remaining
+2024-07-03 14:51:13,602 - INFO - Now analyzing field ID CA_292890
+2024-07-03 14:51:22,797 - INFO - Successful
+2024-07-03 14:51:22,797 - INFO - 278 fields remaining
+2024-07-03 14:51:22,797 - INFO - Now analyzing field ID CA_68947
+2024-07-03 14:51:32,037 - INFO - Successful
+2024-07-03 14:51:32,038 - INFO - 277 fields remaining
+2024-07-03 14:51:32,038 - INFO - Now analyzing field ID CA_72096
+2024-07-03 14:51:41,092 - INFO - Successful
+2024-07-03 14:51:41,092 - INFO - 276 fields remaining
+2024-07-03 14:51:41,092 - INFO - Now analyzing field ID CA_70844
+2024-07-03 14:51:50,444 - INFO - Successful
+2024-07-03 14:51:50,444 - INFO - 275 fields remaining
+2024-07-03 14:51:50,444 - INFO - Now analyzing field ID CA_69317
+2024-07-03 14:52:00,078 - INFO - Successful
+2024-07-03 14:52:00,078 - INFO - 274 fields remaining
+2024-07-03 14:52:00,078 - INFO - Now analyzing field ID CA_69128
+2024-07-03 14:52:08,947 - INFO - Successful
+2024-07-03 14:52:08,947 - INFO - 273 fields remaining
+2024-07-03 14:52:08,947 - INFO - Now analyzing field ID CA_59450
+2024-07-03 14:52:17,594 - INFO - Successful
+2024-07-03 14:52:17,595 - INFO - 272 fields remaining
+2024-07-03 14:52:17,595 - INFO - Now analyzing field ID CA_66675
+2024-07-03 14:52:37,382 - INFO - Successful
+2024-07-03 14:52:37,382 - INFO - 271 fields remaining
+2024-07-03 14:52:37,383 - INFO - Now analyzing field ID CA_318645
+2024-07-03 14:52:56,788 - INFO - Successful
+2024-07-03 14:52:56,789 - INFO - 270 fields remaining
+2024-07-03 14:52:56,789 - INFO - Now analyzing field ID CA_66850
+2024-07-03 14:53:16,437 - INFO - Successful
+2024-07-03 14:53:16,437 - INFO - 269 fields remaining
+2024-07-03 14:53:16,437 - INFO - Now analyzing field ID CA_289998
+2024-07-03 14:53:27,616 - INFO - Successful
+2024-07-03 14:53:27,616 - INFO - 268 fields remaining
+2024-07-03 14:53:27,616 - INFO - Now analyzing field ID CA_72535
+2024-07-03 14:53:37,028 - INFO - Successful
+2024-07-03 14:53:37,028 - INFO - 267 fields remaining
+2024-07-03 14:53:37,028 - INFO - Now analyzing field ID CA_224522
+2024-07-03 14:53:51,552 - INFO - Successful
+2024-07-03 14:53:51,553 - INFO - 266 fields remaining
+2024-07-03 14:53:51,553 - INFO - Now analyzing field ID CA_224158
+2024-07-03 14:54:06,633 - INFO - Successful
+2024-07-03 14:54:06,633 - INFO - 265 fields remaining
+2024-07-03 14:54:06,633 - INFO - Now analyzing field ID CA_223674
+2024-07-03 14:54:15,594 - INFO - Successful
+2024-07-03 14:54:15,594 - INFO - 264 fields remaining
+2024-07-03 14:54:15,594 - INFO - Now analyzing field ID CA_7030
+2024-07-03 14:54:25,392 - INFO - Successful
+2024-07-03 14:54:25,393 - INFO - 263 fields remaining
+2024-07-03 14:54:25,393 - INFO - Now analyzing field ID CA_315416
+2024-07-03 14:54:34,495 - INFO - Successful
+2024-07-03 14:54:34,497 - INFO - 262 fields remaining
+2024-07-03 14:54:34,497 - INFO - Now analyzing field ID CA_297554
+2024-07-03 14:54:42,930 - INFO - Successful
+2024-07-03 14:54:42,930 - INFO - 261 fields remaining
+2024-07-03 14:54:42,931 - INFO - Now analyzing field ID CA_223390
+2024-07-03 14:54:50,735 - INFO - Successful
+2024-07-03 14:54:50,735 - INFO - 260 fields remaining
+2024-07-03 14:54:50,735 - INFO - Now analyzing field ID CA_315646
+2024-07-03 14:55:05,742 - INFO - Successful
+2024-07-03 14:55:05,742 - INFO - 259 fields remaining
+2024-07-03 14:55:05,742 - INFO - Now analyzing field ID CA_315480
+2024-07-03 14:55:14,335 - INFO - Successful
+2024-07-03 14:55:14,335 - INFO - 258 fields remaining
+2024-07-03 14:55:14,335 - INFO - Now analyzing field ID CA_315261
+2024-07-03 14:55:19,870 - WARNING - Reattempting request..
+2024-07-03 14:55:27,961 - INFO - Successful
+2024-07-03 14:55:27,961 - INFO - 257 fields remaining
+2024-07-03 14:55:27,962 - INFO - Now analyzing field ID CA_314177
+2024-07-03 14:55:40,556 - INFO - Successful
+2024-07-03 14:55:40,557 - INFO - 256 fields remaining
+2024-07-03 14:55:40,557 - INFO - Now analyzing field ID CA_60903
+2024-07-03 14:55:48,879 - INFO - Successful
+2024-07-03 14:55:48,879 - INFO - 255 fields remaining
+2024-07-03 14:55:48,879 - INFO - Now analyzing field ID CA_14419
+2024-07-03 14:55:57,542 - INFO - Successful
+2024-07-03 14:55:57,542 - INFO - 254 fields remaining
+2024-07-03 14:55:57,543 - INFO - Now analyzing field ID CA_12627
+2024-07-03 14:56:06,701 - INFO - Successful
+2024-07-03 14:56:06,701 - INFO - 253 fields remaining
+2024-07-03 14:56:06,701 - INFO - Now analyzing field ID CA_296394
+2024-07-03 14:56:16,947 - INFO - Successful
+2024-07-03 14:56:16,947 - INFO - 252 fields remaining
+2024-07-03 14:56:16,947 - INFO - Now analyzing field ID CA_293865
+2024-07-03 14:56:27,784 - INFO - Successful
+2024-07-03 14:56:27,784 - INFO - 251 fields remaining
+2024-07-03 14:56:27,784 - INFO - Now analyzing field ID CA_297569
+2024-07-03 14:56:38,041 - INFO - Successful
+2024-07-03 14:56:38,041 - INFO - 250 fields remaining
+2024-07-03 14:56:38,042 - INFO - Now analyzing field ID CA_297193
+2024-07-03 14:56:49,622 - INFO - Successful
+2024-07-03 14:56:49,623 - INFO - 249 fields remaining
+2024-07-03 14:56:49,623 - INFO - Now analyzing field ID CA_25134
+2024-07-03 14:56:59,641 - INFO - Successful
+2024-07-03 14:56:59,641 - INFO - 248 fields remaining
+2024-07-03 14:56:59,641 - INFO - Now analyzing field ID CA_113117
+2024-07-03 14:57:09,161 - INFO - Successful
+2024-07-03 14:57:09,161 - INFO - 247 fields remaining
+2024-07-03 14:57:09,161 - INFO - Now analyzing field ID CA_315165
+2024-07-03 14:57:18,614 - INFO - Successful
+2024-07-03 14:57:18,614 - INFO - 246 fields remaining
+2024-07-03 14:57:18,615 - INFO - Now analyzing field ID CA_25646
+2024-07-03 14:57:30,246 - INFO - Successful
+2024-07-03 14:57:30,246 - INFO - 245 fields remaining
+2024-07-03 14:57:30,246 - INFO - Now analyzing field ID CA_291054
+2024-07-03 14:57:41,956 - INFO - Successful
+2024-07-03 14:57:41,956 - INFO - 244 fields remaining
+2024-07-03 14:57:41,956 - INFO - Now analyzing field ID CA_317164
+2024-07-03 14:57:56,165 - INFO - Successful
+2024-07-03 14:57:56,165 - INFO - 243 fields remaining
+2024-07-03 14:57:56,165 - INFO - Now analyzing field ID CA_299586
+2024-07-03 14:58:10,418 - INFO - Successful
+2024-07-03 14:58:10,418 - INFO - 242 fields remaining
+2024-07-03 14:58:10,419 - INFO - Now analyzing field ID CA_64204
+2024-07-03 14:58:24,373 - INFO - Successful
+2024-07-03 14:58:24,373 - INFO - 241 fields remaining
+2024-07-03 14:58:24,373 - INFO - Now analyzing field ID CA_315262
+2024-07-03 14:58:38,848 - INFO - Successful
+2024-07-03 14:58:38,848 - INFO - 240 fields remaining
+2024-07-03 14:58:38,848 - INFO - Now analyzing field ID CA_315375
+2024-07-03 14:58:53,042 - INFO - Successful
+2024-07-03 14:58:53,042 - INFO - 239 fields remaining
+2024-07-03 14:58:53,042 - INFO - Now analyzing field ID CA_226383
+2024-07-03 14:59:07,802 - INFO - Successful
+2024-07-03 14:59:07,802 - INFO - 238 fields remaining
+2024-07-03 14:59:07,802 - INFO - Now analyzing field ID CA_11941
+2024-07-03 14:59:22,247 - INFO - Successful
+2024-07-03 14:59:22,247 - INFO - 237 fields remaining
+2024-07-03 14:59:22,247 - INFO - Now analyzing field ID CA_11733
+2024-07-03 14:59:36,717 - INFO - Successful
+2024-07-03 14:59:36,717 - INFO - 236 fields remaining
+2024-07-03 14:59:36,718 - INFO - Now analyzing field ID CA_9796
+2024-07-03 14:59:55,869 - INFO - Successful
+2024-07-03 14:59:55,869 - INFO - 235 fields remaining
+2024-07-03 14:59:55,870 - INFO - Now analyzing field ID CA_25763
+2024-07-03 15:00:09,680 - INFO - Successful
+2024-07-03 15:00:09,681 - INFO - 234 fields remaining
+2024-07-03 15:00:09,681 - INFO - Now analyzing field ID CA_55369
+2024-07-03 15:00:31,660 - INFO - Successful
+2024-07-03 15:00:31,660 - INFO - 233 fields remaining
+2024-07-03 15:00:31,660 - INFO - Now analyzing field ID CA_40791
+2024-07-03 15:00:44,920 - INFO - Successful
+2024-07-03 15:00:44,920 - INFO - 232 fields remaining
+2024-07-03 15:00:44,920 - INFO - Now analyzing field ID CA_54790
+2024-07-03 15:00:59,560 - INFO - Successful
+2024-07-03 15:00:59,560 - INFO - 231 fields remaining
+2024-07-03 15:00:59,560 - INFO - Now analyzing field ID CA_34492
+2024-07-03 15:01:14,364 - INFO - Successful
+2024-07-03 15:01:14,364 - INFO - 230 fields remaining
+2024-07-03 15:01:14,366 - INFO - Now analyzing field ID CA_33134
+2024-07-03 15:01:28,373 - INFO - Successful
+2024-07-03 15:01:28,373 - INFO - 229 fields remaining
+2024-07-03 15:01:28,373 - INFO - Now analyzing field ID CA_228703
+2024-07-03 15:01:44,184 - INFO - Successful
+2024-07-03 15:01:44,184 - INFO - 228 fields remaining
+2024-07-03 15:01:44,184 - INFO - Now analyzing field ID CA_183828
+2024-07-03 15:02:00,081 - INFO - Successful
+2024-07-03 15:02:00,081 - INFO - 227 fields remaining
+2024-07-03 15:02:00,081 - INFO - Now analyzing field ID CA_40117
+2024-07-03 15:02:13,541 - INFO - Successful
+2024-07-03 15:02:13,542 - INFO - 226 fields remaining
+2024-07-03 15:02:13,542 - INFO - Now analyzing field ID CA_51152
+2024-07-03 15:02:29,680 - INFO - Successful
+2024-07-03 15:02:29,680 - INFO - 225 fields remaining
+2024-07-03 15:02:29,680 - INFO - Now analyzing field ID CA_50200
+2024-07-03 15:02:43,960 - INFO - Successful
+2024-07-03 15:02:43,960 - INFO - 224 fields remaining
+2024-07-03 15:02:43,961 - INFO - Now analyzing field ID CA_49460
+2024-07-03 15:02:58,471 - INFO - Successful
+2024-07-03 15:02:58,471 - INFO - 223 fields remaining
+2024-07-03 15:02:58,471 - INFO - Now analyzing field ID CA_49268
+2024-07-03 15:03:13,263 - INFO - Successful
+2024-07-03 15:03:13,263 - INFO - 222 fields remaining
+2024-07-03 15:03:13,263 - INFO - Now analyzing field ID CA_48799
+2024-07-03 15:03:29,659 - INFO - Successful
+2024-07-03 15:03:29,659 - INFO - 221 fields remaining
+2024-07-03 15:03:29,659 - INFO - Now analyzing field ID CA_47884
+2024-07-03 15:03:45,692 - INFO - Successful
+2024-07-03 15:03:45,693 - INFO - 220 fields remaining
+2024-07-03 15:03:45,693 - INFO - Now analyzing field ID CA_46605
+2024-07-03 15:04:01,510 - INFO - Successful
+2024-07-03 15:04:01,510 - INFO - 219 fields remaining
+2024-07-03 15:04:01,510 - INFO - Now analyzing field ID CA_45990
+2024-07-03 15:04:14,060 - INFO - Successful
+2024-07-03 15:04:14,061 - INFO - 218 fields remaining
+2024-07-03 15:04:14,061 - INFO - Now analyzing field ID CA_33823
+2024-07-03 15:04:30,607 - INFO - Successful
+2024-07-03 15:04:30,607 - INFO - 217 fields remaining
+2024-07-03 15:04:30,607 - INFO - Now analyzing field ID CA_32480
+2024-07-03 15:04:45,601 - INFO - Successful
+2024-07-03 15:04:45,601 - INFO - 216 fields remaining
+2024-07-03 15:04:45,601 - INFO - Now analyzing field ID CA_31830
+2024-07-03 15:04:59,756 - INFO - Successful
+2024-07-03 15:04:59,757 - INFO - 215 fields remaining
+2024-07-03 15:04:59,757 - INFO - Now analyzing field ID CA_31256
+2024-07-03 15:05:12,146 - INFO - Successful
+2024-07-03 15:05:12,146 - INFO - 214 fields remaining
+2024-07-03 15:05:12,146 - INFO - Now analyzing field ID CA_52501
+2024-07-03 15:05:36,643 - INFO - Successful
+2024-07-03 15:05:36,643 - INFO - 213 fields remaining
+2024-07-03 15:05:36,643 - INFO - Now analyzing field ID CA_44219
+2024-07-03 15:05:50,775 - INFO - Successful
+2024-07-03 15:05:50,775 - INFO - 212 fields remaining
+2024-07-03 15:05:50,775 - INFO - Now analyzing field ID CA_225626
+2024-07-03 15:06:05,599 - INFO - Successful
+2024-07-03 15:06:05,599 - INFO - 211 fields remaining
+2024-07-03 15:06:05,599 - INFO - Now analyzing field ID CA_57810
+2024-07-03 15:06:24,834 - INFO - Successful
+2024-07-03 15:06:24,834 - INFO - 210 fields remaining
+2024-07-03 15:06:24,834 - INFO - Now analyzing field ID CA_55252
+2024-07-03 15:06:44,792 - INFO - Successful
+2024-07-03 15:06:44,792 - INFO - 209 fields remaining
+2024-07-03 15:06:44,793 - INFO - Now analyzing field ID CA_53305
+2024-07-03 15:06:58,583 - INFO - Successful
+2024-07-03 15:06:58,583 - INFO - 208 fields remaining
+2024-07-03 15:06:58,583 - INFO - Now analyzing field ID CA_54616
+2024-07-03 15:07:12,683 - INFO - Successful
+2024-07-03 15:07:12,683 - INFO - 207 fields remaining
+2024-07-03 15:07:12,683 - INFO - Now analyzing field ID CA_43699
+2024-07-03 15:07:26,211 - INFO - Successful
+2024-07-03 15:07:26,211 - INFO - 206 fields remaining
+2024-07-03 15:07:26,211 - INFO - Now analyzing field ID CA_50989
+2024-07-03 15:07:50,299 - INFO - Successful
+2024-07-03 15:07:50,299 - INFO - 205 fields remaining
+2024-07-03 15:07:50,299 - INFO - Now analyzing field ID CA_54688
+2024-07-03 15:08:04,450 - INFO - Successful
+2024-07-03 15:08:04,450 - INFO - 204 fields remaining
+2024-07-03 15:08:04,450 - INFO - Now analyzing field ID CA_226101
+2024-07-03 15:08:19,354 - INFO - Successful
+2024-07-03 15:08:19,354 - INFO - 203 fields remaining
+2024-07-03 15:08:19,354 - INFO - Now analyzing field ID CA_228776
+2024-07-03 15:08:38,017 - INFO - Successful
+2024-07-03 15:08:38,018 - INFO - 202 fields remaining
+2024-07-03 15:08:38,018 - INFO - Now analyzing field ID CA_37042
+2024-07-03 15:08:52,818 - INFO - Successful
+2024-07-03 15:08:52,818 - INFO - 201 fields remaining
+2024-07-03 15:08:52,818 - INFO - Now analyzing field ID CA_226270
+2024-07-03 15:09:07,126 - INFO - Successful
+2024-07-03 15:09:07,127 - INFO - 200 fields remaining
+2024-07-03 15:09:07,127 - INFO - Now analyzing field ID CA_54305
+2024-07-03 15:09:21,367 - INFO - Successful
+2024-07-03 15:09:21,367 - INFO - 199 fields remaining
+2024-07-03 15:09:21,367 - INFO - Now analyzing field ID CA_128033
+2024-07-03 15:09:35,362 - INFO - Successful
+2024-07-03 15:09:35,362 - INFO - 198 fields remaining
+2024-07-03 15:09:35,362 - INFO - Now analyzing field ID CA_23925
+2024-07-03 15:09:48,291 - INFO - Successful
+2024-07-03 15:09:48,291 - INFO - 197 fields remaining
+2024-07-03 15:09:48,292 - INFO - Now analyzing field ID CA_119712
+2024-07-03 15:10:02,944 - INFO - Successful
+2024-07-03 15:10:02,944 - INFO - 196 fields remaining
+2024-07-03 15:10:02,944 - INFO - Now analyzing field ID CA_112646
+2024-07-03 15:10:16,922 - INFO - Successful
+2024-07-03 15:10:16,922 - INFO - 195 fields remaining
+2024-07-03 15:10:16,922 - INFO - Now analyzing field ID CA_235415
+2024-07-03 15:10:30,068 - INFO - Successful
+2024-07-03 15:10:30,068 - INFO - 194 fields remaining
+2024-07-03 15:10:30,068 - INFO - Now analyzing field ID CA_129661
+2024-07-03 15:10:44,719 - INFO - Successful
+2024-07-03 15:10:44,720 - INFO - 193 fields remaining
+2024-07-03 15:10:44,720 - INFO - Now analyzing field ID CA_227632
+2024-07-03 15:10:57,924 - INFO - Successful
+2024-07-03 15:10:57,924 - INFO - 192 fields remaining
+2024-07-03 15:10:57,924 - INFO - Now analyzing field ID CA_227400
+2024-07-03 15:11:13,138 - INFO - Successful
+2024-07-03 15:11:13,138 - INFO - 191 fields remaining
+2024-07-03 15:11:13,138 - INFO - Now analyzing field ID CA_227224
+2024-07-03 15:11:26,171 - INFO - Successful
+2024-07-03 15:11:26,171 - INFO - 190 fields remaining
+2024-07-03 15:11:26,171 - INFO - Now analyzing field ID CA_130000
+2024-07-03 15:11:40,120 - INFO - Successful
+2024-07-03 15:11:40,120 - INFO - 189 fields remaining
+2024-07-03 15:11:40,121 - INFO - Now analyzing field ID CA_129664
+2024-07-03 15:11:54,735 - INFO - Successful
+2024-07-03 15:11:54,735 - INFO - 188 fields remaining
+2024-07-03 15:11:54,735 - INFO - Now analyzing field ID CA_119945
+2024-07-03 15:12:09,456 - INFO - Successful
+2024-07-03 15:12:09,456 - INFO - 187 fields remaining
+2024-07-03 15:12:09,456 - INFO - Now analyzing field ID CA_48511
+2024-07-03 15:12:23,473 - INFO - Successful
+2024-07-03 15:12:23,473 - INFO - 186 fields remaining
+2024-07-03 15:12:23,473 - INFO - Now analyzing field ID CA_131232
+2024-07-03 15:12:38,490 - INFO - Successful
+2024-07-03 15:12:38,490 - INFO - 185 fields remaining
+2024-07-03 15:12:38,491 - INFO - Now analyzing field ID CA_110176
+2024-07-03 15:12:52,802 - INFO - Successful
+2024-07-03 15:12:52,802 - INFO - 184 fields remaining
+2024-07-03 15:12:52,804 - INFO - Now analyzing field ID CA_235534
+2024-07-03 15:13:04,232 - INFO - Successful
+2024-07-03 15:13:04,232 - INFO - 183 fields remaining
+2024-07-03 15:13:04,232 - INFO - Now analyzing field ID CA_113720
+2024-07-03 15:13:18,950 - INFO - Successful
+2024-07-03 15:13:18,950 - INFO - 182 fields remaining
+2024-07-03 15:13:18,950 - INFO - Now analyzing field ID CA_29966
+2024-07-03 15:13:33,403 - INFO - Successful
+2024-07-03 15:13:33,403 - INFO - 181 fields remaining
+2024-07-03 15:13:33,403 - INFO - Now analyzing field ID CA_128901
+2024-07-03 15:13:48,767 - INFO - Successful
+2024-07-03 15:13:48,767 - INFO - 180 fields remaining
+2024-07-03 15:13:48,767 - INFO - Now analyzing field ID CA_130291
+2024-07-03 15:14:08,147 - INFO - Successful
+2024-07-03 15:14:08,147 - INFO - 179 fields remaining
+2024-07-03 15:14:08,147 - INFO - Now analyzing field ID CA_110959
+2024-07-03 15:14:24,525 - INFO - Successful
+2024-07-03 15:14:24,525 - INFO - 178 fields remaining
+2024-07-03 15:14:24,525 - INFO - Now analyzing field ID CA_122175
+2024-07-03 15:14:41,735 - INFO - Successful
+2024-07-03 15:14:41,735 - INFO - 177 fields remaining
+2024-07-03 15:14:41,736 - INFO - Now analyzing field ID CA_110883
+2024-07-03 15:14:53,658 - INFO - Successful
+2024-07-03 15:14:53,658 - INFO - 176 fields remaining
+2024-07-03 15:14:53,658 - INFO - Now analyzing field ID CA_130897
+2024-07-03 15:15:07,734 - INFO - Successful
+2024-07-03 15:15:07,734 - INFO - 175 fields remaining
+2024-07-03 15:15:07,734 - INFO - Now analyzing field ID CA_121410
+2024-07-03 15:15:22,343 - INFO - Successful
+2024-07-03 15:15:22,343 - INFO - 174 fields remaining
+2024-07-03 15:15:22,343 - INFO - Now analyzing field ID CA_51452
+2024-07-03 15:15:36,621 - INFO - Successful
+2024-07-03 15:15:36,621 - INFO - 173 fields remaining
+2024-07-03 15:15:36,621 - INFO - Now analyzing field ID CA_119568
+2024-07-03 15:15:50,579 - INFO - Successful
+2024-07-03 15:15:50,579 - INFO - 172 fields remaining
+2024-07-03 15:15:50,579 - INFO - Now analyzing field ID CA_110718
+2024-07-03 15:16:08,543 - INFO - Successful
+2024-07-03 15:16:08,543 - INFO - 171 fields remaining
+2024-07-03 15:16:08,543 - INFO - Now analyzing field ID CA_122403
+2024-07-03 15:16:22,321 - INFO - Successful
+2024-07-03 15:16:22,321 - INFO - 170 fields remaining
+2024-07-03 15:16:22,321 - INFO - Now analyzing field ID CA_118357
+2024-07-03 15:16:37,389 - INFO - Successful
+2024-07-03 15:16:37,389 - INFO - 169 fields remaining
+2024-07-03 15:16:37,389 - INFO - Now analyzing field ID CA_121623
+2024-07-03 15:16:51,800 - INFO - Successful
+2024-07-03 15:16:51,800 - INFO - 168 fields remaining
+2024-07-03 15:16:51,800 - INFO - Now analyzing field ID CA_53071
+2024-07-03 15:17:24,060 - INFO - Successful
+2024-07-03 15:17:24,060 - INFO - 167 fields remaining
+2024-07-03 15:17:24,060 - INFO - Now analyzing field ID CA_118917
+2024-07-03 15:17:37,154 - INFO - Successful
+2024-07-03 15:17:37,154 - INFO - 166 fields remaining
+2024-07-03 15:17:37,154 - INFO - Now analyzing field ID CA_132535
+2024-07-03 15:17:49,448 - INFO - Successful
+2024-07-03 15:17:49,448 - INFO - 165 fields remaining
+2024-07-03 15:17:49,448 - INFO - Now analyzing field ID CA_132720
+2024-07-03 15:18:04,313 - INFO - Successful
+2024-07-03 15:18:04,314 - INFO - 164 fields remaining
+2024-07-03 15:18:04,314 - INFO - Now analyzing field ID CA_225250
+2024-07-03 15:18:16,937 - INFO - Successful
+2024-07-03 15:18:16,937 - INFO - 163 fields remaining
+2024-07-03 15:18:16,937 - INFO - Now analyzing field ID CA_2468
+2024-07-03 15:18:30,064 - INFO - Successful
+2024-07-03 15:18:30,064 - INFO - 162 fields remaining
+2024-07-03 15:18:30,064 - INFO - Now analyzing field ID CA_5256
+2024-07-03 15:18:45,302 - INFO - Successful
+2024-07-03 15:18:45,302 - INFO - 161 fields remaining
+2024-07-03 15:18:45,302 - INFO - Now analyzing field ID CA_5907
+2024-07-03 15:18:58,251 - INFO - Successful
+2024-07-03 15:18:58,251 - INFO - 160 fields remaining
+2024-07-03 15:18:58,251 - INFO - Now analyzing field ID CA_28177
+2024-07-03 15:19:10,650 - INFO - Successful
+2024-07-03 15:19:10,651 - INFO - 159 fields remaining
+2024-07-03 15:19:10,651 - INFO - Now analyzing field ID CA_26875
+2024-07-03 15:19:26,138 - INFO - Successful
+2024-07-03 15:19:26,138 - INFO - 158 fields remaining
+2024-07-03 15:19:26,138 - INFO - Now analyzing field ID CA_150688
+2024-07-03 15:19:40,275 - INFO - Successful
+2024-07-03 15:19:40,275 - INFO - 157 fields remaining
+2024-07-03 15:19:40,275 - INFO - Now analyzing field ID CA_117618
+2024-07-03 15:19:54,099 - INFO - Successful
+2024-07-03 15:19:54,099 - INFO - 156 fields remaining
+2024-07-03 15:19:54,099 - INFO - Now analyzing field ID CA_181084
+2024-07-03 15:20:07,933 - INFO - Successful
+2024-07-03 15:20:07,933 - INFO - 155 fields remaining
+2024-07-03 15:20:07,934 - INFO - Now analyzing field ID CA_180936
+2024-07-03 15:20:21,631 - INFO - Successful
+2024-07-03 15:20:21,632 - INFO - 154 fields remaining
+2024-07-03 15:20:21,632 - INFO - Now analyzing field ID CA_180684
+2024-07-03 15:20:35,714 - INFO - Successful
+2024-07-03 15:20:35,714 - INFO - 153 fields remaining
+2024-07-03 15:20:35,714 - INFO - Now analyzing field ID CA_179935
+2024-07-03 15:20:49,357 - INFO - Successful
+2024-07-03 15:20:49,357 - INFO - 152 fields remaining
+2024-07-03 15:20:49,357 - INFO - Now analyzing field ID CA_177775
+2024-07-03 15:21:03,389 - INFO - Successful
+2024-07-03 15:21:03,389 - INFO - 151 fields remaining
+2024-07-03 15:21:03,389 - INFO - Now analyzing field ID CA_171395
+2024-07-03 15:21:20,256 - INFO - Successful
+2024-07-03 15:21:20,256 - INFO - 150 fields remaining
+2024-07-03 15:21:20,256 - INFO - Now analyzing field ID CA_169486
+2024-07-03 15:21:32,655 - INFO - Successful
+2024-07-03 15:21:32,655 - INFO - 149 fields remaining
+2024-07-03 15:21:32,655 - INFO - Now analyzing field ID CA_168467
+2024-07-03 15:21:44,523 - INFO - Successful
+2024-07-03 15:21:44,524 - INFO - 148 fields remaining
+2024-07-03 15:21:44,524 - INFO - Now analyzing field ID CA_158327
+2024-07-03 15:21:58,054 - INFO - Successful
+2024-07-03 15:21:58,054 - INFO - 147 fields remaining
+2024-07-03 15:21:58,055 - INFO - Now analyzing field ID CA_157076
+2024-07-03 15:22:12,539 - INFO - Successful
+2024-07-03 15:22:12,539 - INFO - 146 fields remaining
+2024-07-03 15:22:12,539 - INFO - Now analyzing field ID CA_115464
+2024-07-03 15:22:46,943 - INFO - Successful
+2024-07-03 15:22:46,944 - INFO - 145 fields remaining
+2024-07-03 15:22:46,944 - INFO - Now analyzing field ID CA_169006
+2024-07-03 15:23:00,931 - INFO - Successful
+2024-07-03 15:23:00,931 - INFO - 144 fields remaining
+2024-07-03 15:23:00,931 - INFO - Now analyzing field ID CA_149305
+2024-07-03 15:23:15,266 - INFO - Successful
+2024-07-03 15:23:15,266 - INFO - 143 fields remaining
+2024-07-03 15:23:15,266 - INFO - Now analyzing field ID CA_116825
+2024-07-03 15:23:31,814 - INFO - Successful
+2024-07-03 15:23:31,814 - INFO - 142 fields remaining
+2024-07-03 15:23:31,815 - INFO - Now analyzing field ID CA_156542
+2024-07-03 15:23:45,594 - INFO - Successful
+2024-07-03 15:23:45,594 - INFO - 141 fields remaining
+2024-07-03 15:23:45,594 - INFO - Now analyzing field ID CA_27730
+2024-07-03 15:24:16,850 - INFO - Successful
+2024-07-03 15:24:16,851 - INFO - 140 fields remaining
+2024-07-03 15:24:16,851 - INFO - Now analyzing field ID CA_11216
+2024-07-03 15:24:30,774 - INFO - Successful
+2024-07-03 15:24:30,774 - INFO - 139 fields remaining
+2024-07-03 15:24:30,775 - INFO - Now analyzing field ID CA_150636
+2024-07-03 15:24:43,949 - INFO - Successful
+2024-07-03 15:24:43,950 - INFO - 138 fields remaining
+2024-07-03 15:24:43,950 - INFO - Now analyzing field ID CA_225292
+2024-07-03 15:24:56,342 - INFO - Successful
+2024-07-03 15:24:56,342 - INFO - 137 fields remaining
+2024-07-03 15:24:56,342 - INFO - Now analyzing field ID CA_115801
+2024-07-03 15:25:11,757 - INFO - Successful
+2024-07-03 15:25:11,757 - INFO - 136 fields remaining
+2024-07-03 15:25:11,757 - INFO - Now analyzing field ID CA_117389
+2024-07-03 15:25:29,791 - INFO - Successful
+2024-07-03 15:25:29,791 - INFO - 135 fields remaining
+2024-07-03 15:25:29,791 - INFO - Now analyzing field ID CA_152508
+2024-07-03 15:25:44,217 - INFO - Successful
+2024-07-03 15:25:44,217 - INFO - 134 fields remaining
+2024-07-03 15:25:44,217 - INFO - Now analyzing field ID CA_28297
+2024-07-03 15:25:59,224 - INFO - Successful
+2024-07-03 15:25:59,224 - INFO - 133 fields remaining
+2024-07-03 15:25:59,224 - INFO - Now analyzing field ID CA_116294
+2024-07-03 15:26:12,724 - INFO - Successful
+2024-07-03 15:26:12,724 - INFO - 132 fields remaining
+2024-07-03 15:26:12,725 - INFO - Now analyzing field ID CA_151516
+2024-07-03 15:26:30,090 - INFO - Successful
+2024-07-03 15:26:30,091 - INFO - 131 fields remaining
+2024-07-03 15:26:30,091 - INFO - Now analyzing field ID CA_223445
+2024-07-03 15:26:44,605 - INFO - Successful
+2024-07-03 15:26:44,605 - INFO - 130 fields remaining
+2024-07-03 15:26:44,605 - INFO - Now analyzing field ID CA_166317
+2024-07-03 15:26:59,382 - INFO - Successful
+2024-07-03 15:26:59,382 - INFO - 129 fields remaining
+2024-07-03 15:26:59,382 - INFO - Now analyzing field ID CA_12291
+2024-07-03 15:27:13,248 - INFO - Successful
+2024-07-03 15:27:13,248 - INFO - 128 fields remaining
+2024-07-03 15:27:13,249 - INFO - Now analyzing field ID CA_25726
+2024-07-03 15:27:33,063 - INFO - Successful
+2024-07-03 15:27:33,063 - INFO - 127 fields remaining
+2024-07-03 15:27:33,063 - INFO - Now analyzing field ID CA_165479
+2024-07-03 15:27:47,054 - INFO - Successful
+2024-07-03 15:27:47,054 - INFO - 126 fields remaining
+2024-07-03 15:27:47,055 - INFO - Now analyzing field ID CA_165275
+2024-07-03 15:28:02,255 - INFO - Successful
+2024-07-03 15:28:02,255 - INFO - 125 fields remaining
+2024-07-03 15:28:02,255 - INFO - Now analyzing field ID CA_165541
+2024-07-03 15:28:16,906 - INFO - Successful
+2024-07-03 15:28:16,906 - INFO - 124 fields remaining
+2024-07-03 15:28:16,907 - INFO - Now analyzing field ID CA_180087
+2024-07-03 15:28:32,728 - INFO - Successful
+2024-07-03 15:28:32,728 - INFO - 123 fields remaining
+2024-07-03 15:28:32,728 - INFO - Now analyzing field ID CA_147819
+2024-07-03 15:28:46,321 - INFO - Successful
+2024-07-03 15:28:46,321 - INFO - 122 fields remaining
+2024-07-03 15:28:46,321 - INFO - Now analyzing field ID CA_213142
+2024-07-03 15:29:10,731 - INFO - Successful
+2024-07-03 15:29:10,731 - INFO - 121 fields remaining
+2024-07-03 15:29:10,731 - INFO - Now analyzing field ID CA_210979
+2024-07-03 15:29:26,302 - INFO - Successful
+2024-07-03 15:29:26,302 - INFO - 120 fields remaining
+2024-07-03 15:29:26,302 - INFO - Now analyzing field ID CA_210817
+2024-07-03 15:29:42,945 - INFO - Successful
+2024-07-03 15:29:42,945 - INFO - 119 fields remaining
+2024-07-03 15:29:42,946 - INFO - Now analyzing field ID CA_210797
+2024-07-03 15:29:57,351 - INFO - Successful
+2024-07-03 15:29:57,351 - INFO - 118 fields remaining
+2024-07-03 15:29:57,351 - INFO - Now analyzing field ID CA_209730
+2024-07-03 15:30:13,694 - INFO - Successful
+2024-07-03 15:30:13,695 - INFO - 117 fields remaining
+2024-07-03 15:30:13,695 - INFO - Now analyzing field ID CA_209424
+2024-07-03 15:30:26,903 - INFO - Successful
+2024-07-03 15:30:26,903 - INFO - 116 fields remaining
+2024-07-03 15:30:26,903 - INFO - Now analyzing field ID CA_177425
+2024-07-03 15:30:41,100 - INFO - Successful
+2024-07-03 15:30:41,100 - INFO - 115 fields remaining
+2024-07-03 15:30:41,100 - INFO - Now analyzing field ID CA_152680
+2024-07-03 15:30:55,328 - INFO - Successful
+2024-07-03 15:30:55,328 - INFO - 114 fields remaining
+2024-07-03 15:30:55,328 - INFO - Now analyzing field ID CA_218705
+2024-07-03 15:31:11,315 - INFO - Successful
+2024-07-03 15:31:11,315 - INFO - 113 fields remaining
+2024-07-03 15:31:11,315 - INFO - Now analyzing field ID CA_181926
+2024-07-03 15:31:25,633 - INFO - Successful
+2024-07-03 15:31:25,633 - INFO - 112 fields remaining
+2024-07-03 15:31:25,633 - INFO - Now analyzing field ID CA_179090
+2024-07-03 15:31:40,314 - INFO - Successful
+2024-07-03 15:31:40,314 - INFO - 111 fields remaining
+2024-07-03 15:31:40,314 - INFO - Now analyzing field ID CA_178583
+2024-07-03 15:31:58,277 - INFO - Successful
+2024-07-03 15:31:58,277 - INFO - 110 fields remaining
+2024-07-03 15:31:58,277 - INFO - Now analyzing field ID CA_178552
+2024-07-03 15:32:13,615 - INFO - Successful
+2024-07-03 15:32:13,615 - INFO - 109 fields remaining
+2024-07-03 15:32:13,615 - INFO - Now analyzing field ID CA_171957
+2024-07-03 15:32:27,588 - INFO - Successful
+2024-07-03 15:32:27,588 - INFO - 108 fields remaining
+2024-07-03 15:32:27,589 - INFO - Now analyzing field ID CA_170091
+2024-07-03 15:32:40,925 - INFO - Successful
+2024-07-03 15:32:40,925 - INFO - 107 fields remaining
+2024-07-03 15:32:40,925 - INFO - Now analyzing field ID CA_167160
+2024-07-03 15:32:55,662 - INFO - Successful
+2024-07-03 15:32:55,662 - INFO - 106 fields remaining
+2024-07-03 15:32:55,662 - INFO - Now analyzing field ID CA_167092
+2024-07-03 15:33:21,095 - INFO - Successful
+2024-07-03 15:33:21,095 - INFO - 105 fields remaining
+2024-07-03 15:33:21,096 - INFO - Now analyzing field ID CA_166718
+2024-07-03 15:33:34,449 - INFO - Successful
+2024-07-03 15:33:34,449 - INFO - 104 fields remaining
+2024-07-03 15:33:34,449 - INFO - Now analyzing field ID CA_163993
+2024-07-03 15:33:48,212 - INFO - Successful
+2024-07-03 15:33:48,212 - INFO - 103 fields remaining
+2024-07-03 15:33:48,213 - INFO - Now analyzing field ID CA_161125
+2024-07-03 15:34:03,248 - INFO - Successful
+2024-07-03 15:34:03,248 - INFO - 102 fields remaining
+2024-07-03 15:34:03,248 - INFO - Now analyzing field ID CA_160405
+2024-07-03 15:34:19,504 - INFO - Successful
+2024-07-03 15:34:19,504 - INFO - 101 fields remaining
+2024-07-03 15:34:19,505 - INFO - Now analyzing field ID CA_160350
+2024-07-03 15:34:32,837 - INFO - Successful
+2024-07-03 15:34:32,837 - INFO - 100 fields remaining
+2024-07-03 15:34:32,837 - INFO - Now analyzing field ID CA_160120
+2024-07-03 15:35:01,205 - INFO - Successful
+2024-07-03 15:35:01,205 - INFO - 99 fields remaining
+2024-07-03 15:35:01,205 - INFO - Now analyzing field ID CA_160028
+2024-07-03 15:35:14,637 - INFO - Successful
+2024-07-03 15:35:14,637 - INFO - 98 fields remaining
+2024-07-03 15:35:14,637 - INFO - Now analyzing field ID CA_159621
+2024-07-03 15:35:29,583 - INFO - Successful
+2024-07-03 15:35:29,583 - INFO - 97 fields remaining
+2024-07-03 15:35:29,583 - INFO - Now analyzing field ID CA_157772
+2024-07-03 15:35:44,204 - INFO - Successful
+2024-07-03 15:35:44,205 - INFO - 96 fields remaining
+2024-07-03 15:35:44,205 - INFO - Now analyzing field ID CA_152516
+2024-07-03 15:35:58,932 - INFO - Successful
+2024-07-03 15:35:58,932 - INFO - 95 fields remaining
+2024-07-03 15:35:58,932 - INFO - Now analyzing field ID CA_166979
+2024-07-03 15:36:12,895 - INFO - Successful
+2024-07-03 15:36:12,895 - INFO - 94 fields remaining
+2024-07-03 15:36:12,896 - INFO - Now analyzing field ID CA_178248
+2024-07-03 15:36:27,971 - INFO - Successful
+2024-07-03 15:36:27,971 - INFO - 93 fields remaining
+2024-07-03 15:36:27,971 - INFO - Now analyzing field ID CA_146308
+2024-07-03 15:36:47,523 - INFO - Successful
+2024-07-03 15:36:47,523 - INFO - 92 fields remaining
+2024-07-03 15:36:47,523 - INFO - Now analyzing field ID CA_149265
+2024-07-03 15:37:00,595 - INFO - Successful
+2024-07-03 15:37:00,595 - INFO - 91 fields remaining
+2024-07-03 15:37:00,595 - INFO - Now analyzing field ID CA_149799
+2024-07-03 15:37:13,479 - INFO - Successful
+2024-07-03 15:37:13,479 - INFO - 90 fields remaining
+2024-07-03 15:37:13,479 - INFO - Now analyzing field ID CA_151019
+2024-07-03 15:37:27,876 - INFO - Successful
+2024-07-03 15:37:27,876 - INFO - 89 fields remaining
+2024-07-03 15:37:27,876 - INFO - Now analyzing field ID CA_150220
+2024-07-03 15:37:42,522 - INFO - Successful
+2024-07-03 15:37:42,522 - INFO - 88 fields remaining
+2024-07-03 15:37:42,522 - INFO - Now analyzing field ID CA_213840
+2024-07-03 15:37:58,520 - INFO - Successful
+2024-07-03 15:37:58,520 - INFO - 87 fields remaining
+2024-07-03 15:37:58,520 - INFO - Now analyzing field ID CA_142793
+2024-07-03 15:38:12,636 - INFO - Successful
+2024-07-03 15:38:12,637 - INFO - 86 fields remaining
+2024-07-03 15:38:12,637 - INFO - Now analyzing field ID CA_182086
+2024-07-03 15:38:30,910 - INFO - Successful
+2024-07-03 15:38:30,910 - INFO - 85 fields remaining
+2024-07-03 15:38:30,910 - INFO - Now analyzing field ID CA_180321
+2024-07-03 15:38:49,053 - INFO - Successful
+2024-07-03 15:38:49,053 - INFO - 84 fields remaining
+2024-07-03 15:38:49,053 - INFO - Now analyzing field ID CA_153170
+2024-07-03 15:39:15,223 - INFO - Successful
+2024-07-03 15:39:15,223 - INFO - 83 fields remaining
+2024-07-03 15:39:15,223 - INFO - Now analyzing field ID CA_187438
+2024-07-03 15:39:32,096 - INFO - Successful
+2024-07-03 15:39:32,096 - INFO - 82 fields remaining
+2024-07-03 15:39:32,096 - INFO - Now analyzing field ID CA_197684
+2024-07-03 15:39:46,736 - INFO - Successful
+2024-07-03 15:39:46,736 - INFO - 81 fields remaining
+2024-07-03 15:39:46,736 - INFO - Now analyzing field ID CA_186949
+2024-07-03 15:40:22,330 - INFO - Successful
+2024-07-03 15:40:22,330 - INFO - 80 fields remaining
+2024-07-03 15:40:22,330 - INFO - Now analyzing field ID CA_213630
+2024-07-03 15:40:36,584 - INFO - Successful
+2024-07-03 15:40:36,584 - INFO - 79 fields remaining
+2024-07-03 15:40:36,584 - INFO - Now analyzing field ID CA_203822
+2024-07-03 15:40:50,903 - INFO - Successful
+2024-07-03 15:40:50,903 - INFO - 78 fields remaining
+2024-07-03 15:40:50,904 - INFO - Now analyzing field ID CA_198018
+2024-07-03 15:41:09,741 - INFO - Successful
+2024-07-03 15:41:09,742 - INFO - 77 fields remaining
+2024-07-03 15:41:09,742 - INFO - Now analyzing field ID CA_186870
+2024-07-03 15:41:23,432 - INFO - Successful
+2024-07-03 15:41:23,432 - INFO - 76 fields remaining
+2024-07-03 15:41:23,432 - INFO - Now analyzing field ID CA_214914
+2024-07-03 15:41:37,605 - INFO - Successful
+2024-07-03 15:41:37,605 - INFO - 75 fields remaining
+2024-07-03 15:41:37,605 - INFO - Now analyzing field ID CA_211378
+2024-07-03 15:41:51,430 - INFO - Successful
+2024-07-03 15:41:51,430 - INFO - 74 fields remaining
+2024-07-03 15:41:51,430 - INFO - Now analyzing field ID CA_199904
+2024-07-03 15:42:07,417 - INFO - Successful
+2024-07-03 15:42:07,417 - INFO - 73 fields remaining
+2024-07-03 15:42:07,417 - INFO - Now analyzing field ID CA_241534
+2024-07-03 15:42:21,987 - INFO - Successful
+2024-07-03 15:42:21,987 - INFO - 72 fields remaining
+2024-07-03 15:42:21,987 - INFO - Now analyzing field ID CA_186283
+2024-07-03 15:42:37,073 - INFO - Successful
+2024-07-03 15:42:37,073 - INFO - 71 fields remaining
+2024-07-03 15:42:37,073 - INFO - Now analyzing field ID CA_242010
+2024-07-03 15:42:52,418 - INFO - Successful
+2024-07-03 15:42:52,418 - INFO - 70 fields remaining
+2024-07-03 15:42:52,418 - INFO - Now analyzing field ID CA_241505
+2024-07-03 15:43:13,704 - INFO - Successful
+2024-07-03 15:43:13,704 - INFO - 69 fields remaining
+2024-07-03 15:43:13,704 - INFO - Now analyzing field ID CA_211137
+2024-07-03 15:43:30,832 - INFO - Successful
+2024-07-03 15:43:30,832 - INFO - 68 fields remaining
+2024-07-03 15:43:30,832 - INFO - Now analyzing field ID CA_204773
+2024-07-03 15:43:48,240 - INFO - Successful
+2024-07-03 15:43:48,240 - INFO - 67 fields remaining
+2024-07-03 15:43:48,240 - INFO - Now analyzing field ID CA_203481
+2024-07-03 15:44:04,000 - INFO - Successful
+2024-07-03 15:44:04,000 - INFO - 66 fields remaining
+2024-07-03 15:44:04,000 - INFO - Now analyzing field ID CA_199886
+2024-07-03 15:44:20,998 - INFO - Successful
+2024-07-03 15:44:20,998 - INFO - 65 fields remaining
+2024-07-03 15:44:20,998 - INFO - Now analyzing field ID CA_199389
+2024-07-03 15:44:35,413 - INFO - Successful
+2024-07-03 15:44:35,413 - INFO - 64 fields remaining
+2024-07-03 15:44:35,413 - INFO - Now analyzing field ID CA_199621
+2024-07-03 15:44:50,571 - INFO - Successful
+2024-07-03 15:44:50,571 - INFO - 63 fields remaining
+2024-07-03 15:44:50,571 - INFO - Now analyzing field ID CA_214741
+2024-07-03 15:45:05,799 - INFO - Successful
+2024-07-03 15:45:05,799 - INFO - 62 fields remaining
+2024-07-03 15:45:05,799 - INFO - Now analyzing field ID CA_214463
+2024-07-03 15:45:20,966 - INFO - Successful
+2024-07-03 15:45:20,966 - INFO - 61 fields remaining
+2024-07-03 15:45:20,966 - INFO - Now analyzing field ID CA_205669
+2024-07-03 15:45:35,888 - INFO - Successful
+2024-07-03 15:45:35,888 - INFO - 60 fields remaining
+2024-07-03 15:45:35,889 - INFO - Now analyzing field ID CA_237235
+2024-07-03 15:45:51,258 - INFO - Successful
+2024-07-03 15:45:51,258 - INFO - 59 fields remaining
+2024-07-03 15:45:51,258 - INFO - Now analyzing field ID CA_218504
+2024-07-03 15:46:09,107 - INFO - Successful
+2024-07-03 15:46:09,107 - INFO - 58 fields remaining
+2024-07-03 15:46:09,107 - INFO - Now analyzing field ID CA_206280
+2024-07-03 15:46:24,180 - INFO - Successful
+2024-07-03 15:46:24,180 - INFO - 57 fields remaining
+2024-07-03 15:46:24,180 - INFO - Now analyzing field ID CA_198392
+2024-07-03 15:46:40,105 - INFO - Successful
+2024-07-03 15:46:40,106 - INFO - 56 fields remaining
+2024-07-03 15:46:40,106 - INFO - Now analyzing field ID CA_218326
+2024-07-03 15:46:53,611 - INFO - Successful
+2024-07-03 15:46:53,611 - INFO - 55 fields remaining
+2024-07-03 15:46:53,612 - INFO - Now analyzing field ID CA_197206
+2024-07-03 15:47:09,312 - INFO - Successful
+2024-07-03 15:47:09,312 - INFO - 54 fields remaining
+2024-07-03 15:47:09,313 - INFO - Now analyzing field ID CA_202362
+2024-07-03 15:47:22,667 - INFO - Successful
+2024-07-03 15:47:22,667 - INFO - 53 fields remaining
+2024-07-03 15:47:22,667 - INFO - Now analyzing field ID CA_197548
+2024-07-03 15:47:37,380 - INFO - Successful
+2024-07-03 15:47:37,380 - INFO - 52 fields remaining
+2024-07-03 15:47:37,380 - INFO - Now analyzing field ID CA_206014
+2024-07-03 15:47:53,685 - INFO - Successful
+2024-07-03 15:47:53,686 - INFO - 51 fields remaining
+2024-07-03 15:47:53,686 - INFO - Now analyzing field ID CA_196350
+2024-07-03 15:48:09,878 - INFO - Successful
+2024-07-03 15:48:09,878 - INFO - 50 fields remaining
+2024-07-03 15:48:09,878 - INFO - Now analyzing field ID CA_196217
+2024-07-03 15:48:25,291 - INFO - Successful
+2024-07-03 15:48:25,291 - INFO - 49 fields remaining
+2024-07-03 15:48:25,292 - INFO - Now analyzing field ID CA_194654
+2024-07-03 15:48:40,098 - INFO - Successful
+2024-07-03 15:48:40,098 - INFO - 48 fields remaining
+2024-07-03 15:48:40,098 - INFO - Now analyzing field ID CA_207336
+2024-07-03 15:48:58,238 - INFO - Successful
+2024-07-03 15:48:58,239 - INFO - 47 fields remaining
+2024-07-03 15:48:58,239 - INFO - Now analyzing field ID CA_207283
+2024-07-03 15:49:11,627 - INFO - Successful
+2024-07-03 15:49:11,627 - INFO - 46 fields remaining
+2024-07-03 15:49:11,627 - INFO - Now analyzing field ID CA_206394
+2024-07-03 15:49:32,655 - INFO - Successful
+2024-07-03 15:49:32,656 - INFO - 45 fields remaining
+2024-07-03 15:49:32,656 - INFO - Now analyzing field ID CA_205074
+2024-07-03 15:49:48,389 - INFO - Successful
+2024-07-03 15:49:48,389 - INFO - 44 fields remaining
+2024-07-03 15:49:48,389 - INFO - Now analyzing field ID CA_201209
+2024-07-03 15:50:03,773 - INFO - Successful
+2024-07-03 15:50:03,774 - INFO - 43 fields remaining
+2024-07-03 15:50:03,774 - INFO - Now analyzing field ID CA_196039
+2024-07-03 15:50:18,142 - INFO - Successful
+2024-07-03 15:50:18,142 - INFO - 42 fields remaining
+2024-07-03 15:50:18,142 - INFO - Now analyzing field ID CA_195552
+2024-07-03 15:50:35,154 - INFO - Successful
+2024-07-03 15:50:35,154 - INFO - 41 fields remaining
+2024-07-03 15:50:35,154 - INFO - Now analyzing field ID CA_195055
+2024-07-03 15:50:50,871 - INFO - Successful
+2024-07-03 15:50:50,871 - INFO - 40 fields remaining
+2024-07-03 15:50:50,871 - INFO - Now analyzing field ID CA_218496
+2024-07-03 15:51:04,646 - INFO - Successful
+2024-07-03 15:51:04,646 - INFO - 39 fields remaining
+2024-07-03 15:51:04,646 - INFO - Now analyzing field ID CA_218428
+2024-07-03 15:51:17,676 - INFO - Successful
+2024-07-03 15:51:17,676 - INFO - 38 fields remaining
+2024-07-03 15:51:17,676 - INFO - Now analyzing field ID CA_185399
+2024-07-03 15:51:32,884 - INFO - Successful
+2024-07-03 15:51:32,884 - INFO - 37 fields remaining
+2024-07-03 15:51:32,884 - INFO - Now analyzing field ID CA_219484
+2024-07-03 15:51:47,697 - INFO - Successful
+2024-07-03 15:51:47,697 - INFO - 36 fields remaining
+2024-07-03 15:51:47,697 - INFO - Now analyzing field ID CA_243548
+2024-07-03 15:52:09,493 - INFO - Successful
+2024-07-03 15:52:09,493 - INFO - 35 fields remaining
+2024-07-03 15:52:09,493 - INFO - Now analyzing field ID CA_240061
+2024-07-03 15:52:25,292 - INFO - Successful
+2024-07-03 15:52:25,292 - INFO - 34 fields remaining
+2024-07-03 15:52:25,294 - INFO - Now analyzing field ID CA_221043
+2024-07-03 15:52:40,989 - INFO - Successful
+2024-07-03 15:52:40,990 - INFO - 33 fields remaining
+2024-07-03 15:52:40,990 - INFO - Now analyzing field ID CA_218007
+2024-07-03 15:52:56,715 - INFO - Successful
+2024-07-03 15:52:56,715 - INFO - 32 fields remaining
+2024-07-03 15:52:56,715 - INFO - Now analyzing field ID CA_216615
+2024-07-03 15:53:10,954 - INFO - Successful
+2024-07-03 15:53:10,954 - INFO - 31 fields remaining
+2024-07-03 15:53:10,954 - INFO - Now analyzing field ID CA_216205
+2024-07-03 15:53:27,422 - INFO - Successful
+2024-07-03 15:53:27,423 - INFO - 30 fields remaining
+2024-07-03 15:53:27,423 - INFO - Now analyzing field ID CA_188282
+2024-07-03 15:53:44,792 - INFO - Successful
+2024-07-03 15:53:44,792 - INFO - 29 fields remaining
+2024-07-03 15:53:44,792 - INFO - Now analyzing field ID CA_188163
+2024-07-03 15:53:59,277 - INFO - Successful
+2024-07-03 15:53:59,277 - INFO - 28 fields remaining
+2024-07-03 15:53:59,277 - INFO - Now analyzing field ID CA_346051
+2024-07-03 15:54:16,850 - INFO - Successful
+2024-07-03 15:54:16,850 - INFO - 27 fields remaining
+2024-07-03 15:54:16,850 - INFO - Now analyzing field ID CA_344981
+2024-07-03 15:54:31,201 - INFO - Successful
+2024-07-03 15:54:31,201 - INFO - 26 fields remaining
+2024-07-03 15:54:31,202 - INFO - Now analyzing field ID CA_192944
+2024-07-03 15:54:51,250 - INFO - Successful
+2024-07-03 15:54:51,251 - INFO - 25 fields remaining
+2024-07-03 15:54:51,251 - INFO - Now analyzing field ID CA_176261
+2024-07-03 15:55:07,362 - INFO - Successful
+2024-07-03 15:55:07,362 - INFO - 24 fields remaining
+2024-07-03 15:55:07,362 - INFO - Now analyzing field ID CA_176246
+2024-07-03 15:55:22,532 - INFO - Successful
+2024-07-03 15:55:22,532 - INFO - 23 fields remaining
+2024-07-03 15:55:22,533 - INFO - Now analyzing field ID CA_176041
+2024-07-03 15:55:50,286 - INFO - Successful
+2024-07-03 15:55:50,287 - INFO - 22 fields remaining
+2024-07-03 15:55:50,287 - INFO - Now analyzing field ID CA_135342
+2024-07-03 15:56:04,834 - INFO - Successful
+2024-07-03 15:56:04,834 - INFO - 21 fields remaining
+2024-07-03 15:56:04,834 - INFO - Now analyzing field ID CA_134803
+2024-07-03 15:56:22,256 - INFO - Successful
+2024-07-03 15:56:22,256 - INFO - 20 fields remaining
+2024-07-03 15:56:22,256 - INFO - Now analyzing field ID CA_134482
+2024-07-03 15:56:42,967 - INFO - Successful
+2024-07-03 15:56:42,967 - INFO - 19 fields remaining
+2024-07-03 15:56:42,967 - INFO - Now analyzing field ID CA_134009
+2024-07-03 15:57:10,579 - INFO - Successful
+2024-07-03 15:57:10,579 - INFO - 18 fields remaining
+2024-07-03 15:57:10,579 - INFO - Now analyzing field ID CA_133883
+2024-07-03 15:57:24,753 - INFO - Successful
+2024-07-03 15:57:24,753 - INFO - 17 fields remaining
+2024-07-03 15:57:24,753 - INFO - Now analyzing field ID CA_133674
+2024-07-03 15:57:40,452 - INFO - Successful
+2024-07-03 15:57:40,452 - INFO - 16 fields remaining
+2024-07-03 15:57:40,453 - INFO - Now analyzing field ID CA_189979
+2024-07-03 15:57:54,390 - INFO - Successful
+2024-07-03 15:57:54,390 - INFO - 15 fields remaining
+2024-07-03 15:57:54,390 - INFO - Now analyzing field ID CA_343782
+2024-07-03 15:58:18,364 - INFO - Successful
+2024-07-03 15:58:18,364 - INFO - 14 fields remaining
+2024-07-03 15:58:18,364 - INFO - Now analyzing field ID CA_240493
+2024-07-03 15:58:35,082 - INFO - Successful
+2024-07-03 15:58:35,083 - INFO - 13 fields remaining
+2024-07-03 15:58:35,083 - INFO - Now analyzing field ID CA_343666
+2024-07-03 15:58:49,839 - INFO - Successful
+2024-07-03 15:58:49,839 - INFO - 12 fields remaining
+2024-07-03 15:58:49,839 - INFO - Now analyzing field ID CA_343221
+2024-07-03 15:59:06,424 - INFO - Successful
+2024-07-03 15:59:06,424 - INFO - 11 fields remaining
+2024-07-03 15:59:06,424 - INFO - Now analyzing field ID CA_343648
+2024-07-03 15:59:21,931 - INFO - Successful
+2024-07-03 15:59:21,931 - INFO - 10 fields remaining
+2024-07-03 15:59:21,931 - INFO - Now analyzing field ID CA_192791
+2024-07-03 15:59:43,190 - INFO - Successful
+2024-07-03 15:59:43,190 - INFO - 9 fields remaining
+2024-07-03 15:59:43,190 - INFO - Now analyzing field ID CA_216236
+2024-07-03 15:59:58,457 - INFO - Successful
+2024-07-03 15:59:58,457 - INFO - 8 fields remaining
+2024-07-03 15:59:58,457 - INFO - Now analyzing field ID CA_222239
+2024-07-03 16:00:14,946 - INFO - Successful
+2024-07-03 16:00:14,946 - INFO - 7 fields remaining
+2024-07-03 16:00:14,946 - INFO - Now analyzing field ID CA_343274
+2024-07-03 16:00:30,719 - INFO - Successful
+2024-07-03 16:00:30,719 - INFO - 6 fields remaining
+2024-07-03 16:00:30,719 - INFO - Now analyzing field ID CA_342781
+2024-07-03 16:00:48,711 - INFO - Successful
+2024-07-03 16:00:48,711 - INFO - 5 fields remaining
+2024-07-03 16:00:48,711 - INFO - Now analyzing field ID CA_344925
+2024-07-03 16:01:04,637 - INFO - Successful
+2024-07-03 16:01:04,637 - INFO - 4 fields remaining
+2024-07-03 16:01:04,638 - INFO - Now analyzing field ID CA_136233
+2024-07-03 16:01:18,335 - INFO - Successful
+2024-07-03 16:01:18,335 - INFO - 3 fields remaining
+2024-07-03 16:01:18,335 - INFO - Now analyzing field ID CA_136312
+2024-07-03 16:01:33,777 - INFO - Successful
+2024-07-03 16:01:33,777 - INFO - 2 fields remaining
+2024-07-03 16:01:33,777 - INFO - Now analyzing field ID CA_343914
+2024-07-03 16:01:48,416 - INFO - Successful
+2024-07-03 16:01:48,416 - INFO - 1 fields remaining
+2024-07-03 16:01:48,416 - INFO - Now analyzing field ID CA_342669
+2024-07-03 16:02:03,083 - INFO - Successful
+2024-07-03 16:02:03,083 - INFO - 0 fields remaining
+2024-07-03 16:02:03,091 - INFO - Finished processing. 0 fields failed.
