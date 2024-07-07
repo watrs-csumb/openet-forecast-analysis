@@ -15,7 +15,7 @@ class ETPreprocess:
 	def set_table(self, *, columns: list = ['']) -> pd.DataFrame:
 		'''Sets the output table's columns. columns should be a list of strings and in the order that requests are to be made.
   			Returns DataFrame'''
-		self.data_table = pd.DataFrame(columns=columns)
+		self.data_table = pd.DataFrame(columns=['field_id', 'crop', 'time'] + columns)
 		return
  
 	def set_queue(self, queue: Queue) -> None:
@@ -24,8 +24,8 @@ class ETPreprocess:
 	def set_reference(self, ref: any) -> None:
 		self.points_ref = ref
 	
-	def start(self, *, request_args: list[ETArg], logger: logging.Logger = None) -> int:
-		'''Begins gathering ET data from timeseries and forecast endpoints. Returns number of failed rows.'''
+	def start(self, *, request_args: list[ETArg], frequency:str="monthly", logger: logging.Logger = None) -> int:
+		'''Begins gathering ET data from listed arguments. Frequency is monthly by default. Returns number of failed rows.'''
 		# Fails if set_table has not been called.
 		if self.data_table is None:
 			raise ReferenceError('data_table not set. Call set_table() to specify columns.')
@@ -47,7 +47,7 @@ class ETPreprocess:
 				req = request_args[index]
 				arg = {
 					"date_range": req.date_range,
-					"interval": req.interval,
+					"interval": frequency,
 					"geometry": current_point_coordinates,
 					"model": "Ensemble",
 					"units": "mm",
@@ -65,15 +65,17 @@ class ETPreprocess:
 				# Each item is of dict{'time': str, 'et': float}
 				data_array = []
 				for res in successes:
-					content = json.loads(res[1].response.content.decode('utf-8'))
+					content: str = json.loads(res[1].response.content.decode('utf-8'))
+					# Resulting shape should be n-requests x (n-fields * n-dates)
 					data_array.append([data for data in content])
  
-				for item in timeseries_data:
-					entry_time = item['time']
-					entry_et_actual = item['et']
-					
-	 
-					self.data_table = pd.concat([pd.DataFrame([[current_field_id, current_crop, entry_time, entry_et_actual, entry_et_forecast]], columns=self.data_table.columns), self.data_table], ignore_index=True)
+				# for item in timeseries_data:
+				# 	self.data_table = pd.concat(
+         		# 		[pd.DataFrame(
+                #  			[[current_field_id, current_crop, entry_time, entry_et_actual, entry_et_forecast]],
+                #     		columns=self.data_table.columns),
+              	# 			self.data_table],
+             	# 		ignore_index=True)
 	 
 				if logger is not None: logger.info("Successful")
 			else:

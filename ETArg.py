@@ -3,7 +3,6 @@ class ETArg:
 	def __init__(self, args: dict) -> None:
 		self._endpoint  = args["endpoint"]
 		self._date_range = args["date_range"]
-		self._interval = args["interval"],
 		self._variable = args["ET"]
 	
 	@property
@@ -21,14 +20,6 @@ class ETArg:
 	@endpoint.setter
 	def endpoint(self, endpoint: str):
 		self._endpoint = endpoint
-  
-	@property
-	def interval(self):
-		return self._interval
-
-	@interval.setter
-	def interval(self, interval: str):
-		self._interval = interval
   
 	@property
 	def variable(self):
