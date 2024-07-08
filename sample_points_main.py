@@ -5,6 +5,7 @@ Created on Thu Jun  13 10:06:44 2024
 @author: Robin Fishman
 """
 from datetime import datetime
+from ETArg import ETArg
 from ETPreprocess import ETPreprocess
 from Queue import Queue
 
@@ -31,13 +32,25 @@ forecast_endpoint = "https://developer.openet-api.org/experimental/raster/timese
 
 # DataFrame: k(OPENET_ID), v(CROP_2020, .geo)
 sample_points_reference = pd.read_csv('sample_points.csv', low_memory=False).set_index('OPENET_ID')
-sample_points_queue = Queue(sample_points_reference.index.to_list())
+sample_points_queue = Queue(sample_points_reference.index.to_list()[:2])
 
 def main():
 	sample_data = ETPreprocess(sample_points_queue, sample_points_reference)
-	sample_data.set_table(columns=['field', 'time', 'actual_et_mm', 'expected_et_mm'])
  
-	failed_attempts = sample_data.start(timeseries_endpoint, forecast_endpoint, logger=logger)
+	timeseries_et = ETArg('actual_et', args={
+		'endpoint': timeseries_endpoint,
+		'date_range': ['2023-06-01', '2024-06-30'],
+		'variable': 'ET'
+	})
+ 
+	forecast_et = ETArg('expected_et', args={
+		'endpoint': forecast_endpoint,
+		'date_range': ['2016-01-01', '2024-07-14'],
+		'variable': 'ET'
+	}) 
+ 
+	failed_attempts = sample_data.start(request_args=[timeseries_et, forecast_et], frequency='monthly', logger=logger)
+	print(sample_data.data_table)
  
 	logger.info(f"Finished processing. {str(failed_attempts)} fields failed.")
 	# logger.info("\n" + sample_data.data_table.to_string().replace('\n', '\n\t'))
