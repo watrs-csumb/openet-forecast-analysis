@@ -74,6 +74,7 @@ class ETPreprocess:
 						)
 					# End nth-field data composition
 
+
 				if logger is not None: logger.info("Successful")
 			else:
 				if logger is not None: logger.warning(f"Analyzing for {current_field_id} failed")
