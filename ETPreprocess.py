@@ -1,5 +1,7 @@
 from ETRequest import ETRequest
+from ETArg import ETArg
 from Queue import Queue
+from typing import Union, List, Tuple, Dict
 
 import json
 import logging
@@ -9,83 +11,70 @@ class ETPreprocess:
 	def __init__(self, fields_queue: Queue, points_ref: any) -> None:
 		self.fields_queue = fields_queue
 		self.points_ref = points_ref
-		self.data_table = pd.DataFrame(columns=['field_id', 'crop', 'time', 'et_actual', 'et_forecast'])
-	
+		self.data_table = pd.DataFrame(columns=['field_id', 'crop', 'time'])
+  
+	def __merge(self, *, tables):
+		for table in tables:
+			# Conducts full outer joins to preserve time column not always overlapping.
+			self.data_table = self.data_table.merge(table, on=['field_id', 'crop', 'time'], how='outer')
+ 
 	def set_queue(self, queue: Queue) -> None:
 		self.fields_queue = queue
 		
 	def set_reference(self, ref: any) -> None:
 		self.points_ref = ref
 	
-	def start(self, ts_endpoint: str, fc_endpoint: str, logger: logging.Logger = None) -> int:
-		'''Begins gathering ET data from timeseries and forecast endpoints'''
+	def start(self, *, request_args: list[ETArg], frequency:str="monthly", logger: logging.Logger = None) -> int:
+		'''Begins gathering ET data from listed arguments.\nFrequency is monthly by default.\nGenerates DataFrame using name of ETArgs as column names.\nReturns number of failed rows.'''
 		failed_fields = 0
+		tables = [pd.DataFrame(columns=['field_id', 'crop', 'time', item.name]) for item in request_args]
+
 		while self.fields_queue.is_empty() is False:
-			timeseries_success = False
-			forecast_success = False
 			current_field_id = self.fields_queue.front()
 			current_point_coordinates = json.loads(self.points_ref['.geo'][current_field_id])['coordinates']
 			current_crop = self.points_ref['CROP_2020'][current_field_id]
+   
+			# Creates container to track each request to be made.
+			results: List[ETRequest] = [ETRequest() for item in request_args]
 			
 			if logger is not None: logger.info(f"Now analyzing field ID {current_field_id}")
-			# Fetch timeseries data
-			timeseries_arg = {
-					"date_range": [
-						"2023-01-01", "2023-12-31"
-					],
-					"interval": "monthly",
+			# Conduct request posts
+			for index in range(0, len(request_args)):
+				req = request_args[index]
+				arg = {
+					"date_range": req.date_range,
+					"interval": frequency,
 					"geometry": current_point_coordinates,
 					"model": "Ensemble",
 					"units": "mm",
-					"variable": "ETo",
+					"variable": req.variable,
 					"reference_et": "gridMET",
 					"file_format": "JSON"
 				}
-			
-			timeseries_res = ETRequest(ts_endpoint, timeseries_arg)
-			timeseries_res.send(logger=logger)
-			timeseries_success = timeseries_res.success()
-			# Fetch forecasted data
-			forecast_arg = {
-					"date_range": [
-						"2014-01-01", "2023-06-03"
-					],
-					"interval": "monthly",
-					"geometry": current_point_coordinates,
-					"model": "Ensemble",
-					"units": "mm",
-					"variable": "ETo",
-					"reference_et": "gridMET",
-					"file_format": "JSON"
-				}
-		
-			forecast_res = ETRequest(fc_endpoint, forecast_arg)
-			forecast_res.send(logger=logger)
-			forecast_success = forecast_res.success()
-			# If both are successful, store it!
-			if timeseries_success and forecast_success:
-				# Data returns as a list[12] for each
-				# Each item is of dict{'time': str, 'et': float}
-				timeseries_content = json.loads(timeseries_res.response.content.decode('utf-8'))
-				timeseries_data = [data for data in timeseries_content]
+				response = ETRequest(req.endpoint, arg)
+				response.send(logger=logger)
 
-				forecast_content = json.loads(forecast_res.response.content.decode('utf-8'))
-				forecast_data = [data for data in forecast_content]
-    
-				for item in timeseries_data:
-					try:
-						entry_time = item['time']
-						entry_et_actual = item['eto']
-						entry_et_forecast = forecast_data[timeseries_data.index(item)]['eto']
-		
-						self.data_table = pd.concat([pd.DataFrame([[current_field_id, current_crop, entry_time, entry_et_actual, entry_et_forecast]], columns=self.data_table.columns), self.data_table], ignore_index=True)
-					except Exception as err:
-						forecast_index = timeseries_data.index(item)
-						print(f'field: {current_field_id}')
-						print(f'ts: {len(timeseries_data)}; fc: {len(forecast_data)}')
-						print(f'{forecast_index}/{len(forecast_data)}')
-						print(err)
-						exit()
+				results[index] = response
+			# End conduct request posts
+   
+			# There is no failed responses
+			if False not in [item.success() for item in results]:
+				for entry in range(0, len(results)):
+					res = results[entry]
+					# Begin nth-field data composition
+					# Data returns as a list containing dict{'time': str, '$variable': float}
+					content: List[Dict] = json.loads(res.response.content.decode('utf-8'))
+					# item: {'time': str, '$variable': float}
+					for item in content:
+						tables[entry] = pd.concat(
+							[pd.DataFrame(
+								[[current_field_id, current_crop, item['time'], item[list(item.keys())[1]] ]],
+								columns=tables[entry].columns
+							), tables[entry]], ignore_index=True
+						)
+					# End nth-field data composition
+
+
 				if logger is not None: logger.info("Successful")
 			else:
 				if logger is not None: logger.warning(f"Analyzing for {current_field_id} failed")
@@ -93,7 +82,7 @@ class ETPreprocess:
 	
 			self.fields_queue.dequeue()
 			if logger is not None: logger.info(f"{str(self.fields_queue.size())} fields remaining")
-		
-  		# Wierdly enough, presetting the index will cause a failure. So set index after completion.
-		self.data_table.set_index('field_id', inplace=True)
+
+		# Collapses all generates tables into one.
+		self.__merge(tables=tables)
 		return failed_fields
