@@ -7,3 +7,4 @@ share/
 .ipy*/
 .vscode/
 __pycache__/*
+logs/
