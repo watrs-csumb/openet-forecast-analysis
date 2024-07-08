@@ -50,11 +50,10 @@ def main():
 	}) 
  
 	failed_attempts = sample_data.start(request_args=[timeseries_et, forecast_et], frequency='monthly', logger=logger)
-	print(sample_data.data_table)
  
 	logger.info(f"Finished processing. {str(failed_attempts)} fields failed.")
 	# logger.info("\n" + sample_data.data_table.to_string().replace('\n', '\n\t'))
-	# sample_data.data_table.to_csv("samples_data_table.csv")
+	sample_data.data_table.to_csv("preview.csv")
 
 if __name__ == '__main__':
 	main()

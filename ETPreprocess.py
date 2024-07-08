@@ -12,6 +12,10 @@ class ETPreprocess:
 		self.fields_queue = fields_queue
 		self.points_ref = points_ref
 		self.data_table = pd.DataFrame(columns=['field_id', 'crop', 'time'])
+  
+	def __merge(self, *, tables):
+		for table in tables:
+			self.data_table = self.data_table.merge(table, on=['field_id', 'crop', 'time'], how='outer')
  
 	def set_queue(self, queue: Queue) -> None:
 		self.fields_queue = queue
@@ -22,17 +26,15 @@ class ETPreprocess:
 	def start(self, *, request_args: list[ETArg], frequency:str="monthly", logger: logging.Logger = None) -> int:
 		'''Begins gathering ET data from listed arguments. Frequency is monthly by default. Returns number of failed rows.'''
 		failed_fields = 0
+		tables = [pd.DataFrame(columns=['field_id', 'crop', 'time', item.name]) for item in request_args]
+
 		while self.fields_queue.is_empty() is False:
 			current_field_id = self.fields_queue.front()
 			current_point_coordinates = json.loads(self.points_ref['.geo'][current_field_id])['coordinates']
 			current_crop = self.points_ref['CROP_2020'][current_field_id]
    
 			# Creates base dict for each request
-			results = [{
-       			"success": False,
-     			"response": ETRequest(),
-        		"data": pd.DataFrame(columns=['field_id', 'crop', 'time', item.name])
-          	} for item in request_args]
+			results: List[ETRequest] = [ETRequest() for item in request_args]
 			
 			if logger is not None: logger.info(f"Now analyzing field ID {current_field_id}")
 			# Conduct request posts
@@ -51,25 +53,25 @@ class ETPreprocess:
 				response = ETRequest(req.endpoint, arg)
 				response.send(logger=logger)
 
-				results[index]["success"] = response.success()
-				results[index]["response"] = response
+				results[index] = response
 			# End conduct request posts
    
 			# There is no failed responses
-			if False not in [item['success'] for item in results]:
-				for res in results:
-					# Begin data composition
+			if False not in [item.success() for item in results]:
+				for entry in range(0, len(results)):
+					res = results[entry]
+					# Begin nth-field data composition
 					# Data returns as a list containing dict{'time': str, '$variable': float}
-					content: List[Dict] = json.loads(res['response'].response.content.decode('utf-8'))
+					content: List[Dict] = json.loads(res.response.content.decode('utf-8'))
 					# item: {'time': str, '$variable': float}
 					for item in content:
-						res['data'] = pd.concat(
+						tables[entry] = pd.concat(
 							[pd.DataFrame(
 								[[current_field_id, current_crop, item['time'], item[list(item.keys())[1]] ]],
-								columns=res['data'].columns
-							), res['data']], ignore_index=True
+								columns=tables[entry].columns
+							), tables[entry]], ignore_index=True
 						)
-					# End data composition
+					# End nth-field data composition
 
 				if logger is not None: logger.info("Successful")
 			else:
@@ -79,4 +81,5 @@ class ETPreprocess:
 			self.fields_queue.dequeue()
 			if logger is not None: logger.info(f"{str(self.fields_queue.size())} fields remaining")
 
+		self.__merge(tables=tables)
 		return failed_fields
