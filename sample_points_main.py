@@ -39,7 +39,7 @@ def main():
  
 	timeseries_et = ETArg('actual_et', args={
 		'endpoint': timeseries_endpoint,
-		'date_range': ['2023-07-01', '2024-07-07'],
+		'date_range': ['2016-01-01', '2024-07-07'],
 		'variable': 'ET'
 	})
  
@@ -51,7 +51,7 @@ def main():
  
 	timeseries_eto = ETArg('actual_eto', args={
 		'endpoint': timeseries_endpoint,
-		'date_range': ['2023-07-01', '2024-07-07'],
+		'date_range': ['2016-01-01', '2024-07-07'],
 		'variable': 'ETo'
 	})
  
@@ -63,7 +63,7 @@ def main():
  
 	timeseries_etof = ETArg('actual_etof', args={
 		'endpoint': timeseries_endpoint,
-		'date_range': ['2023-07-01', '2024-07-07'],
+		'date_range': ['2016-01-01', '2024-07-07'],
 		'variable': 'ETof'
 	})
  
@@ -74,14 +74,14 @@ def main():
 	}) 
  
 	failed_attempts = sample_data.start(request_args=[
-		timeseries_et, forecast_et,
-     	timeseries_eto, forecast_eto, 
-      	timeseries_etof, forecast_etof
+		timeseries_et, 
+     	timeseries_eto, 
+      	timeseries_etof
       ], frequency='daily', logger=logger)
  
 	logger.info(f"Finished processing. {str(failed_attempts)} fields failed.")
 	# logger.info("\n" + sample_data.data_table.to_string().replace('\n', '\n\t'))
-	sample_data.data_table.to_csv("data/samples_eto_july_14_forecast.csv")
+	sample_data.data_table.to_csv("data/samples_historical_data_10y.csv")
 
 if __name__ == '__main__':
 	main()
