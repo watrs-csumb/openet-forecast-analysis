@@ -28,7 +28,7 @@ class ETPreprocess:
 			case 'json':
 				self.data_table.to_json(filename, **kwargs)
 			case _:
-				raise ValueError(f'Provided file_format "{str}" is not supported.')
+				raise ValueError(f'Provided file_format "{file_format}" is not supported.')
  
 	def set_queue(self, queue: Queue) -> None:
 		self.fields_queue = queue
