@@ -13,10 +13,22 @@ class ETPreprocess:
 		self.points_ref = points_ref
 		self.data_table = pd.DataFrame(columns=['field_id', 'crop', 'time'])
   
-	def __merge(self, *, tables):
+	def __merge__(self, *, tables):
 		for table in tables:
 			# Conducts full outer joins to preserve time column not always overlapping.
 			self.data_table = self.data_table.merge(table, on=['field_id', 'crop', 'time'], how='outer')
+   
+	def export(self, filename, file_format:str = 'csv', **kwargs) -> None:
+		'''Exports data in provided file format. CSV by default. Passes kwargs to matching pandas export function.'''
+		match file_format:
+			case 'csv':
+				self.data_table.to_csv(filename, **kwargs)
+			case 'pickle':
+				self.data_table.to_pickle(filename, **kwargs)
+			case 'json':
+				self.data_table.to_json(filename, **kwargs)
+			case _:
+				raise ValueError(f'Provided file_format "{str}" is not supported.')
  
 	def set_queue(self, queue: Queue) -> None:
 		self.fields_queue = queue
@@ -73,16 +85,16 @@ class ETPreprocess:
 							), tables[entry]], ignore_index=True
 						)
 					# End nth-field data composition
-
-
 				if logger is not None: logger.info("Successful")
+
 			else:
 				if logger is not None: logger.warning(f"Analyzing for {current_field_id} failed")
 				failed_fields+=1
-	
+
 			self.fields_queue.dequeue()
 			if logger is not None: logger.info(f"{str(self.fields_queue.size())} fields remaining")
 
 		# Collapses all generates tables into one.
-		self.__merge(tables=tables)
+		self.__merge__(tables=tables)
+		if logger is not None: logger.info(f"Finished processing. {str(failed_fields)} fields failed.")
 		return failed_fields
