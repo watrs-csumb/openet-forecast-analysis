@@ -58,9 +58,10 @@ class ETRequest:
 
 	def success(self) -> bool:
 		'''Returns boolean depending on if the request succeeded or not'''
-		if self.response is None or self.response.status_code not in status_whitelist:
+		try:
+			return self.response.status_code in status_whitelist
+		except:
 			return False
-		return True
 
 
 					
