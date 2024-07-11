@@ -47,7 +47,12 @@ class ETRequest:
 		finally:
 			# This branch will only happen if all reattempts failed. Likely due to an outage.
 			if self.success() is False and ignore_fails is False:
-				reattempt_prompt = input(f"Fetch failed [{str(self.response.status_code)}]: {str(self.response.content)}\nWould you like to reattempt (Y/n)? ")
+				# Attempt to build a detailed prompt.
+				# Shows status_code and message if properties exist on response. Otherwise, no additional details.
+				# A detailed message would not be provided in the event of an outage.
+				prompt_info = '. Please check your connection.' if ~hasattr(self.response, 'status_code') and ~hasattr(self.response, 'content') else f" [{str(self.response.status_code)}]: {str(self.response.content.decode('utf-8'))}"
+    
+				reattempt_prompt = input(f"Fetch failed{prompt_info}\nWould you like to reattempt (Y/n)? ")
 				if reattempt_prompt.lower() in ["y", ""]:
 					return self.send(logger=logger)
 				# In this case, yi means "yes and ignore"
