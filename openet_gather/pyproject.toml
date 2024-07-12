@@ -1,0 +1,36 @@
+[build-system]
+# Minimum requirements to build package
+requires = [
+	"hatching",
+	"numpy>=2.0.0rc1",
+	"pandas>=2.2",
+	"requests"
+]
+
+build-backend = "hatching.build"
+
+[project]
+name = "openet_gather"
+version = 0.1.0-alpha
+authors = {
+	{name = "Robin Fishman", email="rfishman@csumb.edu"}
+}
+description = "Data collection library for OpenET"
+readme = README.md
+requires-python = ">=3.8"
+classifiers = [
+	"Development Status :: 3 - Alpha",
+	"Intended Audience :: Science/Research",
+	"Operating System :: OS Independent",
+	"Programming Language :: Python",
+	"Programming Language :: Python :: 3",
+	"Programming Language :: Python :: 3 :: Only",
+	"Programming Language :: Python :: 3.8",
+	"Programming Language :: Python :: 3.9",
+	"Programming Language :: Python :: 3.10",
+	"Topic :: Scientific/Engineering"
+]
+
+[project.urls]
+Homepage = "https://github.com/aetriusgx/openet"
+Issues = "https://github.com/aetriusgx/openet/issues"
