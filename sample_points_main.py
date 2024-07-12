@@ -4,6 +4,7 @@ Created on Thu Jun  13 10:06:44 2024
 
 @author: Robin Fishman
 """
+from copy import copy, deepcopy
 from datetime import datetime, timedelta
 from ETArg import ETArg
 from ETPreprocess import ETPreprocess
@@ -35,14 +36,13 @@ sample_points_reference = pd.read_csv('sample_points.csv', low_memory=False).set
 sample_points_queue = Queue(sample_points_reference.index.to_list())
 
 def main():
-	sample_data = ETPreprocess(sample_points_queue, sample_points_reference)
- 
 	# Gather predictions at weekly intervals.
 	# Forecast begins predictions from the end_range. So to start predictions for Jan 1, set to Dec 31
-	forecasting_date = datetime(2023, 12, 31) # Marker for loop
+	forecasting_date = datetime(2024, 1, 1) # Marker for loop
 	end_date = datetime(2024, 12, 31) # 31 Dec 2024
 	interval_delta = timedelta(weeks=1) # weekly interval
 	while forecasting_date < end_date:
+		process = ETPreprocess(deepcopy(sample_points_queue), sample_points_reference)
 		api_date_format = forecasting_date.strftime('%Y-%m-%d')	
 		filename = f"data/forecasts/{api_date_format}_forecast.csv"
   
@@ -64,14 +64,16 @@ def main():
 			'variable': 'ETof'
 		})
   
-		sample_data.start(request_args=[
+		process.start(request_args=[
 			forecast_et, forecast_eto, forecast_etof
 		], frequency="daily", logger=logger)
   
-		sample_data.export(filename)
+		process.export(filename)
 		
 		forecasting_date = forecasting_date + interval_delta
- 
+	return
+
+	sample_data = ETPreprocess(sample_points_queue, sample_points_reference)
 	timeseries_et = ETArg('actual_et', args={
 		'endpoint': timeseries_endpoint,
 		'date_range': ['2016-01-01', '2023-12-31'],
