@@ -5,9 +5,9 @@ import time
 # ONLY CHANGE IF YOU KNOW WHAT YOU ARE DOING
 status_whitelist = [200]
 
-class ETRequest:
+class Request:
 	def __init__(self, request_endpoint: str = '', request_params: dict = {}, key: str = '') -> None:
-		'''Creates ETRequest object'''
+		'''Creates Request object'''
 		self.request_endpoint = request_endpoint
 		self.request_params = request_params
 		self.header = {"Authorization": key}

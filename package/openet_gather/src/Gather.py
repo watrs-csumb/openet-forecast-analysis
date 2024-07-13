@@ -1,13 +1,13 @@
-from ETRequest import ETRequest
-from ETArg import ETArg
-from Queue import Queue
+from Request import Request
+from Arg import Arg
+from openet_gather.util.Queue import Queue
 from typing import Union, List, Tuple, Dict
 
 import json
 import logging
 import pandas as pd
 
-class ETPreprocess:
+class Gather:
 	def __init__(self, fields_queue: Queue, points_ref: any, *, api_key: str) -> None:
 		self.fields_queue = fields_queue
 		self.points_ref = points_ref
@@ -40,7 +40,7 @@ class ETPreprocess:
 	def set_reference(self, ref: any) -> None:
 		self.points_ref = ref
 	
-	def start(self, *, request_args: list[ETArg], frequency:str="monthly", logger: logging.Logger = None) -> int:
+	def start(self, *, request_args: list[Arg], frequency:str="monthly", logger: logging.Logger = None) -> int:
 		'''Begins gathering ET data from listed arguments.\nFrequency is monthly by default.\nGenerates DataFrame using name of ETArgs as column names.\nReturns number of failed rows.'''
 		failed_fields = 0
 		tables = [pd.DataFrame(columns=['field_id', 'crop', 'time', item.name]) for item in request_args]
@@ -51,7 +51,7 @@ class ETPreprocess:
 			current_crop = self.points_ref['CROP_2020'][current_field_id]
    
 			# Creates container to track each request to be made.
-			results: List[ETRequest] = [ETRequest() for item in request_args]
+			results: List[Request] = [Request() for item in request_args]
 			
 			if logger is not None: logger.info(f"Now analyzing field ID {current_field_id}")
 			# Conduct request posts
@@ -67,7 +67,7 @@ class ETPreprocess:
 					"reference_et": "gridMET",
 					"file_format": "JSON"
 				}
-				response = ETRequest(req.endpoint, arg, key=self.__api_key__)
+				response = Request(req.endpoint, arg, key=self.__api_key__)
 				response.send(logger=logger)
 
 				results[index] = response

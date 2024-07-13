@@ -1,5 +1,4 @@
-
-class ETArg:
+class Arg:
 	def __init__(self, name, *, args: dict) -> None:
 		self._endpoint  = args["endpoint"]
 		self._date_range = args["date_range"]
