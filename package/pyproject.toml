@@ -1,13 +1,13 @@
 [build-system]
 # Minimum requirements to build package
 requires = [
-	"hatching",
+	"hatchling",
 	"numpy>=2.0.0rc1",
 	"pandas>=2.2",
 	"requests"
 ]
 
-build-backend = "hatching.build"
+build-backend = "hatchling.build"
 
 [project]
 name = "openet_gather"
