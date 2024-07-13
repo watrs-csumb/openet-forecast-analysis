@@ -4,8 +4,9 @@ Created on Thu Jun  13 10:06:44 2024
 
 @author: Robin Fishman
 """
-from copy import copy, deepcopy
+from copy import deepcopy
 from datetime import datetime, timedelta
+from dotenv import dotenv_values
 from ETArg import ETArg
 from ETPreprocess import ETPreprocess
 from Queue import Queue
@@ -28,6 +29,7 @@ logging.basicConfig(level=logging.INFO,
 logger = logging.getLogger(__name__)
 # END LOGGING CONFIG
 
+api_key = dotenv_values(".env").get("ET_KEY")
 timeseries_endpoint = "https://developer.openet-api.org/raster/timeseries/point"
 forecast_endpoint = "https://developer.openet-api.org/experimental/raster/timeseries/forecasting/seasonal"
 

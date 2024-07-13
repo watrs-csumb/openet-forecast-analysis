@@ -1,5 +1,3 @@
-from dotenv import dotenv_values
-
 import logging
 import requests
 import time
@@ -7,15 +5,17 @@ import time
 # ONLY CHANGE IF YOU KNOW WHAT YOU ARE DOING
 status_whitelist = [200]
 
-header = {"Authorization": dotenv_values(".env").get("ET_KEY")}
-
 class ETRequest:
-	def __init__(self, request_endpoint: str = '', request_params: dict = {}) -> None:
+	def __init__(self, request_endpoint: str = '', request_params: dict = {}, key: str = '') -> None:
 		'''Creates ETRequest object'''
 		self.request_endpoint = request_endpoint
 		self.request_params = request_params
+		self.header = {"Authorization": key}
 		self._current_attempt = 0
-  
+
+	def set_api_key(self, key: str) -> None:
+		self.header = {"Authorization": key}
+
 	def set_endpoint(self, request_endpoint: str ='') -> None:
 		self.request_endpoint = request_endpoint
 
@@ -27,7 +27,7 @@ class ETRequest:
   			If failures are meant to be ignored, set ignore_fails to True. It is not recommended to modify cur_retry'''
 		try:
 			self.response = requests.post(
-				headers=header,
+				headers=self.header,
 				url=self.request_endpoint,
 				json=self.request_params
 			)
@@ -50,9 +50,9 @@ class ETRequest:
 				# Attempt to build a detailed prompt.
 				# Shows status_code and message if properties exist on response. Otherwise, no additional details.
 				# A detailed message would not be provided in the event of an outage.
-				# prompt_info = '. Please check your connection.' if ~hasattr(self.response, 'status_code') and ~hasattr(self.response, 'content') else f" [{str(self.response.status_code)}]: {str(self.response.content.decode('utf-8'))}"
+				prompt_info = '. Please check your connection.' if ~hasattr(self.response, 'status_code') and ~hasattr(self.response, 'content') else f" [{str(self.response.status_code)}]: {str(self.response.content.decode('utf-8'))}"
     
-				reattempt_prompt = input(f"Fetch failed\nWould you like to reattempt (Y/n)? ")
+				reattempt_prompt = input(f"Fetch failed{prompt_info}\nWould you like to reattempt (Y/n)? ")
 				if reattempt_prompt.lower() in ["y", ""]:
 					return self.send(logger=logger)
 				# In this case, yi means "yes and ignore"
@@ -67,7 +67,3 @@ class ETRequest:
 			return self.response.status_code in status_whitelist
 		except:
 			return False
-
-
-					
-		

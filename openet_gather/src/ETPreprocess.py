@@ -8,10 +8,11 @@ import logging
 import pandas as pd
 
 class ETPreprocess:
-	def __init__(self, fields_queue: Queue, points_ref: any) -> None:
+	def __init__(self, fields_queue: Queue, points_ref: any, *, api_key: str) -> None:
 		self.fields_queue = fields_queue
 		self.points_ref = points_ref
 		self.data_table = pd.DataFrame(columns=['field_id', 'crop', 'time'])
+		self.__api_key__ = api_key
   
 	def __merge__(self, *, tables):
 		for table in tables:
@@ -29,7 +30,10 @@ class ETPreprocess:
 				self.data_table.to_json(filename, **kwargs)
 			case _:
 				raise ValueError(f'Provided file_format "{file_format}" is not supported.')
- 
+
+	def set_api_key(self, api_key: str) -> None:
+		self.__api_key__ = api_key
+
 	def set_queue(self, queue: Queue) -> None:
 		self.fields_queue = queue
 		
@@ -63,7 +67,7 @@ class ETPreprocess:
 					"reference_et": "gridMET",
 					"file_format": "JSON"
 				}
-				response = ETRequest(req.endpoint, arg)
+				response = ETRequest(req.endpoint, arg, key=self.__api_key__)
 				response.send(logger=logger)
 
 				results[index] = response
