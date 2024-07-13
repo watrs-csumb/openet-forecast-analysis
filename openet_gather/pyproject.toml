@@ -11,12 +11,11 @@ build-backend = "hatching.build"
 
 [project]
 name = "openet_gather"
-version = 0.1.0-alpha
-authors = {
+version = "0.1.0-alpha"
+authors = [
 	{name = "Robin Fishman", email="rfishman@csumb.edu"}
-}
+]
 description = "Data collection library for OpenET"
-readme = README.md
 requires-python = ">=3.8"
 classifiers = [
 	"Development Status :: 3 - Alpha",
