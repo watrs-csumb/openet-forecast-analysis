@@ -1,5 +1,3 @@
-from dotenv import dotenv_values
-
 import logging
 import requests
 import time
@@ -7,15 +5,17 @@ import time
 # ONLY CHANGE IF YOU KNOW WHAT YOU ARE DOING
 status_whitelist = [200]
 
-header = {"Authorization": dotenv_values(".env").get("ET_KEY")}
-
 class ETRequest:
-	def __init__(self, request_endpoint: str = '', request_params: dict = {}) -> None:
+	def __init__(self, request_endpoint: str = '', request_params: dict = {}, key: str = '') -> None:
 		'''Creates ETRequest object'''
 		self.request_endpoint = request_endpoint
 		self.request_params = request_params
+		self.header = {"Authorization": key}
 		self._current_attempt = 0
-  
+
+	def set_api_key(self, key: str) -> None:
+		self.header = {"Authorization": key}
+
 	def set_endpoint(self, request_endpoint: str ='') -> None:
 		self.request_endpoint = request_endpoint
 
@@ -27,7 +27,7 @@ class ETRequest:
   			If failures are meant to be ignored, set ignore_fails to True. It is not recommended to modify cur_retry'''
 		try:
 			self.response = requests.post(
-				headers=header,
+				headers=self.header,
 				url=self.request_endpoint,
 				json=self.request_params
 			)
