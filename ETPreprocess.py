@@ -42,14 +42,19 @@ class ETPreprocess:
 			# Collect list of files
 			files = Path(f'data/bin/{self.__timestamp__}/').glob(f'*.{name}.csv')
 
-			print(f'Working on {name} with {len(list(files))} files')
+			# Iterate through each file
 			for file in files:
+				# e.g. CA_270812.27.actual_eto.csv
+				# becomes ['CA_270812', '27', 'actual_eto', 'csv']
+				parts = str(file.name).split('.')
 				# Contains [time, {variable}]
-				data = pd.read_csv(file, header=0, names=['field_id', 'crop', 'time', name])
+				data = pd.read_csv(file, header=0, names=['time', name])
+				data['field_id'] = parts[0]
+				data['crop'] = parts[1]
 				tables[item] = pd.concat([data, tables[item]], ignore_index=True)
 
 		self.__merge__(tables=tables)
-  
+
 	def export(self, filename, file_format:str = 'csv', **kwargs) -> None:
 		'''Exports data in provided file format. CSV by default. Passes kwargs to matching pandas export function.'''
 		match file_format:
@@ -80,7 +85,7 @@ class ETPreprocess:
 			results: List[ETRequest] = [ETRequest() for item in request_args]
 			self.__names__ = [item.name for item in request_args]
 			
-			if logger is not None: logger.info(f"Now analyzing field ID {current_field_id}")
+			if logger: logger.info(f"Now analyzing field ID {current_field_id}")
 			# Conduct request posts
 			for index in range(0, len(request_args)):
 				req = request_args[index]
@@ -123,16 +128,16 @@ class ETPreprocess:
 						if path.exists() is False:
 							path.mkdir(parents=True)
 						# Filename e.g. CA_270812.27.actual_eto.csv
-						tables[entry].to_csv(f'{path}/{current_field_id}.{current_crop}.{name}.csv', index=False)
+						pd.read_json(res.response.content).to_csv(f'{path}/{current_field_id}.{current_crop}.{name}.csv', index=False)
 
-				if logger is not None: logger.info("Successful")
+				if logger: logger.info("Successful")
 
 			else:
-				if logger is not None: logger.warning(f"Analyzing for {current_field_id} failed")
+				if logger: logger.warning(f"Analyzing for {current_field_id} failed")
 				failed_fields+=1
 
 			self.fields_queue.dequeue()
-			if logger is not None: logger.info(f"{str(self.fields_queue.size())} fields remaining")
+			if logger: logger.info(f"{str(self.fields_queue.size())} fields remaining")
 
 		# Produces data table depending on if this process enabled packets.
 		if packets:
@@ -140,5 +145,5 @@ class ETPreprocess:
 		else:
 			self.__merge__(tables=tables)
 
-		if logger is not None: logger.info(f"Finished processing. {str(failed_fields)} fields failed.")
+		if logger: logger.info(f"Finished processing. {str(failed_fields)} fields failed.")
 		return failed_fields
