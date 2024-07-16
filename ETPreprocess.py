@@ -110,25 +110,25 @@ class ETPreprocess:
 				for entry in range(0, len(results)):
 					res = results[entry]
 					name = request_args[entry].name
-					# Begin nth-field data composition
-					# Data returns as a list containing dict{'time': str, '$variable': float}
+     				# Data returns as a list containing dict{'time': str, '$variable': float}
 					content: List[Dict] = json.loads(res.response.content.decode('utf-8'))
-					# item: {'time': str, '$variable': float}
-					for item in content:
-						tables[entry] = pd.concat(
-							[pd.DataFrame(
-								[[current_field_id, current_crop, item['time'], item[list(item.keys())[1]]]],
-								columns=tables[entry].columns
-							), tables[entry]], ignore_index=True
-						)
-					# End nth-field data composition
+
+					# Begin nth-field data composition
 					if packets:
 						path = Path(f'data/bin/{self.__timestamp__}')
 						# Check if directory exists, if not then create it
 						if path.exists() is False:
 							path.mkdir(parents=True)
 						# Filename e.g. CA_270812.27.actual_eto.csv
-						pd.read_json(res.response.content).to_csv(f'{path}/{current_field_id}.{current_crop}.{name}.csv', index=False)
+						pd.json_normalize(content).to_csv(f'{path}/{current_field_id}.{current_crop}.{name}.csv', index=False)
+					else:
+						# item: {'time': str, '$variable': float}
+						for item in content:
+							tables[entry] = pd.concat(
+								[pd.DataFrame(
+									[[current_field_id, current_crop, item['time'], item[list(item.keys())[1]]]],
+									columns=tables[entry].columns), tables[entry]], ignore_index=True)
+					# End nth-field data composition
 
 				if logger: logger.info("Successful")
 

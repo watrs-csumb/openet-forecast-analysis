@@ -77,19 +77,19 @@ def main():
 	sample_data = ETPreprocess(sample_points_queue, sample_points_reference, api_key=api_key)
 	timeseries_et = ETArg('actual_et', args={
 		'endpoint': timeseries_endpoint,
-		'date_range': ['2023-01-01', '2023-12-31'],
+		'date_range': ['2016-01-01', '2024-06-30'],
 		'variable': 'ET'
 	})
  
 	timeseries_eto = ETArg('actual_eto', args={
 		'endpoint': timeseries_endpoint,
-		'date_range': ['2023-01-01', '2023-12-31'],
+		'date_range': ['2016-01-01', '2024-06-30'],
 		'variable': 'ETo'
 	})
  
 	timeseries_etof = ETArg('actual_etof', args={
 		'endpoint': timeseries_endpoint,
-		'date_range': ['2023-01-01', '2023-12-31'],
+		'date_range': ['2016-01-01', '2024-06-30'],
 		'variable': 'ETof'
 	})
  
