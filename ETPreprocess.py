@@ -20,7 +20,7 @@ class ETPreprocess:
 		self.__names__ = []
 		self.__timestamp__ = datetime.now().strftime('%Y%m%d_%H%M%S')
   
-	def __merge__(self, *, tables):
+	def __merge__(self, *, tables) -> None:
 		for table in tables:
 			# Conducts full outer joins to preserve time column not always overlapping.
 			self.data_table = self.data_table.merge(table, on=['field_id', 'crop', 'time'], how='outer')
@@ -34,7 +34,7 @@ class ETPreprocess:
 	def set_reference(self, ref: any) -> None:
 		self.points_ref = ref
   
-	def compile_packets(self):
+	def compile_packets(self) -> None:
 		# Create empty tables for each column name. Will all be merged at the end.
 		tables = [pd.DataFrame(columns=['field_id', 'crop', 'time', name]) for name in self.__names__]
 		# Iterate through each column name first
@@ -56,7 +56,7 @@ class ETPreprocess:
 
 		self.__merge__(tables=tables)
 
-	def export(self, filename, file_format:str = 'csv', **kwargs) -> None:
+	def export(self, filename, file_format: str = 'csv', **kwargs) -> None:
 		'''Exports data in provided file format. CSV by default. Passes kwargs to matching pandas export function.'''
 		match file_format:
 			case 'csv':
@@ -70,7 +70,7 @@ class ETPreprocess:
 	
 	def start(self, *, 
            request_args: list[ETArg], 
-           frequency:str="monthly", 
+           frequency: str = "monthly", 
            logger: logging.Logger = None,
            packets: bool = False) -> int:
 		'''Begins gathering ET data from listed arguments.\nFrequency is monthly by default.\nGenerates DataFrame using name of ETArgs as column names.\nReturns number of failed rows.'''
