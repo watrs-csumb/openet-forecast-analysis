@@ -35,7 +35,7 @@ forecast_endpoint = "https://developer.openet-api.org/experimental/raster/timese
 
 # DataFrame: k(OPENET_ID), v(CROP_2020, .geo)
 sample_points_reference = pd.read_csv('sample_points.csv', low_memory=False).set_index('OPENET_ID')
-sample_points_queue = Queue(sample_points_reference.index.to_list()[:2])
+sample_points_queue = Queue(sample_points_reference.index.to_list())
 
 def main():
 	# Gather predictions at weekly intervals.
@@ -100,7 +100,7 @@ def main():
 	  ], frequency='daily', logger=logger, packets=True)
  
 	# logger.info("\n" + sample_data.data_table.to_string().replace('\n', '\n\t'))
-	sample_data.export("delete.csv")
+	sample_data.export("data/historical_data.csv")
 
 if __name__ == '__main__':
 	main()
