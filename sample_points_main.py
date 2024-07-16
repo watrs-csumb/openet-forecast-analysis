@@ -43,8 +43,8 @@ def main():
 	forecasting_date = datetime(2024, 1, 1) # Marker for loop
 	end_date = datetime(2024, 12, 31) # 31 Dec 2024
 	interval_delta = timedelta(weeks=1) # weekly interval
-	while forecasting_date < end_date:
-		process = ETPreprocess(deepcopy(sample_points_queue), sample_points_reference)
+	while forecasting_date > end_date:
+		process = ETPreprocess(deepcopy(sample_points_queue), sample_points_reference, api_key=api_key)
 		api_date_format = forecasting_date.strftime('%Y-%m-%d')	
 		filename = f"data/forecasts/{api_date_format}_forecast.csv"
   
@@ -73,24 +73,23 @@ def main():
 		process.export(filename)
 		
 		forecasting_date = forecasting_date + interval_delta
-	return
 
-	sample_data = ETPreprocess(sample_points_queue, sample_points_reference)
+	sample_data = ETPreprocess(sample_points_queue, sample_points_reference, api_key=api_key)
 	timeseries_et = ETArg('actual_et', args={
 		'endpoint': timeseries_endpoint,
-		'date_range': ['2016-01-01', '2023-12-31'],
+		'date_range': ['2016-01-01', '2024-06-30'],
 		'variable': 'ET'
 	})
  
 	timeseries_eto = ETArg('actual_eto', args={
 		'endpoint': timeseries_endpoint,
-		'date_range': ['2016-01-01', '2023-12-31'],
+		'date_range': ['2016-01-01', '2024-06-30'],
 		'variable': 'ETo'
 	})
  
 	timeseries_etof = ETArg('actual_etof', args={
 		'endpoint': timeseries_endpoint,
-		'date_range': ['2016-01-01', '2023-12-31'],
+		'date_range': ['2016-01-01', '2024-06-30'],
 		'variable': 'ETof'
 	})
  
@@ -98,10 +97,10 @@ def main():
 		timeseries_et, 
 	 	timeseries_eto, 
 	  	timeseries_etof
-	  ], frequency='daily', logger=logger)
+	  ], frequency='daily', logger=logger, packets=True)
  
 	# logger.info("\n" + sample_data.data_table.to_string().replace('\n', '\n\t'))
-	sample_data.export("data/samples_historical_data_10y.csv")
+	sample_data.export("data/historical_data.csv")
 
 if __name__ == '__main__':
 	main()
