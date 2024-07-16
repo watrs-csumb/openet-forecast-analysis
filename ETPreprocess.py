@@ -1,5 +1,7 @@
+from datetime import datetime
 from ETRequest import ETRequest
 from ETArg import ETArg
+from pathlib import Path
 from Queue import Queue
 from typing import Union, List, Tuple, Dict
 
@@ -12,24 +14,16 @@ class ETPreprocess:
 		self.fields_queue = fields_queue
 		self.points_ref = points_ref
 		self.data_table = pd.DataFrame(columns=['field_id', 'crop', 'time'])
+
+		# private
 		self.__api_key__ = api_key
+		self.__names__ = []
+		self.__timestamp__ = datetime.now().strftime('%Y%m%d_%H%M%S')
   
 	def __merge__(self, *, tables):
 		for table in tables:
 			# Conducts full outer joins to preserve time column not always overlapping.
 			self.data_table = self.data_table.merge(table, on=['field_id', 'crop', 'time'], how='outer')
-   
-	def export(self, filename, file_format:str = 'csv', **kwargs) -> None:
-		'''Exports data in provided file format. CSV by default. Passes kwargs to matching pandas export function.'''
-		match file_format:
-			case 'csv':
-				self.data_table.to_csv(filename, **kwargs)
-			case 'pickle':
-				self.data_table.to_pickle(filename, **kwargs)
-			case 'json':
-				self.data_table.to_json(filename, **kwargs)
-			case _:
-				raise ValueError(f'Provided file_format "{file_format}" is not supported.')
 
 	def set_api_key(self, api_key: str) -> None:
 		self.__api_key__ = api_key
@@ -39,8 +33,40 @@ class ETPreprocess:
 		
 	def set_reference(self, ref: any) -> None:
 		self.points_ref = ref
+  
+	def compile_packets(self):
+		tables = [pd.DataFrame(columns=['field_id', 'crop', 'time', name]) for name in self.__names__]
+		# Iterate through each column name first
+		for item in range(0, len(self.__names__)):
+			name = self.__names__[item]
+			# Collect list of files
+			files = Path(f'data/bin/{self.__timestamp__}/').glob(f'*.{name}.csv')
+
+			print(f'Working on {name} with {len(list(files))} files')
+			for file in files:
+				# Contains [time, {variable}]
+				data = pd.read_csv(file, header=0, names=['field_id', 'crop', 'time', name])
+				tables[item] = pd.concat([data, tables[item]], ignore_index=True)
+
+		self.__merge__(tables=tables)
+  
+	def export(self, filename, file_format:str = 'csv', **kwargs) -> None:
+		'''Exports data in provided file format. CSV by default. Passes kwargs to matching pandas export function.'''
+		match file_format:
+			case 'csv':
+				self.data_table.to_csv(filename, index=False, **kwargs)
+			case 'pickle':
+				self.data_table.to_pickle(filename, index=False, **kwargs)
+			case 'json':
+				self.data_table.to_json(filename, index=False, **kwargs)
+			case _:
+				raise ValueError(f'Provided file_format "{file_format}" is not supported.')
 	
-	def start(self, *, request_args: list[ETArg], frequency:str="monthly", logger: logging.Logger = None) -> int:
+	def start(self, *, 
+           request_args: list[ETArg], 
+           frequency:str="monthly", 
+           logger: logging.Logger = None,
+           packets: bool = False) -> int:
 		'''Begins gathering ET data from listed arguments.\nFrequency is monthly by default.\nGenerates DataFrame using name of ETArgs as column names.\nReturns number of failed rows.'''
 		failed_fields = 0
 		tables = [pd.DataFrame(columns=['field_id', 'crop', 'time', item.name]) for item in request_args]
@@ -52,6 +78,7 @@ class ETPreprocess:
    
 			# Creates container to track each request to be made.
 			results: List[ETRequest] = [ETRequest() for item in request_args]
+			self.__names__ = [item.name for item in request_args]
 			
 			if logger is not None: logger.info(f"Now analyzing field ID {current_field_id}")
 			# Conduct request posts
@@ -77,6 +104,7 @@ class ETPreprocess:
 			if False not in [item.success() for item in results]:
 				for entry in range(0, len(results)):
 					res = results[entry]
+					name = request_args[entry].name
 					# Begin nth-field data composition
 					# Data returns as a list containing dict{'time': str, '$variable': float}
 					content: List[Dict] = json.loads(res.response.content.decode('utf-8'))
@@ -84,11 +112,19 @@ class ETPreprocess:
 					for item in content:
 						tables[entry] = pd.concat(
 							[pd.DataFrame(
-								[[current_field_id, current_crop, item['time'], item[list(item.keys())[1]] ]],
+								[[current_field_id, current_crop, item['time'], item[list(item.keys())[1]]]],
 								columns=tables[entry].columns
 							), tables[entry]], ignore_index=True
 						)
 					# End nth-field data composition
+					if packets:
+						path = Path(f'data/bin/{self.__timestamp__}')
+						# Check if directory exists, if not then create it
+						if path.exists() is False:
+							path.mkdir(parents=True)
+						# Filename e.g. CA_270812.27.actual_eto.csv
+						tables[entry].to_csv(f'{path}/{current_field_id}.{current_crop}.{name}.csv', index=False)
+
 				if logger is not None: logger.info("Successful")
 
 			else:
@@ -98,7 +134,11 @@ class ETPreprocess:
 			self.fields_queue.dequeue()
 			if logger is not None: logger.info(f"{str(self.fields_queue.size())} fields remaining")
 
-		# Collapses all generates tables into one.
-		self.__merge__(tables=tables)
+		# Produces data table depending on if this process enabled packets.
+		if packets:
+			self.compile_packets()
+		else:
+			self.__merge__(tables=tables)
+
 		if logger is not None: logger.info(f"Finished processing. {str(failed_fields)} fields failed.")
 		return failed_fields
