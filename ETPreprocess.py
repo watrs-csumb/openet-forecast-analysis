@@ -35,14 +35,15 @@ class ETPreprocess:
 		self.points_ref = ref
   
 	def compile_packets(self):
+		# Create empty tables for each column name. Will all be merged at the end.
 		tables = [pd.DataFrame(columns=['field_id', 'crop', 'time', name]) for name in self.__names__]
 		# Iterate through each column name first
 		for item in range(0, len(self.__names__)):
 			name = self.__names__[item]
-			# Collect list of files
+			# Collect list of files whose name contains the current column name
 			files = Path(f'data/bin/{self.__timestamp__}/').glob(f'*.{name}.csv')
 
-			# Iterate through each file
+			# Iterate through each file through Generator iterator
 			for file in files:
 				# e.g. CA_270812.27.actual_eto.csv
 				# becomes ['CA_270812', '27', 'actual_eto', 'csv']
@@ -115,10 +116,12 @@ class ETPreprocess:
 
 					# Begin nth-field data composition
 					if packets:
+						# Path used for data dumping uses timestamp of initial program run.
 						path = Path(f'data/bin/{self.__timestamp__}')
-						# Check if directory exists, if not then create it
+						# Check if data bin exists, if not then create it
 						if path.exists() is False:
 							path.mkdir(parents=True)
+						# Converts decoded JSON string to DataFrame, then exports as csv file
 						# Filename e.g. CA_270812.27.actual_eto.csv
 						pd.json_normalize(content).to_csv(f'{path}/{current_field_id}.{current_crop}.{name}.csv', index=False)
 					else:
