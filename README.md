@@ -2,23 +2,15 @@
 Libraries list:
 - dotenv
 - pandas
+- scikit-learn
 - requests
 
 # Project Tracking
+## Relevant Links
+[Google Colab](https://colab.research.google.com/drive/1g8-hXfK--xd-Mnni3Mx-ONnVEBXC_hxH?usp=sharing)
+
 ## Goals
-### Week 3
-- [ ] Debug ETRequest connection loop
-- [x] Finish ETPreprocess data compilation
-- [x] Convert to proper Python logging
-- [ ] Begin statistical analysis
-- [ ] Look into testing approaches for ETRequest and ETPreprocess
-
-### Week 2
-- [x] Experiment with data formatting
-- [x] Look into redundancy checks. For events like power outage, internet loss, etc.
-
-### Week 1
-- [x] Install software
-- [x] Research terms
-- [x] Data set exploration (through code)
-- [x] Experiment with data types
+### Week 8 (July 22)
+ - [x] Complete analysis code to filter input dates
+ - [ ] Graph timeseries plots for each metric
+ - [ ] Update historical data with new week data
