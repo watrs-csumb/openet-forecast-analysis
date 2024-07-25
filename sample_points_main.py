@@ -34,75 +34,128 @@ timeseries_endpoint = "https://developer.openet-api.org/raster/timeseries/point"
 forecast_endpoint = "https://developer.openet-api.org/experimental/raster/timeseries/forecasting/seasonal"
 
 # DataFrame: k(OPENET_ID), v(CROP_2020, .geo)
-sample_points_reference = pd.read_csv('sample_points.csv', low_memory=False).set_index('OPENET_ID').sample(20)
+sample_points_reference = pd.read_csv('sample_points.csv', low_memory=False).set_index('OPENET_ID')
 sample_points_queue = Queue(sample_points_reference.index.to_list())
 
-def main():
-	logger.info("Getting historical data.")
-	sample_data = ETPreprocess(deepcopy(sample_points_queue), sample_points_reference, api_key=api_key)
-	timeseries_et = ETArg('actual_et', args={
-		'endpoint': timeseries_endpoint,
-		'date_range': ['2016-01-01', '2024-07-14'],
-		'variable': 'ET'
-	})
- 
-	timeseries_eto = ETArg('actual_eto', args={
-		'endpoint': timeseries_endpoint,
-		'date_range': ['2016-01-01', '2024-07-14'],
-		'variable': 'ETo'
-	})
- 
-	timeseries_etof = ETArg('actual_etof', args={
-		'endpoint': timeseries_endpoint,
-		'date_range': ['2016-01-01', '2024-07-14'],
-		'variable': 'ETof'
-	})
- 
-	sample_data.start(request_args=[
-		timeseries_et, 
-	 	timeseries_eto, 
-	  	timeseries_etof
-	  ], frequency='daily', logger=logger, packets=True)
- 
-	sample_data.export("data/historical_data.csv")
- 
-	# Gather predictions at weekly intervals.
-	# Forecast begins predictions from the end_range. So to start predictions for Jan 1, set to Dec 31
-	forecasting_date = datetime(2024, 1, 1) # Marker for loop
-	end_date = datetime(2024, 12, 31) # 31 Dec 2024
-	interval_delta = timedelta(weeks=1) # weekly interval
-	logger.info("Getting forecast data.")
-	while forecasting_date < end_date:
-		process = ETPreprocess(deepcopy(sample_points_queue), sample_points_reference, api_key=api_key)
-		api_date_format = forecasting_date.strftime('%Y-%m-%d')	
-		filename = f"data/forecasts/{api_date_format}_forecast.csv"
-  
-		forecast_et = ETArg('expected_et', args={
-			'endpoint': forecast_endpoint,
-			'date_range': ['2016-01-01', api_date_format],
-			'variable': 'ET'
-		})
-  
-		forecast_eto = ETArg('expected_eto', args={
-			'endpoint': forecast_endpoint,
-			'date_range': ['2016-01-01', api_date_format],
-			'variable': 'ETo'
-		})
-  
-		forecast_etof = ETArg('expected_etof', args={
-			'endpoint': forecast_endpoint,
-			'date_range': ['2016-01-01', api_date_format],
-			'variable': 'ETof'
-		})
+def get_historical_data(fields_queue):
+    sample_data = ETPreprocess(
+        deepcopy(fields_queue), sample_points_reference, api_key=api_key
+    )
 
-		logger.info(f"Forecasting from {api_date_format}")
-		process.start(request_args=[
-			forecast_et, forecast_eto, forecast_etof
-		], frequency="daily")
-  
-		process.export(filename)
-		
-		forecasting_date = forecasting_date + interval_delta
+    timeseries_et = ETArg(
+        "actual_et",
+        args={
+            "endpoint": timeseries_endpoint,
+            "date_range": ["2016-01-01", "2024-07-19"],
+            "variable": "ET",
+        },
+    )
+
+    timeseries_eto = ETArg(
+        "actual_eto",
+        args={
+            "endpoint": timeseries_endpoint,
+            "date_range": ["2016-01-01", "2024-07-19"],
+            "variable": "ETo",
+        },
+    )
+
+    timeseries_etof = ETArg(
+        "actual_etof",
+        args={
+            "endpoint": timeseries_endpoint,
+            "date_range": ["2016-01-01", "2024-07-19"],
+            "variable": "ETof",
+        },
+    )
+
+    sample_data.start(
+        request_args=[timeseries_et, timeseries_eto, timeseries_etof],
+        frequency="daily",
+        logger=logger,
+        packets=True,
+    )
+
+    sample_data.export("data/historical_data.csv")
+
+def get_forecasts(fields_queue):
+    # Gather predictions at weekly intervals.
+    # Forecast begins predictions from the end_range. So to start predictions for Jan 1, set to Dec 31
+    forecasting_date = datetime(2024, 1, 1)  # Marker for loop
+    end_date = datetime(2024, 12, 31)  # 31 Dec 2024
+    interval_delta = timedelta(weeks=1)  # weekly interval
+    logger.info("Getting forecast data.")
+    while forecasting_date < end_date:
+        process = ETPreprocess(
+            deepcopy(fields_queue), sample_points_reference, api_key=api_key
+        )
+        api_date_format = forecasting_date.strftime("%Y-%m-%d")
+        filename = f"data/forecasts/{api_date_format}_forecast.csv"
+
+        forecast_et = ETArg(
+            "expected_et",
+            args={
+                "endpoint": forecast_endpoint,
+                "date_range": ["2016-01-01", api_date_format],
+                "variable": "ET",
+            },
+        )
+
+        forecast_eto = ETArg(
+            "expected_eto",
+            args={
+                "endpoint": forecast_endpoint,
+                "date_range": ["2016-01-01", api_date_format],
+                "variable": "ETo",
+            },
+        )
+
+        forecast_etof = ETArg(
+            "expected_etof",
+            args={
+                "endpoint": forecast_endpoint,
+                "date_range": ["2016-01-01", api_date_format],
+                "variable": "ETof",
+            },
+        )
+
+        logger.info(f"Forecasting from {api_date_format}")
+        process.start(
+            request_args=[forecast_et, forecast_eto, forecast_etof], frequency="daily"
+        )
+
+        process.export(filename)
+
+        forecasting_date = forecasting_date + interval_delta
+
+def main():
+    sample_fields = [
+        "CA_89335",
+        "CA_52501",
+        "CA_344925",
+        "CA_343914",
+        "CA_326575",
+        "CA_322633",
+        "CA_289998",
+        "CA_289545",
+        "CA_280097",
+        "CA_226383",
+        "CA_218705",
+        "CA_203481",
+        "CA_198018",
+        "CA_192791",
+        "CA_160405",
+        "CA_145664",
+        "CA_144104",
+        "CA_137260",
+        "CA_122175",
+        "CA_105521",
+    ]
+
+    fields_queue = Queue(sample_fields)
+    
+    # get_historical_data(fields_queue)
+    get_forecasts(fields_queue)
 
 if __name__ == '__main__':
 	main()
