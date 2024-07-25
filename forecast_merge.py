@@ -13,7 +13,7 @@ def merge_forecasts():
         forecasts_table = pd.concat([data, forecasts_table], ignore_index=True)
     
     forecasts_table.set_index('forecasting_date', inplace=True)
-    forecasts_table.to_csv('delete.csv')
+    forecasts_table.to_csv('forecasts_table.csv')
     
 if __name__ == '__main__':
     merge_forecasts()
