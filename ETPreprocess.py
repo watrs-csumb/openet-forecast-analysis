@@ -80,7 +80,7 @@ class ETPreprocess:
 		while self.fields_queue.is_empty() is False:
 			current_field_id = self.fields_queue.front()
 			current_point_coordinates = json.loads(self.points_ref['.geo'][current_field_id])['coordinates']
-			current_crop = self.points_ref['CROP_2020'][current_field_id]
+			current_crop = self.points_ref['CROP_2023'][current_field_id]
    
 			# Creates container to track each request to be made.
 			results: List[ETRequest] = [ETRequest() for item in request_args]

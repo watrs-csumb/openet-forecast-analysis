@@ -12,13 +12,14 @@ from ETPreprocess import ETPreprocess
 from pathlib import Path
 from Queue import Queue
 
+import json
 import logging
 import pandas as pd
 import sys
 
 # LOGGING CONFIG
 # File handler that allows files to show all log entries
-file_log_handler = logging.FileHandler(filename=datetime.now().strftime(f'logs/sample_points_main_%Y_%m_%d_%H_%M_%S.log'))
+file_log_handler = logging.FileHandler(filename=datetime.now().strftime('logs/main_%Y_%m_%d_%H_%M_%S.log'))
 
 # Stream handler that prints log entries at level WARNING or higher
 stdout_log_handler = logging.StreamHandler(stream=sys.stdout)
@@ -33,10 +34,6 @@ logger = logging.getLogger(__name__)
 api_key = dotenv_values(".env").get("ET_KEY")
 timeseries_endpoint = "https://developer.openet-api.org/raster/timeseries/point"
 forecast_endpoint = "https://developer.openet-api.org/experimental/raster/timeseries/forecasting/seasonal"
-
-# DataFrame: k(OPENET_ID), v(CROP_2020, .geo)
-sample_points_reference = pd.read_csv('sample_points.csv', low_memory=False).set_index('OPENET_ID')
-sample_points_queue = Queue(sample_points_reference.index.to_list())
 
 def get_historical_data(fields_queue, reference, *, filename):
 	sample_data = ETPreprocess(
@@ -145,22 +142,64 @@ def merge_forecasts(dir):
     forecasts_table.set_index("forecasting_date", inplace=True)
     forecasts_table.to_csv(f"{dir}_forecast_table.csv")
 
-def main():
-    kern_fields = pd.read_csv("./Kern.csv", low_memory=False)
-    kern_queue = Queue(kern_fields["OPENET_ID"].to_list())
+def concat_details():
+    cdl_codes = pd.read_csv("cdl_codes.csv", low_memory=False).set_index("Codes")
 
-    monterey_fields = pd.read_csv("/Monterey.csv", low_memory=False)
-    monterey_queue = Queue(monterey_fields["OPENET_ID"].to_list())
+    kern_points = (
+        pd.read_csv("Kern.csv", low_memory=False)
+        .set_index("OPENET_ID")
+        .rename(index="field_id")
+    )
+    # Expand .geo column into lon, lat columns
+    kern_geo = kern_points[".geo"].apply(lambda x: pd.Series(dict(json.loads(x))))
+
+    monterey_points = (
+        pd.read_csv("Monterey.csv", low_memory=False)
+        .set_index("OPENET_ID")
+        .rename(index="field_id")
+    )
+    # Expand .geo column into lon, lat columns
+    monterey_geo = monterey_points[".geo"].apply(
+        lambda x: pd.Series(dict(json.loads(x)))
+    )
+
+    kern = pd.read_csv("kern_historical.csv", low_memory=False)
+    # Add geo info to the table
+    kern.join(kern_geo, how="left", on=["field_id"], validate="many_to_one")
+
+    monterey = pd.read_csv("monterey_historical.csv", low_memory=False)
+    # Add geo info to the table
+    monterey.join(monterey_geo, how="left", on=["field_id"], validate="many_to_one")
+
+    kern["county"] = "Kern"
+    monterey["county"] = "Monterey"
+
+    full_historical = pd.concat([monterey, kern], ignore_index=True)
+
+    # Add CDL info to the table
+    full_historical = full_historical.join(
+        cdl_codes, how="left", on="crop", validate="many_to_many"
+    )
+
+    full_historical.to_csv("kern_monterey_historical.csv", index=False)
+
+def main():
+    kern_fields = pd.read_csv("./Kern.csv", low_memory=False).set_index("OPENET_ID")
+    kern_queue = Queue(kern_fields.index.to_list())
+
+    monterey_fields = pd.read_csv("./Monterey.csv", low_memory=False).set_index("OPENET_ID")
+    monterey_queue = Queue(monterey_fields.index.to_list())
+
+    logger.info("Getting data for Monterey County")
+    # Monterey Data
+    # get_historical_data(monterey_queue, monterey_fields, filename="monterey_historical")
+    get_forecasts(monterey_queue, monterey_fields, dir="monterey")
 
     logger.info("Getting data for Kern County")
     # Kern Data
     get_historical_data(kern_queue, kern_fields, filename="kern_historical")
     get_forecasts(kern_queue, kern_fields, dir="kern")
 
-    logger.info("Getting data for Monterey County")
-    # Monterey Data
-    get_historical_data(monterey_queue, monterey_fields, filename="monterey_historical")
-    get_forecasts(monterey_queue, monterey_fields, dir="monterey")
-
 if __name__ == '__main__':
 	main()
+	# concat_details()
