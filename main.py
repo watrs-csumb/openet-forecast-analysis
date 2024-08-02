@@ -35,6 +35,9 @@ api_key = dotenv_values(".env").get("ET_KEY")
 timeseries_endpoint = "https://developer.openet-api.org/raster/timeseries/point"
 forecast_endpoint = "https://developer.openet-api.org/experimental/raster/timeseries/forecasting/seasonal"
 
+kern_fields = pd.read_csv("./Kern.csv", low_memory=False).set_index("OPENET_ID")
+monterey_fields = pd.read_csv("./Monterey.csv", low_memory=False).set_index("OPENET_ID")
+
 def get_historical_data(fields_queue, reference, *, filename):
 	sample_data = ETPreprocess(
 		deepcopy(fields_queue), reference, api_key=api_key
@@ -80,7 +83,7 @@ def get_forecasts(fields_queue, reference, *, dir):
 	# Gather predictions at weekly intervals.
 	# Forecast begins predictions from the end_range. So to start predictions for Jan 1, set to Dec 31
 	forecasting_date = datetime(2024, 1, 1)  # Marker for loop
-	end_date = datetime(2024, 12, 31)  # 31 Dec 2024
+	end_date = datetime(2024, 8, 1)  # 1 Aug 2024
 	interval_delta = timedelta(weeks=1)  # weekly interval
 	logger.info("Getting forecast data.")
 	while forecasting_date < end_date:
@@ -119,7 +122,7 @@ def get_forecasts(fields_queue, reference, *, dir):
 
 		logger.info(f"Forecasting from {api_date_format}")
 		process.start(
-			request_args=[forecast_et, forecast_eto, forecast_etof], frequency="daily"
+			request_args=[forecast_et, forecast_eto, forecast_etof], frequency="daily", packets=True
 		)
 
 		process.export(filename)
@@ -184,10 +187,7 @@ def concat_details():
     full_historical.to_csv("kern_monterey_historical.csv", index=False)
 
 def main():
-    kern_fields = pd.read_csv("./Kern.csv", low_memory=False).set_index("OPENET_ID")
     kern_queue = Queue(kern_fields.index.to_list())
-
-    monterey_fields = pd.read_csv("./Monterey.csv", low_memory=False).set_index("OPENET_ID")
     monterey_queue = Queue(monterey_fields.index.to_list())
 
     logger.info("Getting data for Monterey County")
