@@ -40,7 +40,7 @@ monterey_fields = pd.read_csv("./Monterey.csv", low_memory=False).set_index("OPE
 
 def get_historical_data(fields_queue, reference, *, filename):
 	sample_data = ETPreprocess(
-		deepcopy(fields_queue), reference, api_key=api_key
+		deepcopy(fields_queue), reference, api_key=api_key # type: ignore
 	)
 
 	timeseries_et = ETArg(
@@ -82,13 +82,13 @@ def get_historical_data(fields_queue, reference, *, filename):
 def get_forecasts(fields_queue, reference, *, dir):
 	# Gather predictions at weekly intervals.
 	# Forecast begins predictions from the end_range. So to start predictions for Jan 1, set to Dec 31
-	forecasting_date = datetime(2024, 1, 1)  # Marker for loop
+	forecasting_date = datetime(2024, 6, 17)  # Marker for loop
 	end_date = datetime(2024, 8, 1)  # 1 Aug 2024
 	interval_delta = timedelta(weeks=1)  # weekly interval
 	logger.info("Getting forecast data.")
 	while forecasting_date < end_date:
 		process = ETPreprocess(
-			deepcopy(fields_queue), reference, api_key=api_key
+			deepcopy(fields_queue), reference, api_key=api_key # type: ignore
 		)
 		api_date_format = forecasting_date.strftime("%Y-%m-%d")
 		filename = f"data/forecasts/{dir}/{api_date_format}_forecast.csv"
@@ -148,19 +148,11 @@ def merge_forecasts(dir):
 def concat_details():
     cdl_codes = pd.read_csv("cdl_codes.csv", low_memory=False).set_index("Codes")
 
-    kern_points = (
-        pd.read_csv("Kern.csv", low_memory=False)
-        .set_index("OPENET_ID")
-        .rename(index="field_id")
-    )
+    kern_points = pd.read_csv("Kern.csv", low_memory=False).set_index("OPENET_ID").rename(index="field_id") # type: ignore
     # Expand .geo column into lon, lat columns
     kern_geo = kern_points[".geo"].apply(lambda x: pd.Series(dict(json.loads(x))))
 
-    monterey_points = (
-        pd.read_csv("Monterey.csv", low_memory=False)
-        .set_index("OPENET_ID")
-        .rename(index="field_id")
-    )
+    monterey_points = pd.read_csv("Monterey.csv", low_memory=False).set_index("OPENET_ID").rename(index="field_id") # type: ignore
     # Expand .geo column into lon, lat columns
     monterey_geo = monterey_points[".geo"].apply(
         lambda x: pd.Series(dict(json.loads(x)))
