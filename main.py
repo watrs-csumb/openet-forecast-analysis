@@ -47,7 +47,7 @@ def get_historical_data(fields_queue, reference, *, filename):
 		"actual_et",
 		args={
 			"endpoint": timeseries_endpoint,
-			"date_range": ["2016-01-01", "2024-07-19"],
+			"date_range": ["2016-01-01", "2024-08-02"],
 			"variable": "ET",
 		},
 	)
@@ -56,7 +56,7 @@ def get_historical_data(fields_queue, reference, *, filename):
 		"actual_eto",
 		args={
 			"endpoint": timeseries_endpoint,
-			"date_range": ["2016-01-01", "2024-07-19"],
+			"date_range": ["2016-01-01", "2024-08-02"],
 			"variable": "ETo",
 		},
 	)
@@ -65,7 +65,7 @@ def get_historical_data(fields_queue, reference, *, filename):
 		"actual_etof",
 		args={
 			"endpoint": timeseries_endpoint,
-			"date_range": ["2016-01-01", "2024-07-19"],
+			"date_range": ["2016-01-01", "2024-08-02"],
 			"variable": "ETof",
 		},
 	)
