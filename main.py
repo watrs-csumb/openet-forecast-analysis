@@ -35,8 +35,8 @@ api_key = dotenv_values(".env").get("ET_KEY")
 timeseries_endpoint = "https://developer.openet-api.org/raster/timeseries/point"
 forecast_endpoint = "https://developer.openet-api.org/experimental/raster/timeseries/forecasting/seasonal"
 
-kern_fields = pd.read_csv("./Kern.csv", low_memory=False).set_index("OPENET_ID")
-monterey_fields = pd.read_csv("./Monterey.csv", low_memory=False).set_index("OPENET_ID")
+kern_fields = pd.read_csv("./data/Kern.csv", low_memory=False).set_index("OPENET_ID")
+monterey_fields = pd.read_csv("./data/Monterey.csv", low_memory=False).set_index("OPENET_ID")
 
 def get_historical_data(fields_queue, reference, *, filename):
 	sample_data = ETPreprocess(
