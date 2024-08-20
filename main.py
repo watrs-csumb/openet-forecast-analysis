@@ -122,7 +122,7 @@ def get_forecasts(fields_queue, reference, *, dir):
 
 		logger.info(f"Forecasting from {api_date_format}")
 		process.start(
-			request_args=[forecast_et, forecast_eto, forecast_etof], frequency="daily", packets=True
+			request_args=[forecast_et, forecast_eto, forecast_etof], frequency="daily", packets=True, logger=logger
 		)
 
 		process.export(filename)
@@ -131,66 +131,66 @@ def get_forecasts(fields_queue, reference, *, dir):
 	merge_forecasts(dir)
 
 def merge_forecasts(dir):
-    logger.info(f"Compiling forecasts for {dir}")
-    forecasts_table = pd.DataFrame()
-    files = Path(f"data/forecasts/{dir}").glob("*.csv")
+	logger.info(f"Compiling forecasts for {dir}")
+	forecasts_table = pd.DataFrame()
+	files = Path(f"data/forecasts/{dir}").glob("*.csv")
 
-    for file in files:
-        # splits into [$date, 'forecast.csv']
-        parts = str(file.name).split("_")
-        data = pd.read_csv(file, low_memory=False)
-        data["forecasting_date"] = parts[0]
-        forecasts_table = pd.concat([data, forecasts_table], ignore_index=True)
+	for file in files:
+		# splits into [$date, 'forecast.csv']
+		parts = str(file.name).split("_")
+		data = pd.read_csv(file, low_memory=False)
+		data["forecasting_date"] = parts[0]
+		forecasts_table = pd.concat([data, forecasts_table], ignore_index=True)
 
-    forecasts_table.set_index("forecasting_date", inplace=True)
-    forecasts_table.to_csv(f"{dir}_forecast_table.csv")
+	forecasts_table.set_index("forecasting_date", inplace=True)
+	forecasts_table.to_csv(f"{dir}_forecast_table.csv")
 
 def concat_details():
-    cdl_codes = pd.read_csv("cdl_codes.csv", low_memory=False).set_index("Codes")
+	cdl_codes = pd.read_csv("cdl_codes.csv", low_memory=False).set_index("Codes")
 
-    kern_points = pd.read_csv("Kern.csv", low_memory=False).set_index("OPENET_ID").rename(index="field_id") # type: ignore
-    # Expand .geo column into lon, lat columns
-    kern_geo = kern_points[".geo"].apply(lambda x: pd.Series(dict(json.loads(x))))
+	kern_points = pd.read_csv("Kern.csv", low_memory=False).set_index("OPENET_ID").rename(index="field_id") # type: ignore
+	# Expand .geo column into lon, lat columns
+	kern_geo = kern_points[".geo"].apply(lambda x: pd.Series(dict(json.loads(x))))
 
-    monterey_points = pd.read_csv("Monterey.csv", low_memory=False).set_index("OPENET_ID").rename(index="field_id") # type: ignore
-    # Expand .geo column into lon, lat columns
-    monterey_geo = monterey_points[".geo"].apply(
-        lambda x: pd.Series(dict(json.loads(x)))
-    )
+	monterey_points = pd.read_csv("Monterey.csv", low_memory=False).set_index("OPENET_ID").rename(index="field_id") # type: ignore
+	# Expand .geo column into lon, lat columns
+	monterey_geo = monterey_points[".geo"].apply(
+		lambda x: pd.Series(dict(json.loads(x)))
+	)
 
-    kern = pd.read_csv("kern_historical.csv", low_memory=False)
-    # Add geo info to the table
-    kern.join(kern_geo, how="left", on=["field_id"], validate="many_to_one")
+	kern = pd.read_csv("kern_historical.csv", low_memory=False)
+	# Add geo info to the table
+	kern.join(kern_geo, how="left", on=["field_id"], validate="many_to_one")
 
-    monterey = pd.read_csv("monterey_historical.csv", low_memory=False)
-    # Add geo info to the table
-    monterey.join(monterey_geo, how="left", on=["field_id"], validate="many_to_one")
+	monterey = pd.read_csv("monterey_historical.csv", low_memory=False)
+	# Add geo info to the table
+	monterey.join(monterey_geo, how="left", on=["field_id"], validate="many_to_one")
 
-    kern["county"] = "Kern"
-    monterey["county"] = "Monterey"
+	kern["county"] = "Kern"
+	monterey["county"] = "Monterey"
 
-    full_historical = pd.concat([monterey, kern], ignore_index=True)
+	full_historical = pd.concat([monterey, kern], ignore_index=True)
 
-    # Add CDL info to the table
-    full_historical = full_historical.join(
-        cdl_codes, how="left", on="crop", validate="many_to_many"
-    )
+	# Add CDL info to the table
+	full_historical = full_historical.join(
+		cdl_codes, how="left", on="crop", validate="many_to_many"
+	)
 
-    full_historical.to_csv("kern_monterey_historical.csv", index=False)
+	full_historical.to_csv("kern_monterey_historical.csv", index=False)
 
 def main():
-    kern_queue = Queue(kern_fields.index.to_list())
-    monterey_queue = Queue(monterey_fields.index.to_list())
+	kern_queue = Queue(kern_fields.index.to_list())
+	monterey_queue = Queue(monterey_fields.index.to_list())
 
-    # logger.info("Getting data for Monterey County")
-    # Monterey Data
-    # get_historical_data(monterey_queue, monterey_fields, filename="monterey_historical")
-    # get_forecasts(monterey_queue, monterey_fields, dir="monterey")
+	logger.info("Getting data for Monterey County")
+	# Monterey Data
+	# get_historical_data(monterey_queue, monterey_fields, filename="monterey_historical")
+	get_forecasts(monterey_queue, monterey_fields, dir="monterey")
 
-    logger.info("Getting data for Kern County")
-    # Kern Data
-    get_historical_data(kern_queue, kern_fields, filename="kern_historical")
-    get_forecasts(kern_queue, kern_fields, dir="kern")
+	# logger.info("Getting data for Kern County")
+	# Kern Data
+	# get_historical_data(kern_queue, kern_fields, filename="kern_historical")                         
+	# get_forecasts(kern_queue, kern_fields, dir="kern")
 
 if __name__ == '__main__':
 	main()
