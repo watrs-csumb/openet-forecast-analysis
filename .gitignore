@@ -10,3 +10,6 @@ __pycache__/*
 logs/
 package/
 data/bin/
+lib/*
+lib64
+bin/*

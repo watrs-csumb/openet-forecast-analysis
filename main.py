@@ -82,7 +82,7 @@ def get_historical_data(fields_queue, reference, *, filename):
 def get_forecasts(fields_queue, reference, *, dir):
 	# Gather predictions at weekly intervals.
 	# Forecast begins predictions from the end_range. So to start predictions for Jan 1, set to Dec 31
-	forecasting_date = datetime(2024, 1, 1)  # Marker for loop
+	forecasting_date = datetime(2024, 1, 29)  # Marker for loop
 	end_date = datetime(2024, 8, 1)  # 1 Aug 2024
 	interval_delta = timedelta(weeks=1)  # weekly interval
 	logger.info("Getting forecast data.")
