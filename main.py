@@ -82,7 +82,7 @@ def get_historical_data(fields_queue, reference, *, filename):
 def get_forecasts(fields_queue, reference, *, dir):
 	# Gather predictions at weekly intervals.
 	# Forecast begins predictions from the end_range. So to start predictions for Jan 1, set to Dec 31
-	forecasting_date = datetime(2024, 1, 29)  # Marker for loop
+	forecasting_date = datetime(2024, 1, 1)  # Marker for loop
 	end_date = datetime(2024, 8, 1)  # 1 Aug 2024
 	interval_delta = timedelta(weeks=1)  # weekly interval
 	logger.info("Getting forecast data.")
@@ -185,12 +185,12 @@ def main():
 	logger.info("Getting data for Monterey County")
 	# Monterey Data
 	# get_historical_data(monterey_queue, monterey_fields, filename="monterey_historical")
-	get_forecasts(monterey_queue, monterey_fields, dir="monterey")
+	# get_forecasts(monterey_queue, monterey_fields, dir="monterey")
 
-	# logger.info("Getting data for Kern County")
+	logger.info("Getting data for Kern County")
 	# Kern Data
-	# get_historical_data(kern_queue, kern_fields, filename="kern_historical")                         
-	# get_forecasts(kern_queue, kern_fields, dir="kern")
+	get_historical_data(kern_queue, kern_fields, filename="kern_historical")                         
+	get_forecasts(kern_queue, kern_fields, dir="kern")
 
 if __name__ == '__main__':
 	main()
