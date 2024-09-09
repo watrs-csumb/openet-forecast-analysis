@@ -189,7 +189,7 @@ def main():
 
 	logger.info("Getting data for Kern County")
 	# Kern Data
-	get_historical_data(kern_queue, kern_fields, filename="kern_historical")                         
+	# get_historical_data(kern_queue, kern_fields, filename="kern_historical")                         
 	get_forecasts(kern_queue, kern_fields, dir="kern")
 
 if __name__ == '__main__':
