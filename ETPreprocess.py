@@ -3,7 +3,7 @@ from ETRequest import ETRequest
 from ETArg import ETArg
 from pathlib import Path
 from Queue import Queue
-from typing import Union, List, Tuple, Dict
+from typing import List, Dict
 
 import json
 import logging
@@ -69,11 +69,11 @@ class ETPreprocess:
 				raise ValueError(f'Provided file_format "{file_format}" is not supported.')
 	
 	def start(self, *, 
-           request_args: list[ETArg], 
-           frequency: str = "monthly", 
-           logger: logging.Logger = None,
-           packets: bool = False,
-           crop_col: str = 'CROP_2023') -> int:
+		   request_args: list[ETArg], 
+		   frequency: str = "monthly", 
+		   logger: logging.Logger = None,
+		   packets: bool = False,
+		   crop_col: str = 'CROP_2023') -> int:
 		'''Begins gathering ET data from listed arguments.\nFrequency is monthly by default.\nGenerates DataFrame using name of ETArgs as column names.\nReturns number of failed rows.'''
 		failed_fields = 0
 		tables = [pd.DataFrame(columns=['field_id', 'crop', 'time', item.name]) for item in request_args]
@@ -87,13 +87,12 @@ class ETPreprocess:
 			results: List[ETRequest] = [ETRequest() for item in request_args]
 			self.__names__ = [item.name for item in request_args]
 			
-			if logger: logger.info(f"Now analyzing field ID {current_field_id}")
+			if logger:
+				logger.info(f"Now analyzing field ID {current_field_id}")
 			# Conduct request posts
 			for index in range(0, len(request_args)):
 				req = request_args[index]
 				arg = {
-					"date_range": req.date_range,
-					"interval": frequency,
 					"geometry": current_point_coordinates,
 					"model": "Ensemble",
 					"units": "mm",
@@ -101,6 +100,12 @@ class ETPreprocess:
 					"reference_et": "gridMET",
 					"file_format": "JSON"
 				}
+				# Below are optional fields to omit when using FRET
+				if req.date_range:
+					arg['date_range'] = req.date_range
+				if frequency:
+					arg['interval'] = frequency
+
 				response = ETRequest(req.endpoint, arg, key=self.__api_key__)
 				response.send(logger=logger)
 
@@ -112,7 +117,7 @@ class ETPreprocess:
 				for entry in range(0, len(results)):
 					res = results[entry]
 					name = request_args[entry].name
-     				# Data returns as a list containing dict{'time': str, '$variable': float}
+	 				# Data returns as a list containing dict{'time': str, '$variable': float}
 					content: List[Dict] = json.loads(res.response.content.decode('utf-8'))
 
 					# Begin nth-field data composition
@@ -134,14 +139,17 @@ class ETPreprocess:
 									columns=tables[entry].columns), tables[entry]], ignore_index=True)
 					# End nth-field data composition
 
-				if logger: logger.info("Successful")
+				if logger:
+					logger.info("Successful")
 
 			else:
-				if logger: logger.warning(f"Analyzing for {current_field_id} failed")
+				if logger:
+					logger.warning(f"Analyzing for {current_field_id} failed")
 				failed_fields+=1
 
 			self.fields_queue.dequeue()
-			if logger: logger.info(f"{str(self.fields_queue.size())} fields remaining")
+			if logger:
+				logger.info(f"{str(self.fields_queue.size())} fields remaining")
 
 		# Produces data table depending on if this process enabled packets.
 		if packets:
@@ -149,5 +157,6 @@ class ETPreprocess:
 		else:
 			self.__merge__(tables=tables)
 
-		if logger: logger.info(f"Finished processing. {str(failed_fields)} fields failed.")
+		if logger:
+			logger.info(f"Finished processing. {str(failed_fields)} fields failed.")
 		return failed_fields

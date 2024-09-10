@@ -1,39 +1,39 @@
 
 class ETArg:
-	def __init__(self, name, *, args: dict) -> None:
-		self._endpoint  = args["endpoint"]
-		self._date_range = args["date_range"]
-		self._variable = args["variable"]
-		self._name = name
-	
-	@property
-	def name(self) -> str:
-		return self._name
+    def __init__(self, name, *, args: dict) -> None:
+        self._endpoint = args["endpoint"] if hasattr(args, "endpoint") else None
+        self._date_range = args["date_range"] if hasattr(args, "date_range") else None
+        self._variable = args["variable"] if hasattr(args, "variable") else None
+        self._name = name
 
-	@name.setter
-	def name(self, name):
-		self._name = name
-	
-	@property
-	def date_range(self) -> list[str]:
-		return self._date_range
+    @property
+    def name(self) -> str:
+        return self._name
 
-	@date_range.setter
-	def date_range(self, range: list):
-		self._date_range = range
-  
-	@property
-	def endpoint(self) -> str:
-		return self._endpoint
+    @name.setter
+    def name(self, name):
+        self._name = name
 
-	@endpoint.setter
-	def endpoint(self, endpoint: str):
-		self._endpoint = endpoint
-  
-	@property
-	def variable(self) -> str:
-		return self._variable
+    @property
+    def date_range(self) -> list[str]:
+        return self._date_range
 
-	@variable.setter
-	def variable(self, variable: str):
-		self._variable = variable
+    @date_range.setter
+    def date_range(self, range: list):
+        self._date_range = range
+
+    @property
+    def endpoint(self) -> str:
+        return self._endpoint
+
+    @endpoint.setter
+    def endpoint(self, endpoint: str):
+        self._endpoint = endpoint
+
+    @property
+    def variable(self) -> str:
+        return self._variable
+
+    @variable.setter
+    def variable(self, variable: str):
+        self._variable = variable

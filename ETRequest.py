@@ -42,7 +42,7 @@ class ETRequest:
             if ignore_fails is False and self.success() is False:
                 raise ValueError
 
-        except:
+        except Exception:
             while self._current_attempt < num_retries and self.success() is False:
                 if logger is not None:
                     logger.warning("Reattempting request..")
@@ -60,7 +60,7 @@ class ETRequest:
                 prompt_info = ""
                 try:
                     prompt_info = f"[{self.response.status_code}]: {self.response.content}"
-                except:
+                except Exception:
                     prompt_info = ". Please check your connection."
 
                 reattempt_prompt = input(
@@ -78,7 +78,7 @@ class ETRequest:
         """Returns boolean depending on if the request succeeded or not"""
         try:
             return self.response.status_code in status_whitelist
-        except:
+        finally:
             return False
 
 
