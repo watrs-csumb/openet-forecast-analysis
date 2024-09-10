@@ -52,8 +52,8 @@ def main():
 	kern_queue = Queue(kern_fields.index.to_list())
 
 	et_arg = ETArg("fret_et", args={"endpoint": fret_endpoint, "variable": "ET"})
-	eto_arg = ETArg("fret_et", args={"endpoint": fret_endpoint, "variable": "ETo"})
-	etof_arg = ETArg("fret_et", args={"endpoint": fret_endpoint, "variable": "ETof"})
+	eto_arg = ETArg("fret_eto", args={"endpoint": fret_endpoint, "variable": "ETo"})
+	etof_arg = ETArg("fret_etof", args={"endpoint": fret_endpoint, "variable": "ETof"})
 
 	logger.info(f"FRET automation started on: {check_time}")
 	while run_fetch:
