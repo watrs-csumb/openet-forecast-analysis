@@ -1,10 +1,10 @@
 
 class ETArg:
     def __init__(self, name, *, args: dict) -> None:
-        self._endpoint = args["endpoint"] if hasattr(args, "endpoint") else None
-        self._date_range = args["date_range"] if hasattr(args, "date_range") else None
-        self._variable = args["variable"] if hasattr(args, "variable") else None
         self._name = name
+        self._endpoint = args.get("endpoint", None)
+        self._date_range = args.get("date_range", None)
+        self._variable = args.get("variable", None)
 
     @property
     def name(self) -> str:
