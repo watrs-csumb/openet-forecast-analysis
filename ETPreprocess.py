@@ -69,11 +69,11 @@ class ETPreprocess:
 				raise ValueError(f'Provided file_format "{file_format}" is not supported.')
 	
 	def start(self, *, 
-		   request_args: list[ETArg], 
-		   frequency: str = "monthly", 
-		   logger: logging.Logger = None,
+		   request_args: List[ETArg], 
+		   frequency: str = None, 
 		   packets: bool = False,
-		   crop_col: str = 'CROP_2023') -> int:
+		   crop_col: str = 'CROP_2023',
+		   logger: logging.Logger = None) -> int:
 		'''Begins gathering ET data from listed arguments.\nFrequency is monthly by default.\nGenerates DataFrame using name of ETArgs as column names.\nReturns number of failed rows.'''
 		failed_fields = 0
 		tables = [pd.DataFrame(columns=['field_id', 'crop', 'time', item.name]) for item in request_args]
