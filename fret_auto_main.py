@@ -39,8 +39,8 @@ fret_endpoint = "https://developer.openet-api.org/experimental/raster/timeseries
 timeseries_endpoint = "https://developer.openet-api.org/raster/timeseries/point"
 
 api_key = dotenv_values(".env").get("ET_KEY")
-kern_fields = pd.read_csv("./data/Kern.csv", low_memory=False).set_index("OPENET_ID").sample(5)
-monterey_fields = pd.read_csv("./data/Monterey.csv", low_memory=False).set_index("OPENET_ID").sample(5)
+kern_fields = pd.read_csv("./data/Kern.csv", low_memory=False).set_index("OPENET_ID")
+monterey_fields = pd.read_csv("./data/Monterey.csv", low_memory=False).set_index("OPENET_ID")
 
 def main():
 	# Plan is to auto fetch FRET data every 6 days from script start. Script is to run continuously, checking for this time interval each minute.
@@ -58,7 +58,7 @@ def main():
 
 	logger.info(f"FRET automation started on: {check_time}")
 	try:
-		while run_fetch:
+		while True:
 			# This method performs a do-while loop. Initially running the FRET data fetch, and does so when the run_fetch toggle is True.
 			if run_fetch is True:
 				monterey_fret = ETPreprocess(
