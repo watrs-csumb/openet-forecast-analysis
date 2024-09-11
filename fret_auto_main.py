@@ -57,79 +57,80 @@ def main():
 	etof_arg = ETArg("fret_etof", args={"endpoint": fret_endpoint, "variable": "ETof"})
 
 	logger.info(f"FRET automation started on: {check_time}")
-	while run_fetch:
-		# This method performs a do-while loop. Initially running the FRET data fetch, and does so when the run_fetch toggle is True.
-		if run_fetch is True:
-			monterey_fret = ETPreprocess(
-				deepcopy(monterey_queue), monterey_fields, api_key=api_key # type: ignore
-			)
-			monterey_fret.start(
-				request_args=[et_arg, eto_arg, etof_arg],
-				logger=logger,
-				packets=True
-			)
-			monterey_fret.export("data/forecasts/fret/monterey_fret.csv")
+	try:
+		while run_fetch:
+			# This method performs a do-while loop. Initially running the FRET data fetch, and does so when the run_fetch toggle is True.
+			if run_fetch is True:
+				monterey_fret = ETPreprocess(
+					deepcopy(monterey_queue), monterey_fields, api_key=api_key # type: ignore
+				)
+				monterey_fret.start(
+					request_args=[et_arg, eto_arg, etof_arg],
+					logger=logger,
+					packets=True
+				)
+				monterey_fret.export("data/forecasts/fret/monterey_fret.csv")
 
-			kern_fret = ETPreprocess(deepcopy(kern_queue), kern_fields, api_key=api_key) # type: ignore
-			kern_fret.start(
-				request_args=[et_arg, eto_arg, etof_arg],
-				logger=logger,
-				packets=True
-			)
-			kern_fret.export("data/forecasts/fret/kern_fret.csv")
+				kern_fret = ETPreprocess(deepcopy(kern_queue), kern_fields, api_key=api_key) # type: ignore
+				kern_fret.start(
+					request_args=[et_arg, eto_arg, etof_arg],
+					logger=logger,
+					packets=True
+				)
+				kern_fret.export("data/forecasts/fret/kern_fret.csv")
 
-			run_fetch = False
-			continue
+				run_fetch = False
+				continue
 
-		# When the next check time has passed, toggle the run fetch variable and update the check time
-		if datetime.now() >= upcoming_check_time:
-			check_time = datetime.now()
-			upcoming_check_time = check_time + check_interval
-			run_fetch = True
-			logger.info(
-				f"FRET fetched on: {check_time}. Next check will be on: {upcoming_check_time}"
-			)
-		else:
-			# Wait for one minute before checking again.
-			time.sleep(60)
+			# When the next check time has passed, toggle the run fetch variable and update the check time
+			if datetime.now() >= upcoming_check_time:
+				check_time = datetime.now()
+				upcoming_check_time = check_time + check_interval
+				run_fetch = True
+				logger.info(
+					f"FRET fetched on: {check_time}. Next check will be on: {upcoming_check_time}"
+				)
+			else:
+				# Wait for one minute before checking again.
+				time.sleep(60)
+	except KeyboardInterrupt:
+		# When fetching is complete, gather historical data for evaluation.
 
-	# When fetching is complete, gather historical data for evaluation.
+		# Calculate correct end date as actual data is only reported up to every Friday.
+		final_fetch_time_api_format = deepcopy(check_time)
+		# Weekday is indexed at 0 starting on Monday, so Friday is 4.
+		while final_fetch_time_api_format.weekday() != 4:
+			final_fetch_time_api_format -= timedelta(days=1)
+		# Lastly, update date format so it's proper api date format.
+		final_fetch_time_api_format = final_fetch_time_api_format.strftime("%Y-%m-%d")
 
-	# Calculate correct end date as actual data is only reported up to every Friday.
-	final_fetch_time_api_format = deepcopy(check_time)
-	# Weekday is indexed at 0 starting on Monday, so Friday is 4.
-	while final_fetch_time_api_format.weekday() != 4:
-		final_fetch_time_api_format -= timedelta(days=1)
-	# Lastly, update date format so it's proper api date format.
-	final_fetch_time_api_format = final_fetch_time_api_format.strftime("%Y-%m-%d")
+		logger.info(f'Now getting historical data up to: {final_fetch_time_api_format}')
 
-	logger.info(f'Now getting historical data up to: {final_fetch_time_api_format}')
+		historical_arg_et = ETArg("actual_eto", args={
+			"endpoint": timeseries_endpoint,
+			"variable": "ET",
+			"date_range": ["2016-01-01", final_fetch_time_api_format]
+		})
+		historical_arg_eto = ETArg("actual_eto", args={
+			"endpoint": timeseries_endpoint,
+			"variable": "ETo",
+			"date_range": ["2016-01-01", final_fetch_time_api_format]
+		})
+		historical_arg_etof = ETArg("actual_etof", args={
+			"endpoint": timeseries_endpoint,
+			"variable": "ETof",
+			"date_range": ["2016-01-01", final_fetch_time_api_format]
+		})
 
-	historical_arg_et = ETArg("actual_eto", args={
-		  "endpoint": timeseries_endpoint,
-		  "variable": "ET",
-		  "date_range": ["2016-01-01", final_fetch_time_api_format]
-	})
-	historical_arg_eto = ETArg("actual_eto", args={
-		  "endpoint": timeseries_endpoint,
-		  "variable": "ETo",
-		  "date_range": ["2016-01-01", final_fetch_time_api_format]
-	})
-	historical_arg_etof = ETArg("actual_etof", args={
-		  "endpoint": timeseries_endpoint,
-		  "variable": "ETof",
-		  "date_range": ["2016-01-01", final_fetch_time_api_format]
-	})
+		logger.info("Fetching Monterey County historical data.")
+		mo_historical_fetch = ETPreprocess(monterey_queue, monterey_fields, api_key=api_key) # type: ignore
+		mo_historical_fetch.start(request_args=[historical_arg_et, historical_arg_eto, historical_arg_etof], frequency="daily", packets=True, logger=logger)
+		mo_historical_fetch.export("data/monterey_historical.csv")
 
-	logger.info("Fetching Monterey County historical data.")
-	mo_historical_fetch = ETPreprocess(monterey_queue, monterey_fields, api_key=api_key) # type: ignore
-	mo_historical_fetch.start(request_args=[historical_arg_et, historical_arg_eto, historical_arg_etof], frequency="daily", packets=True, logger=logger)
-	mo_historical_fetch.export("data/monterey_historical.csv")
-
-	logger.info("Fetching Kern County historical data.")
-	ke_historical_fetch = ETPreprocess(kern_queue, kern_fields, api_key=api_key) # type: ignore
-	ke_historical_fetch.start(request_args=[historical_arg_et, historical_arg_eto, historical_arg_etof], frequency="daily", packets=True, logger=logger)
-	ke_historical_fetch.export("data/kern_historical.csv")
+		logger.info("Fetching Kern County historical data.")
+		ke_historical_fetch = ETPreprocess(kern_queue, kern_fields, api_key=api_key) # type: ignore
+		ke_historical_fetch.start(request_args=[historical_arg_et, historical_arg_eto, historical_arg_etof], frequency="daily", packets=True, logger=logger)
+		ke_historical_fetch.export("data/kern_historical.csv")
 
 if __name__ == "__main__":
 	main()
