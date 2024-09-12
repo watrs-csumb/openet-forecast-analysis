@@ -61,6 +61,7 @@ def main():
 		while True:
 			# This method performs a do-while loop. Initially running the FRET data fetch, and does so when the run_fetch toggle is True.
 			if run_fetch is True:
+				export_date_format = check_time.strftime("%Y-%m-%d")
 				monterey_fret = ETPreprocess(
 					deepcopy(monterey_queue), monterey_fields, api_key=api_key # type: ignore
 				)
@@ -69,7 +70,7 @@ def main():
 					logger=logger,
 					packets=True
 				)
-				monterey_fret.export(f"data/forecasts/fret/monterey_fret_{check_time.strftime("%Y-%m-%d")}.csv")
+				monterey_fret.export(f"data/forecasts/fret/monterey_fret_{export_date_format}.csv")
 
 				kern_fret = ETPreprocess(deepcopy(kern_queue), kern_fields, api_key=api_key) # type: ignore
 				kern_fret.start(
@@ -77,7 +78,7 @@ def main():
 					logger=logger,
 					packets=True
 				)
-				kern_fret.export(f"data/forecasts/fret/kern_fret_{check_time.strftime("%Y-%m-%d")}.csv")
+				kern_fret.export(f"data/forecasts/fret/kern_fret_{export_date_format}.csv")
 				logger.info(
 					f"FRET fetched on: {check_time}. Next check will be on: {upcoming_check_time}"
 				)
