@@ -78,6 +78,9 @@ def main():
 					packets=True
 				)
 				kern_fret.export(f"data/forecasts/fret/kern_fret_{check_time.strftime("%Y-%m-%d")}.csv")
+				logger.info(
+					f"FRET fetched on: {check_time}. Next check will be on: {upcoming_check_time}"
+				)
 
 				run_fetch = False
 				continue
