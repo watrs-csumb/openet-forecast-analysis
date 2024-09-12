@@ -69,7 +69,7 @@ def main():
 					logger=logger,
 					packets=True
 				)
-				monterey_fret.export("data/forecasts/fret/monterey_fret.csv")
+				monterey_fret.export(f"data/forecasts/fret/monterey_fret_{check_time.strftime("%Y-%m-%d")}.csv")
 
 				kern_fret = ETPreprocess(deepcopy(kern_queue), kern_fields, api_key=api_key) # type: ignore
 				kern_fret.start(
@@ -77,7 +77,7 @@ def main():
 					logger=logger,
 					packets=True
 				)
-				kern_fret.export("data/forecasts/fret/kern_fret.csv")
+				kern_fret.export(f"data/forecasts/fret/kern_fret_{check_time.strftime("%Y-%m-%d")}.csv")
 
 				run_fetch = False
 				continue
