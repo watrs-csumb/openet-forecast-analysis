@@ -103,6 +103,8 @@ class ETPreprocess:
 				# Below are optional fields to omit when using FRET
 				if req.date_range:
 					arg['date_range'] = req.date_range
+				if req.reducer:
+					arg['reducer'] = req.reducer
 				if frequency:
 					arg['interval'] = frequency
 
