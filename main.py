@@ -33,6 +33,8 @@ logger = logging.getLogger(__name__)
 
 api_key = dotenv_values(".env").get("ET_KEY")
 timeseries_endpoint = "https://developer.openet-api.org/raster/timeseries/point"
+polygon_timeseries_endpoint = "https://developer.openet-api.org/raster/timeseries/polygon"
+
 forecast_endpoint = "https://developer.openet-api.org/experimental/raster/timeseries/forecasting/seasonal"
 polygon_forecast_endpoint = "https://developer.openet-api.org/experimental/raster/timeseries/forecasting/seasonal_polygon"
 
@@ -42,7 +44,7 @@ monterey_fields = pd.read_csv("./data/Monterey.csv", low_memory=False).set_index
 kern_polygon_fields = pd.read_csv("./data/kern_polygons.csv", low_memory=False).set_index('field_id')
 monterey_polygon_fields = pd.read_csv("./data/monterey_polygons.csv", low_memory=False).set_index('field_id')
 
-def get_historical_data(fields_queue, reference, *, filename):
+def get_historical_data(fields_queue, reference, *, filename, endpoint=timeseries_endpoint):
 	sample_data = ETPreprocess(
 		deepcopy(fields_queue), reference, api_key=api_key # type: ignore
 	)
@@ -50,7 +52,7 @@ def get_historical_data(fields_queue, reference, *, filename):
 	timeseries_et = ETArg(
 		"actual_et",
 		args={
-			"endpoint": timeseries_endpoint,
+			"endpoint": endpoint,
 			"date_range": ["2016-01-01", "2024-08-02"],
 			"variable": "ET",
 			"reducer": "mean"
@@ -60,7 +62,7 @@ def get_historical_data(fields_queue, reference, *, filename):
 	timeseries_eto = ETArg(
 		"actual_eto",
 		args={
-			"endpoint": timeseries_endpoint,
+			"endpoint": endpoint,
 			"date_range": ["2016-01-01", "2024-08-02"],
 			"variable": "ETo",
 			"reducer": "mean"
@@ -70,7 +72,7 @@ def get_historical_data(fields_queue, reference, *, filename):
 	timeseries_etof = ETArg(
 		"actual_etof",
 		args={
-			"endpoint": timeseries_endpoint,
+			"endpoint": endpoint,
 			"date_range": ["2016-01-01", "2024-08-02"],
 			"variable": "ETof",
 			"reducer": "mean"
@@ -166,12 +168,12 @@ def main():
 	kern_queue = Queue(kern_polygon_fields.index.to_list())
 	
 	logger.info("Getting data for Monterey County")
-	get_forecasts(monterey_queue, monterey_polygon_fields, dir=f"{version_prompt}/polygon/monterey", endpoint=polygon_forecast_endpoint)
-	get_historical_data(monterey_queue, monterey_polygon_fields, filename="monterey_polygon_historical")
+	# get_forecasts(monterey_queue, monterey_polygon_fields, dir=f"{version_prompt}/polygon/monterey", endpoint=polygon_forecast_endpoint)
+	get_historical_data(monterey_queue, monterey_polygon_fields, filename="monterey_polygon_historical", endpoint=polygon_timeseries_endpoint)
 
 	logger.info("Getting data for Kern County")
 	get_forecasts(kern_queue, kern_polygon_fields, dir=f"{version_prompt}/polygon/kern", endpoint=polygon_forecast_endpoint)
-	get_historical_data(kern_queue, kern_polygon_fields, filename="kern_polygon_historical")
+	get_historical_data(kern_queue, kern_polygon_fields, filename="kern_polygon_historical", endpoint=polygon_timeseries_endpoint)
 
 if __name__ == '__main__':
 	main()
