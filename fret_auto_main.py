@@ -100,11 +100,9 @@ def main():
 	except KeyboardInterrupt:
 		# When fetching is complete, gather historical data for evaluation.
 
-		# Calculate correct end date as actual data is only reported up to every Friday.
+		# Calculate correct end date as actual data is only reported up three days prior
 		final_fetch_time_api_format = deepcopy(check_time)
-		# Weekday is indexed at 0 starting on Monday, so Friday is 4.
-		while final_fetch_time_api_format.weekday() != 4:
-			final_fetch_time_api_format -= timedelta(days=1)
+		final_fetch_time_api_format -= timedelta(days=3)
 		# Lastly, update date format so it's proper api date format.
 		final_fetch_time_api_format = final_fetch_time_api_format.strftime("%Y-%m-%d")
 
