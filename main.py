@@ -41,8 +41,8 @@ polygon_forecast_endpoint = "https://developer.openet-api.org/experimental/raste
 kern_fields = pd.read_csv("./data/Kern.csv", low_memory=False).set_index("OPENET_ID")
 monterey_fields = pd.read_csv("./data/Monterey.csv", low_memory=False).set_index("OPENET_ID")
 
-kern_polygon_fields = pd.read_csv("./data/kern_polygons.csv", low_memory=False).set_index('field_id')
-monterey_polygon_fields = pd.read_csv("./data/monterey_polygons.csv", low_memory=False).set_index('field_id')
+kern_polygon_fields = pd.read_csv("./data/kern_polygons_large.csv", low_memory=False).set_index('field_id')
+monterey_polygon_fields = pd.read_csv("./data/monterey_polygons_large.csv", low_memory=False).set_index('field_id')
 
 def get_historical_data(fields_queue, reference, *, filename, endpoint=timeseries_endpoint):
 	sample_data = ETPreprocess(
@@ -168,12 +168,12 @@ def main():
 	kern_queue = Queue(kern_polygon_fields.index.to_list())
 	
 	logger.info("Getting data for Monterey County")
-	# get_forecasts(monterey_queue, monterey_polygon_fields, dir=f"{version_prompt}/polygon/monterey", endpoint=polygon_forecast_endpoint)
-	get_historical_data(monterey_queue, monterey_polygon_fields, filename="monterey_polygon_historical", endpoint=polygon_timeseries_endpoint)
+	get_forecasts(monterey_queue, monterey_polygon_fields, dir=f"{version_prompt}/polygon/monterey/sampled", endpoint=polygon_forecast_endpoint)
+	get_historical_data(monterey_queue, monterey_polygon_fields, filename="monterey_polygon_large_historical", endpoint=polygon_timeseries_endpoint)
 
 	logger.info("Getting data for Kern County")
-	get_forecasts(kern_queue, kern_polygon_fields, dir=f"{version_prompt}/polygon/kern", endpoint=polygon_forecast_endpoint)
-	get_historical_data(kern_queue, kern_polygon_fields, filename="kern_polygon_historical", endpoint=polygon_timeseries_endpoint)
+	get_forecasts(kern_queue, kern_polygon_fields, dir=f"{version_prompt}/polygon/kern/sampled", endpoint=polygon_forecast_endpoint)
+	get_historical_data(kern_queue, kern_polygon_fields, filename="kern_polygon_large_historical", endpoint=polygon_timeseries_endpoint)
 
 if __name__ == '__main__':
 	main()
