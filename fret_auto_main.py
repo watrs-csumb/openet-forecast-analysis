@@ -100,13 +100,13 @@ def main():
 
 		# Calculate correct end date as actual data is only reported up three days prior
         final_fetch_time_api_format = deepcopy(check_time)
-        final_fetch_time_api_format -= timedelta(days=3)
+        final_fetch_time_api_format -= timedelta(days=4)
 		# Lastly, update date format so it's proper api date format.
         final_fetch_time_api_format = final_fetch_time_api_format.strftime("%Y-%m-%d")
 
         logger.info(f'Now getting historical data up to: {final_fetch_time_api_format}')
 
-        historical_arg_et = ETArg("actual_eto", args={
+        historical_arg_et = ETArg("actual_et", args={
 			"endpoint": timeseries_endpoint,
 			"variable": "ET",
 			"date_range": ["2016-01-01", final_fetch_time_api_format]
