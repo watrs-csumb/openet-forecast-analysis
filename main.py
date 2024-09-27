@@ -169,11 +169,11 @@ def main():
 	
 	logger.info("Getting data for Monterey County")
 	get_forecasts(monterey_queue, monterey_polygon_fields, dir=f"{version_prompt}/polygon/monterey/sampled", endpoint=polygon_forecast_endpoint)
-	get_historical_data(monterey_queue, monterey_polygon_fields, filename="monterey_polygon_large_historical", endpoint=polygon_timeseries_endpoint)
+	# get_historical_data(monterey_queue, monterey_polygon_fields, filename="monterey_polygon_large_historical", endpoint=polygon_timeseries_endpoint)
 
 	logger.info("Getting data for Kern County")
 	get_forecasts(kern_queue, kern_polygon_fields, dir=f"{version_prompt}/polygon/kern/sampled", endpoint=polygon_forecast_endpoint)
-	get_historical_data(kern_queue, kern_polygon_fields, filename="kern_polygon_large_historical", endpoint=polygon_timeseries_endpoint)
+	# get_historical_data(kern_queue, kern_polygon_fields, filename="kern_polygon_large_historical", endpoint=polygon_timeseries_endpoint)
 
 if __name__ == '__main__':
 	main()
