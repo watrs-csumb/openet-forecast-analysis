@@ -65,7 +65,7 @@ class ETRequest:
 				try:
 					prompt_info = f"[{self.response.status_code}]: {self.response.content}"
 				except Exception:
-					prompt_info = ". Please check your connection."
+					prompt_info = "No response. Please check your connection."
 
 				logger.error(prompt_info)
 				logger.info(self.request_params)
