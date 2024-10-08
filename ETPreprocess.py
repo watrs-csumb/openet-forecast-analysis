@@ -94,13 +94,13 @@ class ETPreprocess:
 				req = request_args[index]
 				arg = {
 					"geometry": current_point_coordinates,
-					"model": "Ensemble",
-					"units": "mm",
 					"variable": req.variable,
-					"reference_et": "gridMET",
 					"file_format": "JSON"
 				}
-				# Below are optional fields to omit when using FRET
+				arg['model'] = req.model
+				arg['units'] = req.units
+				arg['reference_et'] = req.reference
+				# Below are optional fields. Included only if they exist
 				if req.date_range:
 					arg['date_range'] = req.date_range
 				if req.reducer:

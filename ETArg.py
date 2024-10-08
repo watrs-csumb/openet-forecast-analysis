@@ -2,10 +2,18 @@
 class ETArg:
 	def __init__(self, name, *, args: dict) -> None:
 		self._name = name
+		# Required - no defaults
 		self._endpoint = args.get("endpoint", None)
 		self._date_range = args.get("date_range", None)
 		self._variable = args.get("variable", None)
-		# Used for polygons
+		# Required - defaults
+		self._model = args.get("model", "Ensemble")  # Default model is SSEBop
+		self._units = args.get("units", "mm")  # Default units are mm
+		self._reference = args.get(
+			"reference", "gridMET"
+		)  # Default reference is gridMET
+
+		# Polygon required
 		self._reducer = args.get("reducer", None)
 
 	@property
@@ -39,11 +47,35 @@ class ETArg:
 	@variable.setter
 	def variable(self, variable: str):
 		self._variable = variable
-		
+
+	@property
+	def model(self) -> str:
+		return self._model
+
+	@model.setter
+	def model(self, model: str):
+		self._model = model
+
+	@property
+	def units(self) -> str:
+		return self._units
+
+	@units.setter
+	def units(self, unit: str):
+		self._units = unit
+	
+	@property
+	def reference(self)->str:
+		return self._reference
+
+	@reference.setter
+	def reference(self, reference: str):
+		self._reference = reference
+
 	@property
 	def reducer(self) -> str:
 		return self._reducer
-	
+
 	@reducer.setter
 	def reducer(self, method: str):
 		self._reducer = method
