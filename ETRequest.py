@@ -42,6 +42,10 @@ class ETRequest:
 			if ignore_fails is False and self.success() is False:
 				raise ValueError
 
+		# Allow keyboard interruption
+		except KeyboardInterrupt:
+			pass
+
 		except Exception:
 			while self._current_attempt < num_retries and self.success() is False:
 				if logger is not None:
