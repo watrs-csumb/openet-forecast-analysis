@@ -91,7 +91,7 @@ def get_historical_data(fields_queue, reference, *, filename, endpoint=timeserie
 def get_forecasts(fields_queue, reference, *, dir, endpoint=forecast_endpoint):
 	# Gather predictions at weekly intervals.
 	# Forecast begins predictions from the end_range. So to start predictions for Jan 1, set to Dec 31
-	forecasting_date = datetime(2024, 1, 1)  # Marker for loop
+	forecasting_date = datetime(2024, 7, 15)  # Marker for loop
 	end_date = datetime(2024, 8, 1)  # 1 Aug 2024
 	interval_delta = timedelta(weeks=1)  # weekly interval
 
@@ -168,12 +168,12 @@ def main():
 	kern_queue = Queue(kern_polygon_fields.index.to_list())
 	
 	logger.info("Getting data for Monterey County")
-	get_forecasts(monterey_queue, monterey_polygon_fields, dir=f"{version_prompt}/polygon/monterey/sampled", endpoint=polygon_forecast_endpoint)
+	# get_forecasts(monterey_queue, monterey_polygon_fields, dir=f"{version_prompt}/polygon/monterey/sampled", endpoint=polygon_forecast_endpoint)
 	# get_historical_data(monterey_queue, monterey_polygon_fields, filename="monterey_polygon_large_historical", endpoint=polygon_timeseries_endpoint)
 
 	logger.info("Getting data for Kern County")
 	get_forecasts(kern_queue, kern_polygon_fields, dir=f"{version_prompt}/polygon/kern/sampled", endpoint=polygon_forecast_endpoint)
-	# get_historical_data(kern_queue, kern_polygon_fields, filename="kern_polygon_large_historical", endpoint=polygon_timeseries_endpoint)
+	get_historical_data(kern_queue, kern_polygon_fields, filename="kern_polygon_large_historical", endpoint=polygon_timeseries_endpoint)
 
 if __name__ == '__main__':
 	main()

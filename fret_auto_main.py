@@ -36,6 +36,7 @@ logger = logging.getLogger(__name__)
 # END LOGGING CONFIG
 
 fret_endpoint = "https://developer.openet-api.org/experimental/raster/timeseries/forecasting/fret"
+forecast_endpoint = "https://developer.openet-api.org/experimental/raster/timeseries/forecasting/seasonal"
 timeseries_endpoint = "https://developer.openet-api.org/raster/timeseries/point"
 
 api_key = dotenv_values(".env").get("ET_KEY")
@@ -53,6 +54,14 @@ def main():
     kern_queue = Queue(kern_fields.index.to_list())
 
     et_arg = ETArg("fret_et", args={"endpoint": fret_endpoint, "variable": "ET"})
+    forecast_eto = ETArg(
+        "expected_eto",
+        args={
+            "endpoint": forecast_endpoint,
+            "date_range": ["2016-01-01", check_time.strftime("%Y-%m-%d")],
+            "variable": "ETo"
+        },
+    )
     eto_arg = ETArg("fret_eto", args={"endpoint": fret_endpoint, "variable": "ETo"})
     etof_arg = ETArg("fret_etof", args={"endpoint": fret_endpoint, "variable": "ETof"})
 
@@ -64,7 +73,7 @@ def main():
                 export_date_format = check_time.strftime("%Y-%m-%d")
                 monterey_fret = ETPreprocess(deepcopy(monterey_queue), monterey_fields, api_key=api_key) # type: ignore
                 monterey_fret.start(
-					request_args=[et_arg, eto_arg, etof_arg],
+					request_args=[eto_arg],
 					logger=logger,
 					packets=True
 				)
@@ -72,7 +81,7 @@ def main():
 
                 kern_fret = ETPreprocess(deepcopy(kern_queue), kern_fields, api_key=api_key) # type: ignore
                 kern_fret.start(
-					request_args=[et_arg, eto_arg, etof_arg],
+					request_args=[eto_arg],
 					logger=logger,
 					packets=True
 				)
