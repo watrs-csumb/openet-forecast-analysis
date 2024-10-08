@@ -18,7 +18,8 @@ class ETPreprocess:
 		# private
 		self.__api_key__ = api_key
 		self.__names__ = []
-		self.__timestamp__ = datetime.now().strftime('%Y%m%d_%H%M%S')
+		self.__start_time__ = datetime.now()
+		self.__timestamp__ = self.__start_time__.strftime('%Y%m%d_%H%M%S')
   
 	def __merge__(self, *, tables) -> None:
 		for table in tables:
@@ -160,5 +161,7 @@ class ETPreprocess:
 			self.__merge__(tables=tables)
 
 		if logger:
-			logger.info(f"Finished processing. {str(failed_fields)} fields failed.")
+			self.__end_time__ = datetime.now()
+			time_elapsed = (self.__end_time__ - self.__start_time__)
+			logger.info(f"Finished processing. {str(failed_fields)} fields failed. Elapsed time: {str(time_elapsed)}")
 		return failed_fields
