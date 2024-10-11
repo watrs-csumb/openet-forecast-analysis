@@ -53,7 +53,7 @@ def get_historical_data(fields_queue, reference, *, filename, endpoint=timeserie
 		"actual_et",
 		args={
 			"endpoint": endpoint,
-			"date_range": ["2016-01-01", "2024-08-02"],
+			"date_range": ["2016-01-01", "2024-09-02"],
 			"variable": "ET",
 			"reducer": "mean"
 		},
@@ -63,7 +63,7 @@ def get_historical_data(fields_queue, reference, *, filename, endpoint=timeserie
 		"actual_eto",
 		args={
 			"endpoint": endpoint,
-			"date_range": ["2016-01-01", "2024-08-02"],
+			"date_range": ["2016-01-01", "2024-09-02"],
 			"variable": "ETo",
 			"reducer": "mean"
 		},
@@ -73,7 +73,7 @@ def get_historical_data(fields_queue, reference, *, filename, endpoint=timeserie
 		"actual_etof",
 		args={
 			"endpoint": endpoint,
-			"date_range": ["2016-01-01", "2024-08-02"],
+			"date_range": ["2016-01-01", "2024-09-02"],
 			"variable": "ETof",
 			"reducer": "mean"
 		},
@@ -88,11 +88,11 @@ def get_historical_data(fields_queue, reference, *, filename, endpoint=timeserie
 
 	sample_data.export(f"data/{filename}.csv")
 
-def get_forecasts(fields_queue, reference, *, dir, endpoint=forecast_endpoint):
+def get_forecasts(fields_queue, reference, *, dir, endpoint=forecast_endpoint, polygon=False):
 	# Gather predictions at weekly intervals.
 	# Forecast begins predictions from the end_range. So to start predictions for Jan 1, set to Dec 31
-	forecasting_date = datetime(2024, 7, 15)  # Marker for loop
-	end_date = datetime(2024, 8, 1)  # 1 Aug 2024
+	forecasting_date = datetime(2024, 8, 5)  # Marker for loop
+	end_date = datetime(2024, 9, 2)  # 2 Sep 2024
 	interval_delta = timedelta(weeks=1)  # weekly interval
 
 	# Create dir if it doesn't exist
@@ -113,8 +113,7 @@ def get_forecasts(fields_queue, reference, *, dir, endpoint=forecast_endpoint):
 			args={
 				"endpoint": endpoint,
 				"date_range": ["2016-01-01", api_date_format],
-				"variable": "ET",
-				"reducer": "mean"
+				"variable": "ET"
 			},
 		)
 
@@ -123,8 +122,7 @@ def get_forecasts(fields_queue, reference, *, dir, endpoint=forecast_endpoint):
 			args={
 				"endpoint": endpoint,
 				"date_range": ["2016-01-01", api_date_format],
-				"variable": "ETo",
-				"reducer": "mean"
+				"variable": "ETo"
 			},
 		)
 
@@ -133,10 +131,12 @@ def get_forecasts(fields_queue, reference, *, dir, endpoint=forecast_endpoint):
 			args={
 				"endpoint": endpoint,
 				"date_range": ["2016-01-01", api_date_format],
-				"variable": "ETof",
-				"reducer": "mean"
+				"variable": "ETof"
 			},
 		)
+  
+		if polygon:
+			forecast_et.reducer, forecast_eto.reducer, forecast_etof.reducer = 'mean'
 
 		logger.info(f"Forecasting from {api_date_format}")
 		process.start(
@@ -153,27 +153,28 @@ def main():
 	kern_queue = Queue(kern_fields.index.to_list())
 	monterey_queue = Queue(monterey_fields.index.to_list())
 
-	# logger.info("Getting data for Monterey County")
+	# point forecasting
+	logger.info("Getting point data for Monterey County")
 	# Monterey Data
-	# get_historical_data(monterey_queue, monterey_fields, filename="monterey_historical")
-	# get_forecasts(monterey_queue, monterey_fields, dir=f"{version_prompt}/monterey")
+	get_historical_data(monterey_queue, monterey_fields, filename="monterey_historical")
+	get_forecasts(monterey_queue, monterey_fields, dir="/monterey")
 
-	# logger.info("Getting data for Kern County")
+	logger.info("Getting point data for Kern County")
 	# Kern Data
-	# get_historical_data(kern_queue, kern_fields, filename="kern_historical")                         
-	# get_forecasts(kern_queue, kern_fields, dir=f"{version_prompt}/kern")
+	get_historical_data(kern_queue, kern_fields, filename="kern_historical")                         
+	get_forecasts(kern_queue, kern_fields, dir="/kern")
 	
 	# polygon forecasting
 	monterey_queue = Queue(monterey_polygon_fields.index.to_list())
 	kern_queue = Queue(kern_polygon_fields.index.to_list())
 	
-	logger.info("Getting data for Monterey County")
-	# get_forecasts(monterey_queue, monterey_polygon_fields, dir=f"{version_prompt}/polygon/monterey/sampled", endpoint=polygon_forecast_endpoint)
+	logger.info("Getting polygon data for Monterey County")
+	get_forecasts(monterey_queue, monterey_polygon_fields, dir=f"{version_prompt}/polygon/monterey/sampled", endpoint=polygon_forecast_endpoint)
 	get_historical_data(monterey_queue, monterey_polygon_fields, filename="monterey_polygon_large_historical", endpoint=polygon_timeseries_endpoint)
 
-	# logger.info("Getting data for Kern County")
-	# get_forecasts(kern_queue, kern_polygon_fields, dir=f"{version_prompt}/polygon/kern/sampled", endpoint=polygon_forecast_endpoint)
-	# get_historical_data(kern_queue, kern_polygon_fields, filename="kern_polygon_large_historical", endpoint=polygon_timeseries_endpoint)
+	logger.info("Getting polygon data for Kern County")
+	get_forecasts(kern_queue, kern_polygon_fields, dir=f"{version_prompt}/polygon/kern/sampled", endpoint=polygon_forecast_endpoint)
+	get_historical_data(kern_queue, kern_polygon_fields, filename="kern_polygon_large_historical", endpoint=polygon_timeseries_endpoint)
 
 if __name__ == '__main__':
 	main()
