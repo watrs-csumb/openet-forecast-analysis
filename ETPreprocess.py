@@ -98,8 +98,20 @@ class ETPreprocess:
 					"variable": req.variable,
 					"file_format": "JSON"
 				}
-				arg.update(req.__dict__) # Copies keys from ETArg to arg without removing existing keys
-    
+				arg['align'] = req.align
+				arg['model'] = req.model
+				arg['units'] = req.units
+				arg['reference_et'] = req.reference
+				# Below are optional fields. Included only if they exist
+				if req.date_range:
+					arg['date_range'] = req.date_range
+				if req.reducer:
+					arg['reducer'] = req.reducer
+				if req.match_variable:
+					arg['match_variable'] = req.match_variable
+				if req.match_window:
+					arg['match_window'] = req.match_window
+     
 				if frequency:
 					arg['interval'] = frequency
 
