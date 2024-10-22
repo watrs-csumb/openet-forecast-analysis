@@ -162,7 +162,7 @@ def main():
             packets=True,
             logger=logger,
         )
-        mo_historical_fetch.export("data/monterey_historical.csv")
+        mo_historical_fetch.export("data/monterey_polygon_historical.csv")
 
         logger.info("Fetching Kern County historical data.")
         ke_historical_fetch = ETPreprocess(kern_queue, kern_fields, api_key=api_key)  # type: ignore
@@ -172,7 +172,7 @@ def main():
             packets=True,
             logger=logger,
         )
-        ke_historical_fetch.export("data/kern_historical.csv")
+        ke_historical_fetch.export("data/kern_polygon_historical.csv")
 
 if __name__ == "__main__":
 	main()
