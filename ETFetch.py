@@ -9,7 +9,7 @@ import json
 import logging
 import pandas as pd
 
-class ETPreprocess:
+class ETFetch:
     def __init__(self, fields_queue: Queue, points_ref: any, *, api_key: str) -> None:
         self.fields_queue = fields_queue
         self.points_ref = points_ref
@@ -125,7 +125,7 @@ class ETPreprocess:
         
         See Also
         --------
-        ETPreprocess : Constructor.
+        ETFetch : Constructor.
         ETArg : Struct-like Class of request arguments with optimized settings.
         Queue : Queue data structure.
         
@@ -148,7 +148,7 @@ class ETPreprocess:
         )
         >>> ref = {'fields': ['CA_062495'], 'CROP_2023': [49], '.geo': [{'type': 'point', 'coordinates': [-121.64489395805282, 36.633390650961346]}]}
         >>> df = pd.DataFrame(data=ref)
-        >>> e = ETPreprocess(fields_queue = Queue(df['fields']), points_ref = df, *, api_key = 'xxxxxx...')
+        >>> e = ETFetch(fields_queue = Queue(df['fields']), points_ref = df, *, api_key = 'xxxxxx...')
         >>> e.start(request_args = [arg], frequency = 'monthly')
         """
         failed_fields = 0

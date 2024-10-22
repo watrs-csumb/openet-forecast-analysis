@@ -8,7 +8,7 @@ from copy import deepcopy
 from datetime import datetime, timedelta
 from dotenv import dotenv_values
 from ETArg import ETArg
-from ETPreprocess import ETPreprocess
+from ETFetch import ETFetch
 from pathlib import Path
 from Queue import Queue
 
@@ -45,7 +45,7 @@ kern_polygon_fields = pd.read_csv("./data/kern_polygons_large.csv", low_memory=F
 monterey_polygon_fields = pd.read_csv("./data/monterey_polygons_large.csv", low_memory=False).set_index('field_id')
 
 def get_historical_data(fields_queue, reference, *, filename, endpoint=timeseries_endpoint, polygon=False):
-    sample_data = ETPreprocess(
+    sample_data = ETFetch(
         deepcopy(fields_queue),
         reference,
         api_key=api_key,  # type: ignore
@@ -109,7 +109,7 @@ def get_forecasts(fields_queue, reference, *, dir, endpoint=forecast_endpoint, p
 
     logger.info("Getting forecast data.")
     while forecasting_date < end_date:
-        process = ETPreprocess(
+        process = ETFetch(
             deepcopy(fields_queue),
             reference,
             api_key=api_key,  # type: ignore

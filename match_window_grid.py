@@ -9,7 +9,7 @@ from copy import deepcopy
 from datetime import datetime, timedelta
 from dotenv import dotenv_values
 from ETArg import ETArg
-from ETPreprocess import ETPreprocess
+from ETFetch import ETFetch
 from pathlib import Path
 from Queue import Queue
 
@@ -99,7 +99,7 @@ def get_forecasts(fields_queue, reference, *, dir, endpoint=polygon_forecast_end
     while forecasting_date < end_date:
         window_queue = Queue(deepcopy(match_windows))
         while window_queue.is_empty() is False:
-            process = ETPreprocess(
+            process = ETFetch(
                 deepcopy(fields_queue),
                 reference,
                 api_key=api_key,  # type: ignore

@@ -8,7 +8,7 @@ from copy import deepcopy
 from datetime import datetime, timedelta
 from dotenv import dotenv_values
 from ETArg import ETArg
-from ETPreprocess import ETPreprocess
+from ETFetch import ETFetch
 from Queue import Queue
 
 import logging
@@ -81,7 +81,7 @@ def main():
             # This method performs a do-while loop. Initially running the FRET data fetch, and does so when the run_fetch toggle is True.
             if run_fetch is True:
                 export_date_format = check_time.strftime("%Y-%m-%d")
-                monterey_fret = ETPreprocess(
+                monterey_fret = ETFetch(
                     deepcopy(monterey_queue), monterey_fields, api_key=api_key
                 )  # type: ignore
                 monterey_fret.start(request_args=[forecast_eto, eto_arg], logger=logger, packets=True, frequency='daily')
@@ -90,7 +90,7 @@ def main():
                 )
 
 
-                kern_fret = ETPreprocess(
+                kern_fret = ETFetch(
                     deepcopy(kern_queue), kern_fields, api_key=api_key
                 )  # type: ignore
                 kern_fret.start(request_args=[forecast_eto, eto_arg], logger=logger, packets=True, frequency='daily')
@@ -155,7 +155,7 @@ def main():
         )
 
         logger.info("Fetching Monterey County historical data.")
-        mo_historical_fetch = ETPreprocess(
+        mo_historical_fetch = ETFetch(
             monterey_queue, monterey_fields, api_key=api_key
         )  # type: ignore
         mo_historical_fetch.start(
@@ -167,7 +167,7 @@ def main():
         mo_historical_fetch.export("data/monterey_polygon_historical.csv")
 
         logger.info("Fetching Kern County historical data.")
-        ke_historical_fetch = ETPreprocess(kern_queue, kern_fields, api_key=api_key)  # type: ignore
+        ke_historical_fetch = ETFetch(kern_queue, kern_fields, api_key=api_key)  # type: ignore
         ke_historical_fetch.start(
             request_args=[historical_arg_et, historical_arg_eto, historical_arg_etof],
             frequency="daily",
