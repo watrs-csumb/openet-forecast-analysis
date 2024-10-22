@@ -13,3 +13,5 @@ data/bin/
 lib/*
 lib64
 bin/*
+*.gpg
+.*/
