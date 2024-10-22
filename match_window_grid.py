@@ -105,9 +105,11 @@ def get_forecasts(fields_queue, reference, *, dir, endpoint=polygon_forecast_end
                 api_key=api_key,  # type: ignore
             )
             api_date_format = forecasting_date.strftime("%Y-%m-%d")
-            filename = (
-                f"{file_dir}/{api_date_format}_window_{window_queue.front()}_forecast.csv"
-            )
+            filename = f"{file_dir}/{api_date_format}_window_{window_queue.front()}_forecast.csv"
+            if Path(filename).exists():
+                print(f'{filename} already exists. Moving on..')
+                window_queue.dequeue()
+                continue
 
             forecast_et = ETArg(
                 "expected_et",
