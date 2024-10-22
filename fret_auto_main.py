@@ -4,12 +4,12 @@ Created on Mon Sep 9 18:42:18 2024
 
 @author: Robin Fishman
 """
+from collections import deque
 from copy import deepcopy
 from datetime import datetime, timedelta
 from dotenv import dotenv_values
 from ETArg import ETArg
 from ETFetch import ETFetch
-from Queue import Queue
 
 import logging
 import os
@@ -52,8 +52,8 @@ def main():
     upcoming_check_time = check_time + check_interval
     run_fetch = True
 
-    monterey_queue = Queue(monterey_fields.index.to_list())
-    kern_queue = Queue(kern_fields.index.to_list())
+    monterey_queue = deque(monterey_fields.index.to_list())
+    kern_queue = deque(kern_fields.index.to_list())
 
     forecast_eto = ETArg(
         "dtw_eto",

@@ -1,8 +1,8 @@
+from collections import deque
 from datetime import datetime
 from ETRequest import ETRequest
 from ETArg import ETArg
 from pathlib import Path
-from Queue import Queue
 from typing import List, Dict
 
 import json
@@ -10,7 +10,15 @@ import logging
 import pandas as pd
 
 class ETFetch:
-    def __init__(self, fields_queue: Queue, points_ref: any, *, api_key: str) -> None:
+    def __init__(self, fields_queue: deque, points_ref: any, *, api_key: str) -> None:
+        """
+        OpenET data retrieval configuration. 
+        
+        Parameters
+        ==========
+        fields_queue : deque
+        
+        """
         self.fields_queue = fields_queue
         self.points_ref = points_ref
         self.data_table = pd.DataFrame(columns=['field_id', 'crop', 'time'])
@@ -29,7 +37,7 @@ class ETFetch:
     def set_api_key(self, api_key: str) -> None:
         self.__api_key__ = api_key
 
-    def set_queue(self, queue: Queue) -> None:
+    def set_queue(self, queue: deque) -> None:
         self.fields_queue = queue
         
     def set_reference(self, ref: any) -> None:
@@ -127,7 +135,7 @@ class ETFetch:
         --------
         ETFetch : Constructor.
         ETArg : Struct-like Class of request arguments with optimized settings.
-        Queue : Queue data structure.
+        deque : deque data structure.
         
         Notes
         -----
@@ -148,14 +156,14 @@ class ETFetch:
         )
         >>> ref = {'fields': ['CA_062495'], 'CROP_2023': [49], '.geo': [{'type': 'point', 'coordinates': [-121.64489395805282, 36.633390650961346]}]}
         >>> df = pd.DataFrame(data=ref)
-        >>> e = ETFetch(fields_queue = Queue(df['fields']), points_ref = df, *, api_key = 'xxxxxx...')
+        >>> e = ETFetch(fields_queue = deque(df['fields']), points_ref = df, *, api_key = 'xxxxxx...')
         >>> e.start(request_args = [arg], frequency = 'monthly')
         """
         failed_fields = 0
         tables = [pd.DataFrame(columns=['field_id', 'crop', 'time', item.name]) for item in request_args]
 
-        while self.fields_queue.is_empty() is False:
-            current_field_id = self.fields_queue.front()
+        while (len(self.fields_queue) == 0) is False:
+            current_field_id = self.fields_queue[0]
             current_point_coordinates = json.loads(self.points_ref['.geo'][current_field_id])['coordinates']
             current_crop = self.points_ref[crop_col][current_field_id]
    
@@ -231,9 +239,9 @@ class ETFetch:
                     logger.warning(f"Analyzing for {current_field_id} failed")
                 failed_fields+=1
 
-            self.fields_queue.dequeue()
+            self.fields_queue.popleft()
             if logger:
-                logger.info(f"{str(self.fields_queue.size())} fields remaining")
+                logger.info(f"{str(len(self.fields_queue))} fields remaining")
 
         # Produces data table depending on if this process enabled packets.
         if packets:

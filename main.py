@@ -4,13 +4,13 @@ Created on Thu Jun  13 10:06:44 2024
 
 @author: Robin Fishman
 """
+from collections import deque
 from copy import deepcopy
 from datetime import datetime, timedelta
 from dotenv import dotenv_values
 from ETArg import ETArg
 from ETFetch import ETFetch
 from pathlib import Path
-from Queue import Queue
 
 import json
 import logging
@@ -164,8 +164,8 @@ def get_forecasts(fields_queue, reference, *, dir, endpoint=forecast_endpoint, p
 def main():
 	version_prompt = input('What version of DTW is this?: ')
 
-	kern_queue = Queue(kern_fields.index.to_list())
-	monterey_queue = Queue(monterey_fields.index.to_list())
+	kern_queue = deque(kern_fields.index.to_list())
+	monterey_queue = deque(monterey_fields.index.to_list())
 
 	# point forecasting
 	# logger.info("Getting point data for Monterey County")
@@ -179,8 +179,8 @@ def main():
 	get_forecasts(kern_queue, kern_fields, dir="/kern")
 	
 	# polygon forecasting
-	monterey_queue = Queue(monterey_polygon_fields.index.to_list())
-	kern_queue = Queue(kern_polygon_fields.index.to_list())
+	monterey_queue = deque(monterey_polygon_fields.index.to_list())
+	kern_queue = deque(kern_polygon_fields.index.to_list())
 	
 	logger.info("Getting polygon data for Monterey County")
 	get_forecasts(monterey_queue, monterey_polygon_fields, dir=f"{version_prompt}/polygon/monterey/sampled", endpoint=polygon_forecast_endpoint, polygon=True)
