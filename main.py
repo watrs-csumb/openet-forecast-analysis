@@ -44,7 +44,7 @@ monterey_fields = pd.read_csv("./data/Monterey.csv", low_memory=False).set_index
 kern_polygon_fields = pd.read_csv("./data/kern_polygons_large.csv", low_memory=False).set_index('field_id')
 monterey_polygon_fields = pd.read_csv("./data/monterey_polygons_large.csv", low_memory=False).set_index('field_id')
 
-def get_historical_data(fields_queue, reference, *, filename, endpoint=timeseries_endpoint, polygon):
+def get_historical_data(fields_queue, reference, *, filename, endpoint=timeseries_endpoint, polygon=False):
     sample_data = ETPreprocess(
         deepcopy(fields_queue),
         reference,
@@ -95,7 +95,7 @@ def get_historical_data(fields_queue, reference, *, filename, endpoint=timeserie
 
     sample_data.export(f"data/{filename}.csv")
 
-def get_forecasts(fields_queue, reference, *, dir, endpoint=forecast_endpoint, polygon):
+def get_forecasts(fields_queue, reference, *, dir, endpoint=forecast_endpoint, polygon=False):
     # Gather predictions at weekly intervals.
     # Forecast begins predictions from the end_range. So to start predictions for Jan 1, set to Dec 31
     forecasting_date = datetime(2024, 8, 5)  # Marker for loop
@@ -176,7 +176,7 @@ def main():
 	# logger.info("Getting point data for Kern County")
 	# # Kern Data
 	# get_historical_data(kern_queue, kern_fields, filename="kern_historical")                         
-	# get_forecasts(kern_queue, kern_fields, dir="/kern")
+	get_forecasts(kern_queue, kern_fields, dir="/kern")
 	
 	# polygon forecasting
 	monterey_queue = Queue(monterey_polygon_fields.index.to_list())
