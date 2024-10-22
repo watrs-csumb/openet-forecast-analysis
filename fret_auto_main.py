@@ -42,6 +42,8 @@ timeseries_endpoint = "https://developer.openet-api.org/raster/timeseries/polygo
 api_key = dotenv_values(".env").get("ET_KEY")
 kern_fields = pd.read_csv("./data/kern_polygons.csv", low_memory=False).set_index("OPENET_ID")
 monterey_fields = pd.read_csv("./data/monterey_polygons.csv", low_memory=False).set_index("OPENET_ID")
+# Drop fields with too large of polygons
+monterey_fields.drop(index=['CA_244144', 'CA_244402'], inplace=True)
 
 def main():
     # Plan is to auto fetch FRET data every 6 days from script start. Script is to run continuously, checking for this time interval each minute.
