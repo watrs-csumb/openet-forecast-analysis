@@ -121,6 +121,7 @@ def get_forecasts(fields_queue, reference, *, dir, endpoint=polygon_forecast_end
                     "reducer": "mean",
                     "match_variable": "ndvi",
                     "match_window": window_queue.front(),
+                    "align": True
                 },
             )
 
@@ -134,6 +135,7 @@ def get_forecasts(fields_queue, reference, *, dir, endpoint=polygon_forecast_end
                     "reducer": "mean",
                     "match_variable": "ndvi",
                     "match_window": window_queue.front(),
+                    "align": True
                 },
             )
 
@@ -147,6 +149,7 @@ def get_forecasts(fields_queue, reference, *, dir, endpoint=polygon_forecast_end
                     "reducer": "mean",
                     "match_variable": "ndvi",
                     "match_window": window_queue.front(),
+                    "align": True
                 },
             )
 
