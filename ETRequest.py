@@ -44,7 +44,8 @@ class ETRequest:
 
 		# Allow keyboard interruption
 		except KeyboardInterrupt:
-			pass
+			num_retries = 0
+			return None
 
 		except Exception:
 			while self._current_attempt < num_retries and self.success() is False:
