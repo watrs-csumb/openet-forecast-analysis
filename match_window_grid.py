@@ -85,7 +85,7 @@ monterey_polygon_fields = (
 
 def get_forecasts(fields_queue, reference, *, dir, endpoint=polygon_forecast_endpoint):
     forecasting_date = datetime(2024, 6, 3)  # Marker for loop
-    end_date = datetime(2024, 8, 2)  # 2 Sep 2024
+    end_date = datetime(2024, 8, 2)  # 2 Aug 2024
     interval_delta = timedelta(weeks=1)  # weekly interval
     match_windows = [60, 90, 180]
 
@@ -120,7 +120,7 @@ def get_forecasts(fields_queue, reference, *, dir, endpoint=polygon_forecast_end
                     "reducer": "mean",
                     "match_variable": "ndvi",
                     "match_window": window_queue[0],
-                    "align": True
+                    # "align": True
                 },
             )
 
@@ -134,7 +134,7 @@ def get_forecasts(fields_queue, reference, *, dir, endpoint=polygon_forecast_end
                     "reducer": "mean",
                     "match_variable": "ndvi",
                     "match_window": window_queue[0],
-                    "align": True
+                    # "align": True
                 },
             )
 
@@ -148,7 +148,7 @@ def get_forecasts(fields_queue, reference, *, dir, endpoint=polygon_forecast_end
                     "reducer": "mean",
                     "match_variable": "ndvi",
                     "match_window": window_queue[0],
-                    "align": True
+                    # "align": True
                 },
             )
 
@@ -159,10 +159,10 @@ def get_forecasts(fields_queue, reference, *, dir, endpoint=polygon_forecast_end
                 packets=True,
                 logger=logger,
             )
+            
+            process.export(filename)
 
             window_queue.popleft()
-
-        process.export(filename)
 
         forecasting_date = forecasting_date + interval_delta
 
