@@ -10,15 +10,40 @@ import logging
 import pandas as pd
 
 class ETFetch:
+    """
+    OpenET data retrieval configuration. 
+    
+    Parameters
+    ----------
+    fields_queue : deque
+        Queue of fields that are to be processed. 
+            
+    points_ref : dict, or DataFrame
+        Collection of points that are referenced for the fields. 
+        Must contain key or column for USDA Cropland Data Layer and proper WKT formatted coordinates '.geo' column.
+        
+    api_key : str
+        User API key for OpenET API. User restrictions apply.
+            
+    See Also
+    --------
+    start : Begin gathering ET data from listed arguments.
+    export : Export data in provided file format. CSV by default. Passes kwargs to matching pandas export function.
+    ETRequest : ET API Request Handling.
+    collections.deque : Thread-safe, memory efficient appends and pops from either side.
+    
+    Notes
+    -----
+    Internal DataFrame has default columns ['field_id', 'crop', 'time'] where 'crop' is in reference to crop column in `points_ref`.
+    
+    Examples
+    --------
+    Constructing ETFetch using one field
+    >>> ref = {'fields': ['CA_062495'], 'CROP_2023': [49], '.geo': [{'type': 'point', 'coordinates': [-121.64489395805282, 36.633390650961346]}]}
+    >>> df = pd.DataFrame(data=ref)
+    >>> e = ETFetch(fields_queue = deque(df['fields']), points_ref = df, api_key = 'xxxxxx...')
+    """
     def __init__(self, fields_queue: deque, points_ref: any, *, api_key: str) -> None:
-        """
-        OpenET data retrieval configuration. 
-        
-        Parameters
-        ==========
-        fields_queue : deque
-        
-        """
         self.fields_queue = fields_queue
         self.points_ref = points_ref
         self.data_table = pd.DataFrame(columns=['field_id', 'crop', 'time'])
@@ -29,21 +54,7 @@ class ETFetch:
         self.__start_time__ = datetime.now()
         self.__timestamp__ = self.__start_time__.strftime('%Y%m%d_%H%M%S')
   
-    def __merge__(self, *, tables) -> None:
-        for table in tables:
-            # Conducts full outer joins to preserve time column not always overlapping.
-            self.data_table = self.data_table.merge(table, on=['field_id', 'crop', 'time'], how='outer')
-
-    def set_api_key(self, api_key: str) -> None:
-        self.__api_key__ = api_key
-
-    def set_queue(self, queue: deque) -> None:
-        self.fields_queue = queue
-        
-    def set_reference(self, ref: any) -> None:
-        self.points_ref = ref
-  
-    def compile_packets(self) -> None:
+    def __compile_packets__(self) -> None:
         # Create empty tables for each column name. Will all be merged at the end.
         tables = [pd.DataFrame(columns=['field_id', 'crop', 'time', name]) for name in self.__names__]
         # Iterate through each column name first
@@ -64,6 +75,20 @@ class ETFetch:
                 tables[item] = pd.concat([data, tables[item]], ignore_index=True)
 
         self.__merge__(tables=tables)
+
+    def __merge__(self, *, tables) -> None:
+        for table in tables:
+            # Conducts full outer joins to preserve time column not always overlapping.
+            self.data_table = self.data_table.merge(table, on=['field_id', 'crop', 'time'], how='outer')
+
+    def set_api_key(self, api_key: str) -> None:
+        self.__api_key__ = api_key
+
+    def set_queue(self, queue: deque) -> None:
+        self.fields_queue = queue
+        
+    def set_reference(self, ref: any) -> None:
+        self.points_ref = ref
 
     def export(self, filename, file_format: str = 'csv', **kwargs) -> None:
         """
@@ -122,7 +147,7 @@ class ETFetch:
         crop_col : str, default 'CROP_2023'
             Name of column used to reference USDA's Cropland Data Layer code.
             
-        logger : py Logger, default None
+        logger : logging.Logger, default None
             If logger is provided, logs request success and failure activity.
             Recommended for debugging.
             
@@ -135,7 +160,6 @@ class ETFetch:
         --------
         ETFetch : Constructor.
         ETArg : Struct-like Class of request arguments with optimized settings.
-        deque : deque data structure.
         
         Notes
         -----
@@ -156,7 +180,7 @@ class ETFetch:
         )
         >>> ref = {'fields': ['CA_062495'], 'CROP_2023': [49], '.geo': [{'type': 'point', 'coordinates': [-121.64489395805282, 36.633390650961346]}]}
         >>> df = pd.DataFrame(data=ref)
-        >>> e = ETFetch(fields_queue = deque(df['fields']), points_ref = df, *, api_key = 'xxxxxx...')
+        >>> e = ETFetch(fields_queue = deque(df['fields']), points_ref = df, api_key = 'xxxxxx...')
         >>> e.start(request_args = [arg], frequency = 'monthly')
         """
         failed_fields = 0
@@ -245,7 +269,7 @@ class ETFetch:
 
         # Produces data table depending on if this process enabled packets.
         if packets:
-            self.compile_packets()
+            self.__compile_packets__()
         else:
             self.__merge__(tables=tables)
 
