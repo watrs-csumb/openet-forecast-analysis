@@ -116,6 +116,10 @@ def get_forecasts(fields_queue, reference, *, dir, endpoint=forecast_endpoint, p
         )
         api_date_format = forecasting_date.strftime("%Y-%m-%d")
         filename = f"{file_dir}/{api_date_format}_forecast.csv"
+        if Path(filename).exists():
+            print(f"{filename} already exists. Moving on..")
+            forecasting_date = forecasting_date + interval_delta
+            continue
 
         forecast_et = ETArg(
             "expected_et",
