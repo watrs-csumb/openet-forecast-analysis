@@ -1,7 +1,10 @@
-from sklearn.metrics import mean_absolute_error, mean_squared_error
+from sklearn.metrics import mean_absolute_error, root_mean_squared_error
 
-import pandas as pd
+import contextily as cx
 import numpy as np
+import pandas as pd
+import matplotlib.cm as cm
+import matplotlib.colors as mcolors
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
@@ -28,7 +31,7 @@ def calculate_metrics(
 ) -> pd.Series:
     # Calculate error metrics
     mae: float = mean_absolute_error(data[actual], data[expected])
-    forecast_mse: float = mean_squared_error(data[actual], data[expected])
+    forecast_mse: float = np.square(root_mean_squared_error(data[actual], data[expected]))
     rmse: float = np.sqrt(forecast_mse)
 
     # Correlation Coefficient (R)
@@ -51,7 +54,7 @@ def calculate_metrics(
     )
 
     climatology = climatology_ref[field_mask & crop_mask & date_mask][actual]
-    climatology_mse = mean_squared_error(data[actual], climatology)
+    climatology_mse = np.square(root_mean_squared_error(data[actual], climatology))
 
     # Positive skill score indicates the error in climatology is greater than forecast.
     # This means that forecast is outperforming climatology.
@@ -246,9 +249,13 @@ def timeseries_rel(
         rel.refline(**refline)
 
     if type(export_img) is bool and export_img is True:
-        rel.savefig(fname=f"images/monterey/{str(title)}")
+        rel.savefig(
+            fname=f"../images/{str(title)}"
+        )
     elif type(export_img) is str:
-        rel.savefig(fname=f"images/monterey/{export_img}")
+        rel.savefig(
+            fname=f"../images/{export_img}"
+        )
 
     return rel
 
@@ -264,3 +271,92 @@ def trim_extremes(data, *, cols, threshold):
         data.drop(index=data[(data[f"{c}_pct"] <= threshold)].index, inplace=True)
         data.drop(columns=f"{c}_pct", inplace=True)
     return data
+
+def catplot_geo(
+    data,
+    *,
+    boundary_map,
+    col,
+    row=None,
+    hue,
+    palette="YlOrRd",
+    size=8,
+    title,
+    export_img: bool | str = None,
+    height=4,
+    aspect=1.2,
+    double_legend=False,
+    row_order=None,
+    col_order=None,
+    title_template={},
+    as_percent=True,
+    normalize_cmap=False,
+    background=False,
+):
+    plt.rcdefaults()
+    g = sns.FacetGrid(
+        data,
+        col=col,
+        row=row,
+        height=height,
+        aspect=aspect,
+        despine=False,
+        row_order=row_order,
+        col_order=col_order,
+    )
+    for ax in g.axes.flat:
+        boundary_map.plot(color="lightgrey", edgecolor="k", alpha=0.3, ax=ax)
+        # Add basemap
+        if background:
+            ax.tick_params(left=False, bottom=False)
+            ax.set(xticklabels=[], yticklabels=[], xlabel=None, ylabel=None)
+            cx.add_basemap(ax, crs=boundary_map.crs.to_string(), attribution=False)
+
+    # Colorbar config
+    norm = None
+    if normalize_cmap:
+        norm = mcolors.TwoSlopeNorm(
+            vcenter=0, vmin=data[hue].min(), vmax=data[hue].max()
+        )
+        c_mappable = cm.ScalarMappable(norm=norm, cmap=palette)
+        c_mappable.set_array(data[hue])
+    else:
+        c_mappable = plt.scatter(
+            [], [], c=[], vmin=data[hue].min(), vmax=data[hue].max(), cmap=palette
+        )
+
+    # Plot points
+    g.map_dataframe(
+        sns.scatterplot,
+        x="longitude",
+        y="latitude",
+        hue=hue,
+        hue_norm=norm,
+        palette=palette,
+        linewidths=0,
+        size=size,
+    )
+    g.set(xlabel=None, ylabel=None)
+    g.set_titles(**title_template)
+    plt.suptitle(title, y=1.00)
+    # Add colorbar to right side
+    g.figure.subplots_adjust(right=0.92)
+    cax = g.fig.add_axes([0.94, 0.25, 0.02, 0.6])
+    g.figure.colorbar(c_mappable, cax=cax)
+    if as_percent:
+        cax.yaxis.set_major_formatter(mtick.PercentFormatter(1.0))
+    if double_legend is not False:
+        g.figure.subplots_adjust(right=0.90)
+        dax = cax.twinx()
+        if type(double_legend) is not bool:
+            dax.set(ylim=(double_legend.min()["value"], double_legend.max()["value"]))
+
+    # Export image
+    if type(export_img) is bool and export_img is True:
+        g.savefig(f"../images/{title}.png")
+    elif type(export_img) is str:
+        g.savefig(
+            f"../images/{export_img}.png"
+        )
+
+    return g
