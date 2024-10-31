@@ -7,6 +7,7 @@ share/
 .ipy*/
 .vscode/
 __pycache__/*
+notebook/__pycache__/*
 logs/
 package/
 data/bin/
