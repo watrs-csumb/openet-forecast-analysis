@@ -12,7 +12,6 @@ from ETArg import ETArg
 from ETFetch import ETFetch
 from pathlib import Path
 
-import json
 import logging
 import pandas as pd
 import sys
@@ -44,8 +43,10 @@ monterey_fields = pd.read_csv("./data/Monterey.csv", low_memory=False).set_index
 kern_polygon_fields = pd.read_csv("./data/kern_polygons_large.csv", low_memory=False).set_index('field_id')
 monterey_polygon_fields = pd.read_csv("./data/monterey_polygons_large.csv", low_memory=False).set_index('field_id')
 
+data_end_date_reference = "2024-10-07"
+
 def get_historical_data(fields_queue, reference, *, filename, endpoint=timeseries_endpoint, polygon=False):
-    sample_data = ETFetch(
+    et_data = ETFetch(
         deepcopy(fields_queue),
         reference,
         api_key=api_key,  # type: ignore
@@ -55,7 +56,7 @@ def get_historical_data(fields_queue, reference, *, filename, endpoint=timeserie
         "actual_et",
         args={
             "endpoint": endpoint,
-            "date_range": ["2016-01-01", "2024-09-02"],
+            "date_range": ["2016-01-01", data_end_date_reference],
             "variable": "ET",
             "reducer": "mean",
         },
@@ -65,7 +66,7 @@ def get_historical_data(fields_queue, reference, *, filename, endpoint=timeserie
         "actual_eto",
         args={
             "endpoint": endpoint,
-            "date_range": ["2016-01-01", "2024-09-02"],
+            "date_range": ["2016-01-01", data_end_date_reference],
             "variable": "ETo",
             "reducer": "mean",
         },
@@ -75,7 +76,7 @@ def get_historical_data(fields_queue, reference, *, filename, endpoint=timeserie
         "actual_etof",
         args={
             "endpoint": endpoint,
-            "date_range": ["2016-01-01", "2024-09-02"],
+            "date_range": ["2016-01-01", data_end_date_reference],
             "variable": "ETof",
             "reducer": "mean",
         },
@@ -86,20 +87,39 @@ def get_historical_data(fields_queue, reference, *, filename, endpoint=timeserie
         timeseries_eto.reducer = "mean"
         timeseries_etof.reducer = "mean"
 
-    sample_data.start(
+    et_data.start(
         request_args=[timeseries_et, timeseries_eto, timeseries_etof],
         frequency="daily",
         logger=logger,
         packets=True,
     )
-
-    sample_data.export(f"data/{filename}.csv")
+    
+    et_data.export(f"data/{filename}.csv")
+    et_data.data_table["time"] = pd.to_datetime(et_data.data_table["time"])
+    # Climatology compilation
+    # Create a column for day of year
+    et_data.data_table["doy"] = et_data.data_table["time"].dt.dayofyear
+    # Group by field, crop, and doy then calculate the average conditions
+    climatology_table = et_data.data_table.groupby(["field_id", "crop", "doy"])[
+        ["actual_et", "actual_eto", "actual_etof"]
+    ].agg("mean")
+    climatology_table.reset_index().to_csv(f"data/{filename}_climatology.csv", index=False)
+    # End Climatology
+    
+    # Year-to-date Averages Compilation
+    avgs_table = (
+        et_data.data_table.loc[(et_data.data_table["time"].dt.year == 2024), :]
+        .groupby(["field_id", "crop"])[["actual_et", "actual_eto", "actual_etof"]]
+        .agg("mean")
+    )
+    avgs_table.reset_index().to_csv(f"data/{filename}_2024_avgs.csv", index=False)
+    # End Year-to-date Averages Compilation
 
 def get_forecasts(fields_queue, reference, *, dir, endpoint=forecast_endpoint, polygon=False):
     # Gather predictions at weekly intervals.
     # Forecast begins predictions from the end_range. So to start predictions for Jan 1, set to Dec 31
     forecasting_date = datetime(2024, 8, 5)  # Marker for loop
-    end_date = datetime(2024, 9, 2)  # 2 Sep 2024
+    end_date = datetime(2024, 10, 7)  # 2 Sep 2024
     interval_delta = timedelta(weeks=1)  # weekly interval
 
     # Create dir if it doesn't exist
@@ -172,14 +192,14 @@ def main():
 	monterey_queue = deque(monterey_fields.index.to_list())
 
 	# point forecasting
-	# logger.info("Getting point data for Monterey County")
-	# # Monterey Data
-	# get_historical_data(monterey_queue, monterey_fields, filename="monterey_historical")
-	# get_forecasts(monterey_queue, monterey_fields, dir="/monterey")
+	logger.info("Getting point data for Monterey County")
+	# Monterey Data
+	get_historical_data(monterey_queue, monterey_fields, filename="monterey_historical")
+	get_forecasts(monterey_queue, monterey_fields, dir="/monterey")
 
-	# logger.info("Getting point data for Kern County")
-	# # Kern Data
-	# get_historical_data(kern_queue, kern_fields, filename="kern_historical")                         
+	logger.info("Getting point data for Kern County")
+	# Kern Data
+	get_historical_data(kern_queue, kern_fields, filename="kern_historical")                         
 	get_forecasts(kern_queue, kern_fields, dir="/kern")
 	
 	# polygon forecasting

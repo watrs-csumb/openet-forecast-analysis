@@ -16,14 +16,13 @@ import logging
 import os
 import pandas as pd
 import sys
-import time
 
 # LOGGING CONFIG
 # File handler that allows files to show all log entries
 file_log_handler = logging.FileHandler(
-	filename=datetime.now().strftime(
-		f"logs/{os.path.basename(__file__)}_%Y_%m_%d_%H_%M_%S.log"
-	)
+    filename=datetime.now().strftime(
+        f"logs/{os.path.basename(__file__)}_%Y_%m_%d_%H_%M_%S.log"
+    )
 )
 
 # Stream handler that prints log entries at level WARNING or higher
@@ -31,57 +30,29 @@ stdout_log_handler = logging.StreamHandler(stream=sys.stdout)
 stdout_log_handler.setLevel(logging.INFO)
 
 logging.basicConfig(
-	level=logging.INFO,
-	format="%(asctime)s - %(levelname)s - %(message)s",
-	handlers=[file_log_handler, stdout_log_handler],
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[file_log_handler, stdout_log_handler],
 )
 logger = logging.getLogger(__name__)
 # END LOGGING CONFIG
 
 polygon_forecast_endpoint = (
-	"https://developer.openet-api.org/experimental/raster/timeseries/forecasting/seasonal_polygon"
+    "https://developer.openet-api.org/experimental/raster/timeseries/forecasting/seasonal_polygon"
 )
+polygon_timeseries_endpoint = "https://developer.openet-api.org/raster/timeseries/polygon"
 
 api_key = dotenv_values(".env").get("ET_KEY")
 kern_polygon_fields = (
-	pd.read_csv("./data/kern_polygons.csv", low_memory=False)
-	.set_index("OPENET_ID")
-	.sample(50)
+    pd.read_csv("./data/kern_polygons.csv", low_memory=False)
+    .set_index("OPENET_ID")
+    .sample(50)
 )
 monterey_polygon_fields = (
-	pd.read_csv("./data/monterey_polygons.csv", low_memory=False)
-	.set_index("OPENET_ID")
-	.sample(50)
+    pd.read_csv("./data/monterey_polygons.csv", low_memory=False)
+    .set_index("OPENET_ID")
+    .sample(50)
 )
-
-"""
-{
-  "align": false,
-  "date_range": [
-	"2016-01-01",
-	"2024-10-07"
-  ],
-  "file_format": "CSV",
-  "geometry": [
-	-119.7937,
-	35.58995,
-	-119.7937,
-	35.53326,
-	-119.71268,
-	35.53326,
-	-119.71268,
-	35.58995
-  ],
-  "interval": "daily",
-  "model": "Ensemble",
-  "reducer": "mean",
-  "reference_et": "cimis",
-  "units": "mm",
-  "variable": "ET",
-  "match_window": 90,
-  "match_variable" : "ndvi"
-}'
-"""# 60, 90, 180
 
 def get_forecasts(fields_queue, reference, *, dir, endpoint=polygon_forecast_endpoint):
     forecasting_date = datetime(2024, 6, 3)  # Marker for loop
@@ -120,7 +91,7 @@ def get_forecasts(fields_queue, reference, *, dir, endpoint=polygon_forecast_end
                     "reducer": "mean",
                     "match_variable": "ndvi",
                     "match_window": window_queue[0],
-                    # "align": True
+                    "align": True
                 },
             )
 
@@ -134,7 +105,7 @@ def get_forecasts(fields_queue, reference, *, dir, endpoint=polygon_forecast_end
                     "reducer": "mean",
                     "match_variable": "ndvi",
                     "match_window": window_queue[0],
-                    # "align": True
+                    "align": True
                 },
             )
 
@@ -148,7 +119,7 @@ def get_forecasts(fields_queue, reference, *, dir, endpoint=polygon_forecast_end
                     "reducer": "mean",
                     "match_variable": "ndvi",
                     "match_window": window_queue[0],
-                    # "align": True
+                    "align": True
                 },
             )
 
@@ -166,22 +137,73 @@ def get_forecasts(fields_queue, reference, *, dir, endpoint=polygon_forecast_end
 
         forecasting_date = forecasting_date + interval_delta
 
-def main():
-	version_prompt = input("What version of DTW is this?: ")
-	
-	monterey_queue = deque(monterey_polygon_fields.index.to_list())
-	kern_queue = deque(kern_polygon_fields.index.to_list())
+def get_historical(
+    fields_queue, reference, *, filename, endpoint=polygon_timeseries_endpoint
 
-	logger.info("Getting polygon data for Monterey County")
-	get_forecasts(
-		monterey_queue,
-		monterey_polygon_fields,
-		dir=f"{version_prompt}/polygon/monterey/sampled",
-		endpoint=polygon_forecast_endpoint,
-	)
-	
-	logger.info("Getting polygon data for Kern County")
-	get_forecasts(kern_queue, kern_polygon_fields, dir=f"{version_prompt}/polygon/kern/sampled", endpoint=polygon_forecast_endpoint)
+):
+    et_data = ETFetch(
+        deepcopy(fields_queue),
+        reference,
+        api_key=api_key,  # type: ignore
+    )
+
+    timeseries_et = ETArg(
+        "actual_et",
+        args={
+            "endpoint": endpoint,
+            "date_range": ["2016-01-01", "2024-08-02"],
+            "variable": "ET",
+            "reducer": "mean",
+        },
+    )
+
+    timeseries_eto = ETArg(
+        "actual_eto",
+        args={
+            "endpoint": endpoint,
+            "date_range": ["2016-01-01", "2024-08-02"],
+            "variable": "ETo",
+            "reducer": "mean",
+        },
+    )
+
+    timeseries_etof = ETArg(
+        "actual_etof",
+        args={
+            "endpoint": endpoint,
+            "date_range": ["2016-01-01", "2024-08-02"],
+            "variable": "ETof",
+            "reducer": "mean",
+        },
+    )
+    
+    et_data.start(
+        request_args=[timeseries_et, timeseries_eto, timeseries_etof],
+        frequency="daily",
+        logger=logger,
+        packets=True,
+    )
+    
+    et_data.export(f"data/{filename}.csv")
+
+def main():
+    version_prompt = input("What version of DTW is this?: ")
+    
+    monterey_queue = deque(monterey_polygon_fields.index.to_list())
+    kern_queue = deque(kern_polygon_fields.index.to_list())
+
+    logger.info("Getting polygon data for Monterey County")
+    get_forecasts(
+        monterey_queue,
+        monterey_polygon_fields,
+        dir=f"{version_prompt}/polygon/monterey/sampled",
+        endpoint=polygon_forecast_endpoint,
+    )
+    get_historical(monterey_queue, monterey_polygon_fields, filename='monterey_window_historical.csv')
+    
+    logger.info("Getting polygon data for Kern County")
+    get_forecasts(kern_queue, kern_polygon_fields, dir=f"{version_prompt}/polygon/kern/sampled", endpoint=polygon_forecast_endpoint)
+    get_historical(kern_queue, kern_polygon_fields, filename='kern_window_historical.csv')
 
 if __name__ == '__main__':
     main()
