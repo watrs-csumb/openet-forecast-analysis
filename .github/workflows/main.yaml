@@ -1,0 +1,27 @@
+name: openet-lib-test-action
+
+# Run the tests only if code is pushed to the main branch
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  python-env-setup:
+    name: Python Environment Setup
+    # Only tested on Ubuntu 24 and Windows 11
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12' 
+        cache: 'pip-env'
+    # Create virtual env at current dir.
+    - run: python -m venv .
+    - run: source bin/Activate
+    - run: pip install -r requirements.txt
+  run-pytest:
+    name: Run PyTest
+    needs: python-env-setup
+    run: python -m pytest

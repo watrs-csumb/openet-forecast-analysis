@@ -1,0 +1,9 @@
+requests
+numpy
+pandas
+geopandas
+contexily
+pytest
+pytest-cov
+requests_mock
+mock

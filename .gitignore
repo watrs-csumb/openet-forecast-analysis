@@ -6,8 +6,8 @@ Scripts/
 share/
 .ipy*/
 .vscode/
-__pycache__/*
-notebook/__pycache__/*
+/__pycache__/*
+*/__pycache__/*
 logs/
 package/
 data/bin/
@@ -15,5 +15,6 @@ lib/*
 lib64
 bin/*
 *.gpg
-.*/
-\.*
+.virtual_documents/
+.coverage
+.Queue.py
