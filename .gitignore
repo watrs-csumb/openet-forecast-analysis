@@ -18,3 +18,4 @@ bin/*
 .virtual_documents/
 .coverage
 .Queue.py
+junit/
