@@ -2,7 +2,7 @@ requests
 numpy
 pandas
 geopandas
-contexily
+contextily
 pytest
 pytest-cov
 requests_mock
