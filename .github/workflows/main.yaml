@@ -24,4 +24,5 @@ jobs:
   run-pytest:
     name: Run PyTest
     needs: python-env-setup
-    run: python -m pytest
+    steps:
+    - run: python -m pytest --cov
