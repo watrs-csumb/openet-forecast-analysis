@@ -53,7 +53,7 @@ class ETFetch:
         self.__names__ = []
         self.__start_time__ = datetime.now()
         self.__timestamp__ = self.__start_time__.strftime('%Y%m%d_%H%M%S')
-  
+
     def __compile_packets__(self) -> None:
         # Create empty tables for each column name. Will all be merged at the end.
         tables = [pd.DataFrame(columns=['field_id', 'crop', 'time', name]) for name in self.__names__]
@@ -122,14 +122,14 @@ class ETFetch:
                 raise ValueError(f'Provided file_format "{file_format}" is not supported.')
     
     def start(self, *, 
-           request_args: List[ETArg], 
-           frequency: str, 
-           packets: bool = True,
-           crop_col: str = 'CROP_2023',
-           logger: logging.Logger = None) -> int:
+            request_args: List[ETArg], 
+            frequency: str, 
+            packets: bool = True,
+            crop_col: str = 'CROP_2023',
+            logger: logging.Logger = None) -> int:
         """
         Begin gathering ET data from listed arguments.
-          
+
         Parameters
         ----------
         request_args : Iterable of ETArg
@@ -190,7 +190,7 @@ class ETFetch:
             current_field_id = self.fields_queue[0]
             current_point_coordinates = json.loads(self.points_ref['.geo'][current_field_id])['coordinates']
             current_crop = self.points_ref[crop_col][current_field_id]
-   
+
             # Creates container to track each request to be made.
             results: List[ETRequest] = [ETRequest() for item in request_args]
             self.__names__ = [item.name for item in request_args]
@@ -218,7 +218,7 @@ class ETFetch:
                     arg['match_variable'] = req.match_variable
                 if req.match_window:
                     arg['match_window'] = req.match_window
-     
+
                 if frequency:
                     arg['interval'] = frequency
 
@@ -227,13 +227,13 @@ class ETFetch:
 
                 results[index] = response
             # End conduct request posts
-   
+
             # There is no failed responses
             if False not in [item.success() for item in results]:
                 for entry in range(0, len(results)):
                     res = results[entry]
                     name = request_args[entry].name
-                     # Data returns as a list containing dict{'time': str, '$variable': float}
+                    # Data returns as a list containing dict{'time': str, '$variable': float}
                     content: List[Dict] = json.loads(res.response.content.decode('utf-8'))
 
                     # Begin nth-field data composition
