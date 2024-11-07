@@ -155,9 +155,9 @@ class ETRequest:
                     prompt_info = f"[{self.response.status_code}]: {self.response.content}"
                 except Exception:
                     prompt_info = "No response. Please check your connection."
-
-                logger.error(prompt_info)
-                logger.info(self.request_params)
+                if logger is not None:
+                    logger.error(prompt_info)
+                    logger.info(self.request_params)
                 reattempt_prompt = input(
                     f"Fetch failed{prompt_info}\nWould you like to reattempt (Y/n)? "
                 )
