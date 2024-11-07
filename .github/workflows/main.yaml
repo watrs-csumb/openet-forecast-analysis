@@ -23,6 +23,7 @@ jobs:
     - run: pip install -r requirements.txt
   run-pytest:
     name: Run PyTest
+    runs-on: ubuntu-latest
     needs: python-env-setup
     steps:
     - run: python -m pytest --cov
