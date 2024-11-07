@@ -7,22 +7,21 @@ on:
       - main
 
 jobs:
-  python-env-setup:
-    name: Python Environment Setup
+  test-runner:
+    name: OpenET Test Runner
     # Only tested on Ubuntu 24 and Windows 11
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-python@v5
+    - name: Python Setup
+      uses: actions/setup-python@v5
       with:
         python-version: '3.12' 
     # Install venv-run to easily run a virtualenv
-    - run: pip install venv-run
-    - run: python -m venv .
-    - run: venv-run pip install -r requirements.txt
-  run-pytest:
-    name: Run PyTest
-    runs-on: ubuntu-latest
-    needs: python-env-setup
-    steps:
-    - run: venv-run -m pytest --cov
+    - name: virtualenv setup
+      run: |
+        pip install venv-run
+        python -m venv .
+        venv-run pip install -r requirements.txt
+    - name: Run Tests
+      run: venv-run -m pytest --cov
