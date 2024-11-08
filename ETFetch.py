@@ -71,7 +71,7 @@ class ETFetch:
                 # Contains [time, {variable}]
                 data = pd.read_csv(file, header=0, names=['time', name])
                 data['field_id'] = parts[0]
-                data['crop'] = parts[1]
+                data['crop'] = int(parts[1])
                 tables[item] = pd.concat([data, tables[item]], ignore_index=True)
 
         self.__merge__(tables=tables)
@@ -234,6 +234,7 @@ class ETFetch:
                     res = results[entry]
                     name = request_args[entry].name
                     # Data returns as a list containing dict{'time': str, '$variable': float}
+                    print(res.response.content)
                     content: List[Dict] = json.loads(res.response.content.decode('utf-8'))
 
                     # Begin nth-field data composition
