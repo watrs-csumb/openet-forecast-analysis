@@ -167,6 +167,7 @@ def timeseries_rel(
     data,
     *,
     y,
+    twin_y=None,
     plot="rel",
     col=None,
     row=None,
@@ -233,6 +234,30 @@ def timeseries_rel(
     rel.tick_params(axis="x", rotation=90)
     plt.suptitle(title, y=1.02)
     rel.set_titles(**title_template)
+    
+    if twin_y:
+        for row_col, ax in rel.axes_dict.items():
+            bx = ax.twinx()
+            locator = data[(data[row] == row_col[0]) & (data[col] == row_col[1])]
+            sns.lineplot(
+                locator,
+                x="forecasting_date",
+                y=twin_y,
+                estimator=np.median,
+                errorbar=None,
+                ax=bx,
+                color='g'
+            )
+            bx.tick_params(
+                left=False,
+                right=False,
+                labelleft=False,
+                labelright=False,
+            )
+            bx.set_ylabel('')
+            bx.set(ylim=ax.get_ylim())
+            bx.grid(None)
+    
     if as_percent is True:
         for ax in rel.axes.flat:
             ax.yaxis.set_major_formatter(mtick.PercentFormatter(1.0))
