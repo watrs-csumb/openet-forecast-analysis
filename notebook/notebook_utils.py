@@ -55,6 +55,8 @@ def calculate_metrics(
 
     climatology = climatology_ref[field_mask & crop_mask & date_mask][actual]
     climatology_mse = np.square(root_mean_squared_error(data[actual], climatology))
+    climatology_mae = mean_absolute_error(data[actual], climatology)
+    climatology_bias: float = np.mean(climatology - data[actual])
 
     # Positive skill score indicates the error in climatology is greater than forecast.
     # This means that forecast is outperforming climatology.
@@ -78,6 +80,8 @@ def calculate_metrics(
             "corr": cor.round(2),
             "bias": bias.round(2),
             "skill_score": skill_score.round(2),
+            "c_mae": climatology_mae,
+            "c_bias": climatology_bias
         }
     )
 
@@ -96,6 +100,8 @@ def eval_metrics(
             "corr",
             "bias",
             "skill_score",
+            "c_mae",
+            "c_bias",
         ]
     )
 
