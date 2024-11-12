@@ -90,7 +90,7 @@ class ETFetch:
     def set_reference(self, ref: any) -> None:
         self.points_ref = ref
 
-    def export(self, filename, file_format: str = 'csv', **kwargs) -> None:
+    def export(self, filename = None, file_format: str = 'csv', **kwargs) -> None|str:
         """
         Export data in provided file format. CSV by default. Passes kwargs to matching pandas export function.
         
@@ -113,7 +113,7 @@ class ETFetch:
         """
         match file_format:
             case 'csv':
-                self.data_table.to_csv(filename, index=False, **kwargs)
+                return self.data_table.to_csv(filename, index=False, **kwargs) 
             case 'pickle':
                 self.data_table.to_pickle(filename, index=False, **kwargs)
             case 'json':
