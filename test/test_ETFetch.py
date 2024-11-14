@@ -1,6 +1,4 @@
-from ETArg import ETArg
-from ETFetch import ETFetch
-from ETRequest import ETRequest
+from src import ETFetch, ETArg
 from pathlib import Path
 from shutil import rmtree
 

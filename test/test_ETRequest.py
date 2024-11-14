@@ -1,4 +1,4 @@
-from ETRequest import ETRequest, status_whitelist
+from src.ETRequest import ETRequest, status_whitelist
 
 def ETRequest_successful(requests_mock):
     res = ETRequest(

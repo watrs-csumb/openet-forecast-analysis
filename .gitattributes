@@ -1,3 +1,0 @@
-monterey_forecast_table.csv filter=lfs diff=lfs merge=lfs -text
-data/kern_historical.csv filter=lfs diff=lfs merge=lfs -text
-data/*.csv filter=lfs diff=lfs merge=lfs -text

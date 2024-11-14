@@ -1,7 +1,7 @@
 from collections import deque
 from datetime import datetime
-from ETRequest import ETRequest
-from ETArg import ETArg
+from src.ETRequest import ETRequest
+from src.ETArg import ETArg
 from pathlib import Path
 from typing import List, Dict
 
@@ -234,7 +234,6 @@ class ETFetch:
                     res = results[entry]
                     name = request_args[entry].name
                     # Data returns as a list containing dict{'time': str, '$variable': float}
-                    print(res.response.content)
                     content: List[Dict] = json.loads(res.response.content.decode('utf-8'))
 
                     # Begin nth-field data composition

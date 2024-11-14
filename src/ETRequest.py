@@ -186,9 +186,5 @@ class ETRequest:
         """
         try:
             return self.response.status_code in status_whitelist
-        except:
+        except Exception:
             return False
-
-
-                    
-        

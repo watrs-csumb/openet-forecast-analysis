@@ -4,9 +4,9 @@ from logging import Logger
 import pandas as pd
 
 class ETCloudStorage:
-    def __init__(self, project_id, logger=None):
+    def __init__(self, project_id, client_key=None, logger=None):
         self.__project_id__ = project_id
-        self.__client__ = storage.Client(project=self.__project_id__)
+        self.__client__ = storage.Client(project=self.__project_id__, credentials=client_key)
         self.__logger__: None|Logger = logger
         
     @property
