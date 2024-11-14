@@ -8,8 +8,8 @@ from collections import deque
 from copy import deepcopy
 from datetime import datetime, timedelta
 from dotenv import dotenv_values
-from ETArg import ETArg
-from ETFetch import ETFetch
+from src import ETCloudStorage, ETFetch, ETArg
+from google.oauth2 import service_account  # https://google-auth.readthedocs.io/en/latest/reference/google.oauth2.credentials.html
 from pathlib import Path
 
 import logging
@@ -25,8 +25,8 @@ stdout_log_handler = logging.StreamHandler(stream=sys.stdout)
 stdout_log_handler.setLevel(logging.INFO)
 
 logging.basicConfig(level=logging.INFO,
-					format='%(asctime)s - %(levelname)s - %(message)s',
-					handlers=[file_log_handler, stdout_log_handler])
+                    format='%(asctime)s - %(levelname)s - %(message)s',
+                    handlers=[file_log_handler, stdout_log_handler])
 logger = logging.getLogger(__name__)
 # END LOGGING CONFIG
 
@@ -186,33 +186,39 @@ def get_forecasts(fields_queue, reference, *, dir, endpoint=forecast_endpoint, p
         forecasting_date = forecasting_date + interval_delta
 
 def main():
-	version_prompt = input('What version of DTW is this?: ')
+    gapi_cred = service_account.Credentials.from_service_account_file('./openet-dbe9bc1963b9.json')
+    storage_client = ETCloudStorage("openet", client_key=gapi_cred)
+    df = storage_client.pd_read('Kern.csv')
+    print(df.info())
+    
+    return
+    version_prompt = input('What version of DTW is this?: ')
 
-	kern_queue = deque(kern_fields.index.to_list())
-	monterey_queue = deque(monterey_fields.index.to_list())
+    kern_queue = deque(kern_fields.index.to_list())
+    monterey_queue = deque(monterey_fields.index.to_list())
 
-	# point forecasting
-	logger.info("Getting point data for Monterey County")
-	# Monterey Data
-	get_historical_data(monterey_queue, monterey_fields, filename="monterey_historical")
-	get_forecasts(monterey_queue, monterey_fields, dir="/monterey")
+    # point forecasting
+    logger.info("Getting point data for Monterey County")
+    # Monterey Data
+    get_historical_data(monterey_queue, monterey_fields, filename="monterey_historical")
+    get_forecasts(monterey_queue, monterey_fields, dir="/monterey")
 
-	logger.info("Getting point data for Kern County")
-	# Kern Data
-	get_historical_data(kern_queue, kern_fields, filename="kern_historical")                         
-	get_forecasts(kern_queue, kern_fields, dir="/kern")
-	
-	# polygon forecasting
-	monterey_queue = deque(monterey_polygon_fields.index.to_list())
-	kern_queue = deque(kern_polygon_fields.index.to_list())
-	
-	logger.info("Getting polygon data for Monterey County")
-	get_forecasts(monterey_queue, monterey_polygon_fields, dir=f"{version_prompt}/polygon/monterey/sampled", endpoint=polygon_forecast_endpoint, polygon=True)
-	get_historical_data(monterey_queue, monterey_polygon_fields, filename="monterey_polygon_large_historical", endpoint=polygon_timeseries_endpoint, polygon=True)
+    logger.info("Getting point data for Kern County")
+    # Kern Data
+    get_historical_data(kern_queue, kern_fields, filename="kern_historical")                         
+    get_forecasts(kern_queue, kern_fields, dir="/kern")
+    
+    # polygon forecasting
+    monterey_queue = deque(monterey_polygon_fields.index.to_list())
+    kern_queue = deque(kern_polygon_fields.index.to_list())
+    
+    logger.info("Getting polygon data for Monterey County")
+    get_forecasts(monterey_queue, monterey_polygon_fields, dir=f"{version_prompt}/polygon/monterey/sampled", endpoint=polygon_forecast_endpoint, polygon=True)
+    get_historical_data(monterey_queue, monterey_polygon_fields, filename="monterey_polygon_large_historical", endpoint=polygon_timeseries_endpoint, polygon=True)
 
-	logger.info("Getting polygon data for Kern County")
-	get_forecasts(kern_queue, kern_polygon_fields, dir=f"{version_prompt}/polygon/kern/sampled", endpoint=polygon_forecast_endpoint, polygon=True)
-	get_historical_data(kern_queue, kern_polygon_fields, filename="kern_polygon_large_historical", endpoint=polygon_timeseries_endpoint, polygon=True)
+    logger.info("Getting polygon data for Kern County")
+    get_forecasts(kern_queue, kern_polygon_fields, dir=f"{version_prompt}/polygon/kern/sampled", endpoint=polygon_forecast_endpoint, polygon=True)
+    get_historical_data(kern_queue, kern_polygon_fields, filename="kern_polygon_large_historical", endpoint=polygon_timeseries_endpoint, polygon=True)
 
 if __name__ == '__main__':
-	main()
+    main()

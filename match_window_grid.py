@@ -8,8 +8,7 @@ from collections import deque
 from copy import deepcopy
 from datetime import datetime, timedelta
 from dotenv import dotenv_values
-from ETArg import ETArg
-from ETFetch import ETFetch
+from src import ETArg, ETFetch
 from pathlib import Path
 
 import logging
@@ -54,9 +53,9 @@ monterey_polygon_fields = (
     .sample(50)
 )
 
-def get_forecasts(fields_queue, reference, *, dir, endpoint=polygon_forecast_endpoint):
-    forecasting_date = datetime(2024, 6, 3)  # Marker for loop
-    end_date = datetime(2024, 8, 2)  # 2 Aug 2024
+def get_forecasts(fields_queue, reference, *, dir, endpoint=polygon_forecast_endpoint, align=True):
+    forecasting_date = datetime(2024, 5, 6)  # Marker for loop
+    end_date = datetime(2024, 9, 3)  # 2 Aug 2024
     interval_delta = timedelta(weeks=1)  # weekly interval
     match_windows = [60, 90, 180]
     match_variables = ['ndvi', None]
@@ -81,7 +80,7 @@ def get_forecasts(fields_queue, reference, *, dir, endpoint=polygon_forecast_end
                 filename = f"{file_dir}/{api_date_format}_{str(var_queue[0])}_window_{window_queue[0]}_forecast.csv"
                 if Path(filename).exists():
                     print(f'{filename} already exists. Moving on..')
-                    window_queue.popleft()
+                    var_queue.popleft()
                     continue
 
                 forecast_et = ETArg(
@@ -93,7 +92,7 @@ def get_forecasts(fields_queue, reference, *, dir, endpoint=polygon_forecast_end
                         "reference_et": "cimis",
                         "reducer": "mean",
                         "match_window": window_queue[0],
-                        # "align": False
+                        "align": align
                     },
                 )
                 if var_queue[0]:
@@ -108,7 +107,7 @@ def get_forecasts(fields_queue, reference, *, dir, endpoint=polygon_forecast_end
                         "reference_et": "cimis",
                         "reducer": "mean",
                         "match_window": window_queue[0],
-                        # "align": False
+                        "align": align,
                     },
                 )
                 if var_queue[0]:
@@ -123,7 +122,7 @@ def get_forecasts(fields_queue, reference, *, dir, endpoint=polygon_forecast_end
                         "reference_et": "cimis",
                         "reducer": "mean",
                         "match_window": window_queue[0],
-                        # "align": False
+                        "align": align,
                     },
                 )
                 if var_queue[0]:
@@ -209,7 +208,7 @@ def main():
     # get_historical(monterey_queue, monterey_polygon_fields, filename='monterey_window_historical.csv')
     
     logger.info("Getting polygon data for Kern County")
-    get_forecasts(kern_queue, kern_polygon_fields, dir=f"{version_prompt}/polygon/kern/sampled", endpoint=polygon_forecast_endpoint)
+    get_forecasts(kern_queue, kern_polygon_fields, dir=f"{version_prompt}/polygon/kern/sampled", endpoint=polygon_forecast_endpoint, align=False)
     # get_historical(kern_queue, kern_polygon_fields, filename='kern_window_historical.csv')
 
 if __name__ == '__main__':
