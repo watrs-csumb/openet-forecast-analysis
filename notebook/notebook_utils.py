@@ -19,6 +19,7 @@ import seaborn as sns
 # * Negative skill scores indicate the MSE for forecast is larger than the MSE for climatology
 # * Positive skill scores indicate otherwise
 
+
 # The function is very flexible given the data is formatted appropriately. It has the option of enabling normalization which is based on the average specified variable (ET, ETo, or ETof) throughout that field's historical data.
 def calculate_metrics(
     data: pd.DataFrame,
@@ -29,61 +30,67 @@ def calculate_metrics(
     expected: str,
     normalize: bool = False,
 ) -> pd.Series:
-    # Calculate error metrics
-    mae: float = mean_absolute_error(data[actual], data[expected])
-    forecast_mse: float = np.square(root_mean_squared_error(data[actual], data[expected]))
-    rmse: float = np.sqrt(forecast_mse)
+    try:
+        # Calculate error metrics
+        mae: float = mean_absolute_error(data[actual], data[expected])
+        forecast_mse: float = np.square(
+            root_mean_squared_error(data[actual], data[expected])
+        )
+        rmse: float = np.sqrt(forecast_mse)
 
-    # Correlation Coefficient (R)
-    cor = data[actual].corr(data[expected]).astype(float)
+        # Correlation Coefficient (R)
+        cor = data[actual].corr(data[expected]).astype(float)
 
-    # Mean Forecast Bias determines if the forecast is overshooting or undershooting.
-    # Greater positive number indicates overshooting.
-    bias: float = np.mean(data[expected] - data[actual])
+        # Mean Forecast Bias determines if the forecast is overshooting or undershooting.
+        # Greater positive number indicates overshooting.
+        bias: float = np.mean(data[expected] - data[actual])
 
-    # Climatology uses the mean actual variable for that time of year using historical data.
-    field = data.head(1).squeeze()
-    start_date = data["time"].min().dayofyear
-    end_date = data["time"].max().dayofyear
+        # Climatology uses the mean actual variable for that time of year using historical data.
+        field = data.head(1).squeeze()
+        start_date = data["time"].min().dayofyear
+        end_date = data["time"].max().dayofyear
 
-    # Filter the climatology reference
-    field_mask = climatology_ref["field_id"] == field["field_id"]
-    crop_mask = climatology_ref["crop"] == field["crop"]
-    date_mask = (climatology_ref["doy"] >= start_date) & (
-        climatology_ref["doy"] <= end_date
-    )
+        # Filter the climatology reference
+        field_mask = climatology_ref["field_id"] == field["field_id"]
+        crop_mask = climatology_ref["crop"] == field["crop"]
+        date_mask = (climatology_ref["doy"] >= start_date) & (
+            climatology_ref["doy"] <= end_date
+        )
 
-    climatology = climatology_ref[field_mask & crop_mask & date_mask][actual]
-    climatology_mse = np.square(root_mean_squared_error(data[actual], climatology))
-    climatology_mae = mean_absolute_error(data[actual], climatology)
-    climatology_bias: float = np.mean(climatology - data[actual])
+        climatology = climatology_ref[field_mask & crop_mask & date_mask][actual]
+        climatology_mse = np.square(root_mean_squared_error(data[actual], climatology))
+        climatology_mae = mean_absolute_error(data[actual], climatology)
+        climatology_bias: float = np.mean(climatology - data[actual])
 
-    # Positive skill score indicates the error in climatology is greater than forecast.
-    # This means that forecast is outperforming climatology.
-    skill_score = 1 - np.max(
-        np.min((forecast_mse / climatology_mse), initial=2), initial=-1
-    )
+        # Positive skill score indicates the error in climatology is greater than forecast.
+        # This means that forecast is outperforming climatology.
+        skill_score = 1 - np.max(
+            np.min((forecast_mse / climatology_mse), initial=2), initial=-1
+        )
 
-    if normalize:
-        avg: float = avgs_ref[avgs_ref["field_id"] == field["field_id"]][actual].values[
-            0
-        ]
+        if normalize:
+            avg: float = avgs_ref[avgs_ref["field_id"] == field["field_id"]][
+                actual
+            ].values[0]
 
-        mae: float = mae.astype(float) / avg.astype(float)
-        rmse = np.sqrt(forecast_mse.astype(float) / avg.astype(float))
-        bias = bias.astype(float) / avg.astype(float)
+            mae: float = mae.astype(float) / avg.astype(float)
+            rmse = np.sqrt(forecast_mse.astype(float) / avg.astype(float))
+            bias = bias.astype(float) / avg.astype(float)
+        return pd.Series(
+            {
+                "mae": mae.round(2),
+                "rmse": rmse.round(2),
+                "corr": cor.round(2),
+                "bias": bias.round(2),
+                "skill_score": skill_score.round(2),
+                "c_mae": climatology_mae,
+                "c_bias": climatology_bias,
+            }
+        )
+    except Exception as err:
+        print("Failed to measure error metrics for field", field["field_id"])
+        print(err)
 
-    return pd.Series(
-        {
-            "mae": mae.round(2),
-            "rmse": rmse.round(2),
-            "corr": cor.round(2),
-            "bias": bias.round(2),
-            "skill_score": skill_score.round(2),
-            "c_mae": climatology_mae,
-            "c_bias": climatology_bias
-        }
-    )
 
 ### eval_metrics
 # This function evaluates the metrics for each variable. The output is a DataFrame containing the metrics with a column specifying which variable (ET, ETo, ETof)
@@ -167,6 +174,7 @@ def eval_metrics(
 
     return metrics_table
 
+
 ### timeseries_rel
 # This plot function utilizes the seaborn relplot method to create grids of plots. Particularly useful for showing distribution on one cell.
 def timeseries_rel(
@@ -240,7 +248,7 @@ def timeseries_rel(
     rel.tick_params(axis="x", rotation=90)
     plt.suptitle(title, y=1.02)
     rel.set_titles(**title_template)
-    
+
     if twin_y:
         for row_col, ax in rel.axes_dict.items():
             bx = ax.twinx()
@@ -252,7 +260,8 @@ def timeseries_rel(
                 estimator=np.median,
                 errorbar=None,
                 ax=bx,
-                color='g'
+                color="k",
+                ls=":",
             )
             bx.tick_params(
                 left=False,
@@ -260,10 +269,10 @@ def timeseries_rel(
                 labelleft=False,
                 labelright=False,
             )
-            bx.set_ylabel('')
+            bx.set_ylabel("")
             bx.set(ylim=ax.get_ylim())
             bx.grid(None)
-    
+
     if as_percent is True:
         for ax in rel.axes.flat:
             ax.yaxis.set_major_formatter(mtick.PercentFormatter(1.0))
@@ -280,15 +289,12 @@ def timeseries_rel(
         rel.refline(**refline)
 
     if type(export_img) is bool and export_img is True:
-        rel.savefig(
-            fname=f"../images/{str(title)}"
-        )
+        rel.savefig(fname=f"../images/{str(title)}")
     elif type(export_img) is str:
-        rel.savefig(
-            fname=f"../images/{export_img}"
-        )
+        rel.savefig(fname=f"../images/{export_img}")
 
     return rel
+
 
 ### trim_extremes
 # Trim the edges of the DataFrame along provided columns with provided threshold.
@@ -303,6 +309,7 @@ def trim_extremes(data, *, cols, threshold):
         data.drop(columns=f"{c}_pct", inplace=True)
     return data
 
+
 def catplot_geo(
     data,
     *,
@@ -316,6 +323,8 @@ def catplot_geo(
     export_img: bool | str = None,
     height=4,
     aspect=1.2,
+    vmin=None,
+    vmax=None,
     double_legend=False,
     row_order=None,
     col_order=None,
@@ -345,16 +354,21 @@ def catplot_geo(
 
     # Colorbar config
     norm = None
+
+    data = data.copy()
+    if not vmin and not vmax:
+        vmin = data[hue].min()
+        vmax = data[hue].max()
+
+    data[hue] = data[hue].transform(lambda x: x if x > vmin else vmin)
+    data[hue] = data[hue].transform(lambda x: x if x < vmax else vmax)
+
     if normalize_cmap:
-        norm = mcolors.TwoSlopeNorm(
-            vcenter=0, vmin=data[hue].min(), vmax=data[hue].max()
-        )
+        norm = mcolors.TwoSlopeNorm(vcenter=0, vmin=vmin, vmax=vmax)
         c_mappable = cm.ScalarMappable(norm=norm, cmap=palette)
         c_mappable.set_array(data[hue])
     else:
-        c_mappable = plt.scatter(
-            [], [], c=[], vmin=data[hue].min(), vmax=data[hue].max(), cmap=palette
-        )
+        c_mappable = plt.scatter([], [], c=[], vmin=vmin, vmax=vmax, cmap=palette)
 
     # Plot points
     g.map_dataframe(
@@ -386,8 +400,6 @@ def catplot_geo(
     if type(export_img) is bool and export_img is True:
         g.savefig(f"../images/{title}.png")
     elif type(export_img) is str:
-        g.savefig(
-            f"../images/{export_img}.png"
-        )
+        g.savefig(f"../images/{export_img}.png")
 
     return g

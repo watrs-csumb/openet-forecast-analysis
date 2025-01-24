@@ -42,20 +42,12 @@ polygon_forecast_endpoint = (
 polygon_timeseries_endpoint = "https://developer.openet-api.org/raster/timeseries/polygon"
 
 api_key = dotenv_values(".env").get("ET_KEY")
-kern_polygon_fields = (
-    pd.read_csv("./data/kern_polygons_large.csv", low_memory=False)
-    .set_index("field_id")
-    .sample(50)
-)
-monterey_polygon_fields = (
-    pd.read_csv("./data/monterey_polygons_large.csv", low_memory=False)
-    .set_index("field_id")
-    .sample(50)
-)
+kern_polygon_fields = pd.read_csv("./data/kern_polygons_large.csv", low_memory=False).set_index("field_id")
+monterey_polygon_fields = pd.read_csv("./data/monterey_polygons_large.csv", low_memory=False).set_index("field_id")
 
-def get_forecasts(fields_queue, reference, *, dir, endpoint=polygon_forecast_endpoint, align=True):
+def get_forecasts(fields_queue, reference, *, dir, endpoint=polygon_forecast_endpoint, align=True, skip_exist=False):
     forecasting_date = datetime(2024, 5, 6)  # Marker for loop
-    end_date = datetime(2024, 9, 3)  # 2 Aug 2024
+    end_date = datetime(2024, 9, 3) 
     interval_delta = timedelta(weeks=1)  # weekly interval
     match_windows = [60, 90, 180]
     match_variables = ['ndvi', None]
@@ -78,7 +70,7 @@ def get_forecasts(fields_queue, reference, *, dir, endpoint=polygon_forecast_end
                 )
                 api_date_format = forecasting_date.strftime("%Y-%m-%d")
                 filename = f"{file_dir}/{api_date_format}_{str(var_queue[0])}_window_{window_queue[0]}_forecast.csv"
-                if Path(filename).exists():
+                if Path(filename).exists() and skip_exist:
                     print(f'{filename} already exists. Moving on..')
                     var_queue.popleft()
                     continue
@@ -157,7 +149,7 @@ def get_historical(
         "actual_et",
         args={
             "endpoint": endpoint,
-            "date_range": ["2016-01-01", "2024-08-02"],
+            "date_range": ["2016-01-01", "2024-09-03"],
             "variable": "ET",
             "reducer": "mean",
         },
@@ -167,7 +159,7 @@ def get_historical(
         "actual_eto",
         args={
             "endpoint": endpoint,
-            "date_range": ["2016-01-01", "2024-08-02"],
+            "date_range": ["2016-01-01", "2024-09-03"],
             "variable": "ETo",
             "reducer": "mean",
         },
@@ -177,7 +169,7 @@ def get_historical(
         "actual_etof",
         args={
             "endpoint": endpoint,
-            "date_range": ["2016-01-01", "2024-08-02"],
+            "date_range": ["2016-01-01", "2024-09-03"],
             "variable": "ETof",
             "reducer": "mean",
         },
@@ -204,12 +196,20 @@ def main():
         monterey_polygon_fields,
         dir=f"{version_prompt}/polygon/monterey/sampled",
         endpoint=polygon_forecast_endpoint,
+        skip_exist=False
     )
-    # get_historical(monterey_queue, monterey_polygon_fields, filename='monterey_window_historical.csv')
+    get_historical(monterey_queue, monterey_polygon_fields, filename='monterey_window_historical')
     
     logger.info("Getting polygon data for Kern County")
-    get_forecasts(kern_queue, kern_polygon_fields, dir=f"{version_prompt}/polygon/kern/sampled", endpoint=polygon_forecast_endpoint, align=False)
-    # get_historical(kern_queue, kern_polygon_fields, filename='kern_window_historical.csv')
+    get_forecasts(
+        kern_queue,
+        kern_polygon_fields,
+        dir=f"{version_prompt}/polygon/kern/sampled",
+        endpoint=polygon_forecast_endpoint,
+        align=False,
+        skip_exist=False,
+    )
+    get_historical(kern_queue, kern_polygon_fields, filename='kern_window_historical')
 
 if __name__ == '__main__':
     main()

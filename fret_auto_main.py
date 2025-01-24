@@ -8,8 +8,8 @@ from collections import deque
 from copy import deepcopy
 from datetime import datetime, timedelta
 from dotenv import dotenv_values
-from ETArg import ETArg
-from ETFetch import ETFetch
+from src import ETArg, ETFetch
+from src.ETUtils import CloudStorage, Authenticate
 
 import logging
 import os
@@ -55,15 +55,6 @@ def main():
     monterey_queue = deque(monterey_fields.index.to_list())
     kern_queue = deque(kern_fields.index.to_list())
 
-    forecast_eto = ETArg(
-        "dtw_eto",
-        args={
-            "endpoint": forecast_endpoint,
-            "date_range": ["2016-01-01", check_time.strftime("%Y-%m-%d")],
-            "variable": "ETo",
-            "reducer": "mean"
-        },
-    )
     eto_arg = ETArg(
         "fret_eto",
         args={
@@ -75,28 +66,36 @@ def main():
         },
     )
 
+    # Google Cloud Storage authentication and initialization
+    storage_client = CloudStorage("openet", Authenticate("./gapi_credentials.json"), logger=logger)
+
     logger.info(f"FRET automation started on: {check_time}")
     try:
         while True:
             # This method performs a do-while loop. Initially running the FRET data fetch, and does so when the run_fetch toggle is True.
             if run_fetch is True:
                 export_date_format = check_time.strftime("%Y-%m-%d")
+                
+                # -- Monterey FRET -- #
                 monterey_fret = ETFetch(
                     deepcopy(monterey_queue), monterey_fields, api_key=api_key
                 )  # type: ignore
-                monterey_fret.start(request_args=[forecast_eto, eto_arg], logger=logger, packets=True, frequency='daily')
-                monterey_fret.export(
-                    f"data/forecasts/fret/monterey_fret_{export_date_format}.csv"
+                monterey_fret.start(request_args=[eto_arg], logger=logger, packets=True, frequency='daily')
+                storage_client.fetch_save(
+                    monterey_fret,
+                    f"forecasts/fret/monterey_fret_{export_date_format}.csv",
                 )
-
-
+                
+                # -- Kern FRET -- #
                 kern_fret = ETFetch(
                     deepcopy(kern_queue), kern_fields, api_key=api_key
                 )  # type: ignore
-                kern_fret.start(request_args=[forecast_eto, eto_arg], logger=logger, packets=True, frequency='daily')
-                kern_fret.export(
-                    f"data/forecasts/fret/kern_fret_{export_date_format}.csv"
+                
+                kern_fret.start(request_args=[eto_arg], logger=logger, packets=True, frequency='daily')
+                storage_client.fetch_save(
+                    kern_fret, f"forecasts/fret/kern_fret_{export_date_format}.csv"
                 )
+                
                 logger.info(
                     f"FRET fetched on: {check_time}. Next check will be on: {upcoming_check_time}"
                 )
@@ -132,7 +131,7 @@ def main():
                 "endpoint": timeseries_endpoint,
                 "variable": "ET",
                 "date_range": ["2016-01-01", final_fetch_time_api_format],
-           		"reducer": "mean"
+                "reducer": "mean"
             },
         )
         historical_arg_eto = ETArg(
@@ -141,7 +140,7 @@ def main():
                 "endpoint": timeseries_endpoint,
                 "variable": "ETo",
                 "date_range": ["2016-01-01", final_fetch_time_api_format],
-            	"reducer": "mean"
+                "reducer": "mean"
             },
         )
         historical_arg_etof = ETArg(
@@ -150,7 +149,7 @@ def main():
                 "endpoint": timeseries_endpoint,
                 "variable": "ETof",
                 "date_range": ["2016-01-01", final_fetch_time_api_format],
-            	"reducer": "mean"
+                "reducer": "mean"
             },
         )
 
@@ -164,7 +163,9 @@ def main():
             packets=True,
             logger=logger,
         )
-        mo_historical_fetch.export("data/monterey_polygon_historical.csv")
+        storage_client.fetch_save(
+            mo_historical_fetch, "monterey_polygon_historical.csv"
+        )
 
         logger.info("Fetching Kern County historical data.")
         ke_historical_fetch = ETFetch(kern_queue, kern_fields, api_key=api_key)  # type: ignore
@@ -174,7 +175,7 @@ def main():
             packets=True,
             logger=logger,
         )
-        ke_historical_fetch.export("data/kern_polygon_historical.csv")
+        storage_client.fetch_save(ke_historical_fetch, "kern_polygon_historical.csv")
 
 if __name__ == "__main__":
 	main()

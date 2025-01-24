@@ -167,6 +167,7 @@ class ETRequest:
                 elif reattempt_prompt.lower() == "yi":
                     return self.send(logger=logger, ignore_fails=True)
                 else:
+                    num_retries = 0
                     self.response = None
 
             return self.response
