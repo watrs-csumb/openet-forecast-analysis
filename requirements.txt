@@ -8,3 +8,4 @@ pytest-cov
 requests_mock
 mock
 google-cloud-storage
+gcp-storage-emulator
