@@ -30,7 +30,10 @@ def calculate_metrics(
     expected: str,
     normalize: bool = False,
 ) -> pd.Series:
+    global field
+    field = ''
     try:
+        field = data.head(1).squeeze()
         # Calculate error metrics
         mae: float = mean_absolute_error(data[actual], data[expected])
         forecast_mse: float = np.square(
@@ -46,7 +49,6 @@ def calculate_metrics(
         bias: float = np.mean(data[expected] - data[actual])
 
         # Climatology uses the mean actual variable for that time of year using historical data.
-        field = data.head(1).squeeze()
         start_date = data["time"].min().dayofyear
         end_date = data["time"].max().dayofyear
 
@@ -88,7 +90,7 @@ def calculate_metrics(
             }
         )
     except Exception as err:
-        print("Failed to measure error metrics for field", field["field_id"])
+        print("Failed to measure error metrics for field", field["field_id"], "on", field['time'])
         print(err)
 
 
