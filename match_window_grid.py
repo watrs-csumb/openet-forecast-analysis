@@ -196,6 +196,7 @@ def main():
         monterey_polygon_fields,
         dir=f"{version_prompt}/polygon/monterey/sampled",
         endpoint=polygon_forecast_endpoint,
+        # align=False,
         skip_exist=False
     )
     get_historical(monterey_queue, monterey_polygon_fields, filename='monterey_window_historical')
@@ -206,7 +207,7 @@ def main():
         kern_polygon_fields,
         dir=f"{version_prompt}/polygon/kern/sampled",
         endpoint=polygon_forecast_endpoint,
-        align=False,
+        # align=False,
         skip_exist=False,
     )
     get_historical(kern_queue, kern_polygon_fields, filename='kern_window_historical')

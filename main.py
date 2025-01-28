@@ -145,7 +145,7 @@ def get_historical_data(
     )
     if isinstance(use_cloud, CloudStorage):
         fname = f"{filename}_2024_avgs.csv"
-        avgs_table.reset_index().to_csv(f'data/{fname}.csv', index=False)
+        avgs_table.reset_index().to_csv(f'data/{fname}', index=False)
 
         use_cloud.pd_write(
             fname,
@@ -156,7 +156,6 @@ def get_historical_data(
     avgs_table.reset_index().to_csv(f"{filename}_2024_avgs.csv", index=False)
     # End Year-to-date Averages Compilation
 
-
 def get_forecasts(
     fields_queue,
     reference,
@@ -165,6 +164,7 @@ def get_forecasts(
     end_date:str,
     endpoint=forecast_endpoint,
     polygon=False,
+    align=False,
     use_cloud: bool | CloudStorage = False,
     make_parents=False,
     skip_exists=True
@@ -175,7 +175,7 @@ def get_forecasts(
     end_date = datetime.strptime(end_date, '%Y-%m-%d')
     interval_delta = timedelta(weeks=1)  # weekly interval
 
-    # Create dir if it doesn't exist
+    # Create dir if it doesn't exist.
     file_dir = Path(f"data/forecasts/{dir}")
     if file_dir.exists() is False and make_parents:
         file_dir.mkdir(parents=True)
@@ -189,6 +189,8 @@ def get_forecasts(
         )
         api_date_format = forecasting_date.strftime("%Y-%m-%d")
         filename = f"{file_dir}/{api_date_format}_forecast.csv"
+        
+        # If skip_exists is True, skips operation if the output path already exists.
         if skip_exists and Path(filename).exists():
             print(f"{filename} already exists. Moving on..")
             forecasting_date = forecasting_date + interval_delta
@@ -200,6 +202,7 @@ def get_forecasts(
                 "endpoint": endpoint,
                 "date_range": ["2016-01-01", api_date_format],
                 "variable": "ET",
+                "align": align
             },
         )
 
@@ -209,6 +212,7 @@ def get_forecasts(
                 "endpoint": endpoint,
                 "date_range": ["2016-01-01", api_date_format],
                 "variable": "ETo",
+                "align": align,
             },
         )
 
@@ -218,6 +222,7 @@ def get_forecasts(
                 "endpoint": endpoint,
                 "date_range": ["2016-01-01", api_date_format],
                 "variable": "ETof",
+                "align": align,
             },
         )
 
@@ -236,6 +241,7 @@ def get_forecasts(
         
         process.export(filename)
 
+        # If the use_cloud flag is a CloudStorage object, export to the bucket contained in the object.
         if isinstance(use_cloud, CloudStorage):
             try:
                 use_cloud.pd_write(filename, process.export())
@@ -249,36 +255,50 @@ def main():
         "openet", credentials=Authenticate("./gapi_credentials.json"), logger=logger
     )
     
-    # version_prompt = input("What version of DTW is this?: ")
+    version_prompt = input("What version of DTW is this?: ")
 
     kern_queue = deque(kern_fields.index.to_list())
     monterey_queue = deque(monterey_fields.index.to_list())
 
     # point forecasting
-    # logger.info("Getting point data for Monterey County")
-    # # Monterey Data
-    # # get_historical_data(monterey_queue, monterey_fields, filename="monterey_historical", use_cloud=storage_client)
-    # # get_forecasts(monterey_queue, monterey_fields, dir="/monterey", use_cloud=storage_client)
+    logger.info("Getting point data for Monterey County")
+    # Monterey Data
+    get_historical_data(monterey_queue, monterey_fields, filename="monterey_historical", use_cloud=storage_client,
+        end_date="2024-12-14",)
+    get_forecasts(
+        monterey_queue,
+        monterey_fields,
+        dir="/monterey",
+        use_cloud=storage_client,
+        end_date="2024-12-14",
+    )
 
-    # logger.info("Getting point data for Kern County")
-    # # Kern Data
-    # get_historical_data(kern_queue, kern_fields, filename="kern_historical", use_cloud=storage_client)
-    # get_forecasts(kern_queue, kern_fields, dir="/kern", use_cloud=storage_client)
-    # return
+    logger.info("Getting point data for Kern County")
+    # Kern Data
+    get_historical_data(kern_queue, kern_fields, filename="kern_historical", use_cloud=storage_client,
+        end_date="2024-12-14",)
+    get_forecasts(
+        kern_queue,
+        kern_fields,
+        dir="/kern",
+        use_cloud=storage_client,
+        end_date="2024-12-14",
+    )
 
     # polygon forecasting
     monterey_queue = deque(monterey_polygon_fields.index.to_list())
     kern_queue = deque(kern_polygon_fields.index.to_list())
 
     logger.info("Getting polygon data for Monterey County")
-    # get_forecasts(
-    #     monterey_queue,
-    #     monterey_polygon_fields,
-    #     dir=f"{version_prompt}/polygon/monterey/sampled",
-    #     endpoint=polygon_forecast_endpoint,
-    #     polygon=True,
-    #     use_cloud=storage_client,
-    # )
+    get_forecasts(
+        monterey_queue,
+        monterey_polygon_fields,
+        dir=f"{version_prompt}/polygon/monterey/sampled",
+        endpoint=polygon_forecast_endpoint,
+        polygon=True,
+        use_cloud=storage_client,
+        end_date="2024-12-14",
+    )
     get_historical_data(
         monterey_queue,
         monterey_polygon_fields,
@@ -290,15 +310,15 @@ def main():
     )
 
     logger.info("Getting polygon data for Kern County")
-    # get_forecasts(
-    #     kern_queue,
-    #     kern_polygon_fields,
-    #     dir=f"{version_prompt}/polygon/kern/sampled",
-    #     endpoint=polygon_forecast_endpoint,
-    #     polygon=True,
-    #     use_cloud=storage_client,
-    #     end_date="2024-12-14",
-    # )
+    get_forecasts(
+        kern_queue,
+        kern_polygon_fields,
+        dir=f"{version_prompt}/polygon/kern/sampled",
+        endpoint=polygon_forecast_endpoint,
+        polygon=True,
+        use_cloud=storage_client,
+        end_date="2024-12-14",
+    )
     get_historical_data(
         kern_queue,
         kern_polygon_fields,
@@ -308,7 +328,6 @@ def main():
         use_cloud=storage_client,
         end_date="2024-12-14",
     )
-
 
 if __name__ == "__main__":
     main()
