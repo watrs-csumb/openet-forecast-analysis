@@ -36,7 +36,6 @@ logger = logging.getLogger(__name__)
 # END LOGGING CONFIG
 
 fret_endpoint = "https://developer.openet-api.org/experimental/raster/timeseries/forecasting/fret"
-forecast_endpoint = "https://developer.openet-api.org/experimental/raster/timeseries/forecasting/seasonal_polygon"
 timeseries_endpoint = "https://developer.openet-api.org/raster/timeseries/polygon"
 
 api_key = dotenv_values(".env").get("ET_KEY")

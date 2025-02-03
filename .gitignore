@@ -22,3 +22,4 @@ junit/
 data/
 openet-dbe9bc1963b9.json
 gapi_credentials.json
+update_bucket.py

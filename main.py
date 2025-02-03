@@ -261,29 +261,29 @@ def main():
     monterey_queue = deque(monterey_fields.index.to_list())
 
     # point forecasting
-    logger.info("Getting point data for Monterey County")
+    # logger.info("Getting point data for Monterey County")
     # Monterey Data
-    get_historical_data(monterey_queue, monterey_fields, filename="monterey_historical", use_cloud=storage_client,
-        end_date="2024-12-14",)
-    get_forecasts(
-        monterey_queue,
-        monterey_fields,
-        dir="/monterey",
-        use_cloud=storage_client,
-        end_date="2024-12-14",
-    )
+    # get_historical_data(monterey_queue, monterey_fields, filename="monterey_historical", use_cloud=storage_client,
+    #     end_date="2024-12-14",)
+    # get_forecasts(
+    #     monterey_queue,
+    #     monterey_fields,
+    #     dir="/monterey",
+    #     use_cloud=storage_client,
+    #     end_date="2024-12-14",
+    # )
 
-    logger.info("Getting point data for Kern County")
+    # logger.info("Getting point data for Kern County")
     # Kern Data
-    get_historical_data(kern_queue, kern_fields, filename="kern_historical", use_cloud=storage_client,
-        end_date="2024-12-14",)
-    get_forecasts(
-        kern_queue,
-        kern_fields,
-        dir="/kern",
-        use_cloud=storage_client,
-        end_date="2024-12-14",
-    )
+    # get_historical_data(kern_queue, kern_fields, filename="kern_historical", use_cloud=storage_client,
+    #     end_date="2024-12-14",)
+    # get_forecasts(
+    #     kern_queue,
+    #     kern_fields,
+    #     dir="/kern",
+    #     use_cloud=storage_client,
+    #     end_date="2024-12-14",
+    # )
 
     # polygon forecasting
     monterey_queue = deque(monterey_polygon_fields.index.to_list())
