@@ -1,5 +1,4 @@
 import gzip
-import requests
 import sys
 import time
 
@@ -92,7 +91,7 @@ def main():
     huc8Id = sys.argv[1]
     # Gets metadata from field IDs found in HUC8 boundary.
     metadata = HUC8.get_huc8_metadata(huc8Id)
-    # metadata.to_csv(f"./data/huc8/{huc8Id}_metadata.csv")
+    metadata.to_csv(f"./data/huc8/{huc8Id}_metadata.csv")
     
     top_crops = metadata['crop_2022'].value_counts(ascending=False)[:3]
     
@@ -102,7 +101,7 @@ def main():
     data = HUC8.get_timeseries_data(collecting_fields['field_id'].astype(str).tolist())
     stop = time.perf_counter()
     
-    # data.to_csv(f"./data/huc8/{huc8Id}_values.csv")
+    data.to_csv(f"./data/huc8/{huc8Id}_values.csv")
     
     print(f'{collecting_fields['field_id'].agg('count')} fields took {round((stop-start), 2)}')
     
