@@ -218,6 +218,10 @@ class ETFetch:
                     arg['match_variable'] = req.match_variable
                 if req.match_window:
                     arg['match_window'] = req.match_window
+                if req.cog:
+                    arg['cog'] = req.cog
+                if req.encrypt:
+                    arg['encrypt'] = req.encrypt
 
                 if frequency:
                     arg['interval'] = frequency
