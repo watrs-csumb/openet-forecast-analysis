@@ -182,6 +182,7 @@ def eval_metrics(
 def timeseries_rel(
     data,
     *,
+    x="forecasting_date",
     y,
     twin_y=None,
     plot="rel",
@@ -203,7 +204,7 @@ def timeseries_rel(
         case "rel":
             rel = sns.relplot(
                 data=data,
-                x="forecasting_date",
+                x=x,
                 y=y,
                 col=col,
                 row=row,
@@ -219,7 +220,7 @@ def timeseries_rel(
         case "cat":
             rel = sns.catplot(
                 data=data,
-                x="forecasting_date",
+                x=x,
                 y=y,
                 col=col,
                 row=row,
@@ -231,7 +232,7 @@ def timeseries_rel(
         case "lm":
             rel = sns.lmplot(
                 data=data,
-                x="forecasting_date",
+                x=x,
                 y=y,
                 col=col,
                 row=row,
@@ -327,7 +328,7 @@ def catplot_geo(
     aspect=1.2,
     vmin=None,
     vmax=None,
-    double_legend=False,
+    double_legend: dict = None,
     row_order=None,
     col_order=None,
     title_template={},
@@ -336,6 +337,7 @@ def catplot_geo(
     background=False,
 ):
     plt.rcdefaults()
+    
     g = sns.FacetGrid(
         data,
         col=col,
@@ -346,12 +348,14 @@ def catplot_geo(
         row_order=row_order,
         col_order=col_order,
     )
+    
     for ax in g.axes.flat:
+        ax.set_yticks([])
+        ax.set_xticks([])
         boundary_map.plot(color="lightgrey", edgecolor="k", alpha=0.3, ax=ax)
         # Add basemap
         if background:
             ax.tick_params(left=False, bottom=False)
-            ax.set(xticklabels=[], yticklabels=[], xlabel=None, ylabel=None)
             cx.add_basemap(ax, crs=boundary_map.crs.to_string(), attribution=False)
 
     # Colorbar config
@@ -365,12 +369,37 @@ def catplot_geo(
     data[hue] = data[hue].transform(lambda x: x if x > vmin else vmin)
     data[hue] = data[hue].transform(lambda x: x if x < vmax else vmax)
 
+    if double_legend:
+        c_map = double_legend.get("cmap", palette)
+
+        g.figure.subplots_adjust(left=0.1)
+
     if normalize_cmap:
         norm = mcolors.TwoSlopeNorm(vcenter=0, vmin=vmin, vmax=vmax)
         c_mappable = cm.ScalarMappable(norm=norm, cmap=palette)
         c_mappable.set_array(data[hue])
+        
+        if double_legend:
+            d_norm = mcolors.TwoSlopeNorm(
+                vcenter=0,
+                vmin=double_legend["data"].min(),
+                vmax=double_legend["data"].max(),
+            )
+            
+            d_mappable = cm.ScalarMappable(norm=d_norm, cmap=c_map)
+        
     else:
         c_mappable = plt.scatter([], [], c=[], vmin=vmin, vmax=vmax, cmap=palette)
+        
+        if double_legend:
+            d_mappable = plt.scatter(
+                [],
+                [],
+                c=[],
+                vmin=double_legend["data"].min(),
+                vmax=double_legend["data"].max(),
+                cmap=c_map,
+            )
 
     # Plot points
     g.map_dataframe(
@@ -386,17 +415,20 @@ def catplot_geo(
     g.set(xlabel=None, ylabel=None)
     g.set_titles(**title_template)
     plt.suptitle(title, y=1.00)
+    
     # Add colorbar to right side
     g.figure.subplots_adjust(right=0.92)
-    cax = g.fig.add_axes([0.94, 0.25, 0.02, 0.6])
+    cax = g.figure.add_axes([0.94, 0.25, 0.02, 0.6])
     g.figure.colorbar(c_mappable, cax=cax)
+    
+    if double_legend:
+        aax = g.figure.add_axes([-0.075, 0.25, 0.02, 0.6])
+        plt.colorbar(d_mappable, cax=aax, label=double_legend.get("name", None))
+    
     if as_percent:
         cax.yaxis.set_major_formatter(mtick.PercentFormatter(1.0))
-    if double_legend is not False:
-        g.figure.subplots_adjust(right=0.90)
-        dax = cax.twinx()
-        if type(double_legend) is not bool:
-            dax.set(ylim=(double_legend.min()["value"], double_legend.max()["value"]))
+        if double_legend:
+            aax.yaxis.set_major_formatter(mtick.PercentFormatter(1.0))
 
     # Export image
     if type(export_img) is bool and export_img is True:
