@@ -4,7 +4,7 @@ import time
 
 # ONLY CHANGE IF YOU KNOW WHAT YOU ARE DOING
 status_whitelist = [200]
-
+timeout_s = 15*60 # 150 seconds
 class ETRequest:
     """
     ET API Request Handling.
@@ -52,7 +52,7 @@ class ETRequest:
         num_retries: int = 3,
         ignore_fails: bool = False,
         logger: logging.Logger = None,
-    ) -> any:
+    ) -> requests.Response | None:
         """
         Send POST request and returns response.
         
@@ -121,7 +121,7 @@ class ETRequest:
         """
         try:
             self.response = requests.post(
-                headers=self.header, url=self.request_endpoint, json=self.request_params
+                headers=self.header, url=self.request_endpoint, json=self.request_params, timeout=timeout_s
             )
 
             # Only a 200 Response will return the right data
@@ -152,7 +152,7 @@ class ETRequest:
                 # A detailed message would not be provided in the event of an outage.
                 prompt_info = ""
                 try:
-                    prompt_info = f"[{self.response.status_code}]: {self.response.content}"
+                    prompt_info = f"[{self.response.status_code}]: {self.response.text}"
                 except Exception:
                     prompt_info = "No response. Please check your connection."
                 if logger is not None:
