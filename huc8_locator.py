@@ -1,7 +1,11 @@
 import argparse
 import gzip
+import logging
+import pathlib
 import sys
 import time
+
+from typing import Optional, List, Union
 
 if sys.version_info < (3, 8):
     print("Python 3.8+ is supported. Please update to use this script.")
@@ -17,6 +21,10 @@ except ImportError:
 
 try:
     import ee
+    from ee.featurecollection import FeatureCollection
+    from ee.collection import Collection
+    from ee.filter import Filter
+    from ee.oauth import _valid_credentials_exist
 except ImportError:
     print("Please run `pip install earthengine-api` and try again.")
     sys.exit(1)
@@ -36,9 +44,17 @@ except ImportError:
 parser = argparse.ArgumentParser(add_help=True)
 parser.add_argument("-huc8", "--huc8", nargs=OPTIONAL, type=str, help="HUC8 Code")
 parser.add_argument("-y", "--year", nargs=OPTIONAL, default="2022", help="Year of Reference. Default, 2022")
-parser.add_argument("-e", "--exclude", nargs=OPTIONAL, type=list, help="List of USDS CDL codes to exclude for EToF maxes")
+parser.add_argument("-e", "--exclude", nargs=OPTIONAL, default=[], type=list, help="List of USDS CDL codes to exclude for EToF maxes")
 parser.add_argument("-d", "--dest", nargs=OPTIONAL, default=None, help="Dir/File prefix for output. Defaults to huc8 code")
 parser.add_argument("-k", "--key", help="OpenET API Key")
+# add verbose flag
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
 
 endpoints = {
     "fieldId": "https://openet-api.org/geodatabase/metadata/ids",
@@ -47,11 +63,16 @@ endpoints = {
 }
 
 ee.Authenticate()
+
+if not _valid_credentials_exist():
+    print("No valid Earth Engine credentials found. Please run `earthengine authenticate` and try again.")
+    sys.exit(1)
+
 ee.Initialize()
 
-dataset = ee.FeatureCollection("USGS/WBD/2017/HUC08")
+dataset = FeatureCollection("USGS/WBD/2017/HUC08")
 
-def request_handler(**kwargs) -> requests.Response | None:
+def request_handler(**kwargs) -> Optional[requests.Response]:
     try:
         req = requests.post(timeout=60, **kwargs)
         
@@ -64,11 +85,15 @@ def request_handler(**kwargs) -> requests.Response | None:
     except KeyboardInterrupt:
         sys.exit(1)
 
-def get_huc8_metadata(huc8_id, api_key) -> pd.DataFrame:
+def get_huc8_metadata(huc8_id: str, api_key: str) -> Optional[pd.DataFrame]:
     # Filter huc8 IDs to return element matching ID provided.
-    elements: ee.Collection = dataset.filter(ee.Filter.eq("huc8", huc8_id))
+    elements: Collection = dataset.filter(Filter.eq("huc8", huc8_id))
+    
     # Localize.
     info = elements.getInfo()
+    
+    if info is None:
+        return
     
     # If features list is empty, filter did not find the huc8 ID.
     if len(info["features"]) == 0:
@@ -89,6 +114,9 @@ def get_huc8_metadata(huc8_id, api_key) -> pd.DataFrame:
         headers={"Authorization": api_key},
     )
     
+    if id_res is None:
+        return
+    
     # Unzip data. List of Field IDs.
     field_Ids = eval(gzip.decompress(id_res.content).decode())
     
@@ -100,6 +128,9 @@ def get_huc8_metadata(huc8_id, api_key) -> pd.DataFrame:
         headers={"Authorization": api_key},
     )
     
+    if metadata_res is None:
+        return
+    
     # Unzips data. List of Dicts["field_id", "hectares", "crop_2016", ..., "crop_2022", ...]
     metadata = eval(gzip.decompress(metadata_res.content).decode())
     
@@ -108,7 +139,7 @@ def get_huc8_metadata(huc8_id, api_key) -> pd.DataFrame:
     
     return df
 
-def get_timeseries_data(field_ids, api_key, year) -> pd.DataFrame:
+def get_timeseries_data(field_ids: List[str], api_key: str, year: Union[str, int]) -> Optional[pd.DataFrame]:
     print(f"Fetching {year} EToF timeseries data for {len(field_ids)} fields...")
     # Request Handler for timeseries data.
     res = request_handler(
@@ -132,10 +163,12 @@ def get_timeseries_data(field_ids, api_key, year) -> pd.DataFrame:
         headers={"Authorization": api_key},
     )
     
+    if res is None:
+        return
     data = eval(gzip.decompress(res.content).decode())
-    
+
     df = pd.DataFrame(data)
-    
+
     return df
 
 def main():
@@ -147,10 +180,17 @@ def main():
     api_key = args.key
     crop_excludes = args.exclude
     
+    # If filename is a directory, append HUC8 ID to it.
+    if pathlib.Path(filename).is_dir():
+        filename = f"{filename}/{huc8Id}"
+    
     crop_col = f"crop_{year}"
     
     # Gets metadata from field IDs found in HUC8 boundary.
     metadata = get_huc8_metadata(huc8Id, api_key=api_key)
+    
+    if metadata is None:
+        return
     
     # Check if metadata contains year provided.
     if crop_col not in metadata.columns:
@@ -173,11 +213,14 @@ def main():
     data = get_timeseries_data(collecting_fields["field_id"].astype(str).tolist(), api_key=api_key, year=year)
     stop = time.perf_counter()
     
+    if data is None:
+        return None
+    
     data.to_csv(f"{filename}_values_{year}.csv")
     
-    print(f"{collecting_fields["field_id"].agg("count")} fields took {round((stop-start), 2)} seconds.")
+    print(f"{collecting_fields['field_id'].agg('count')} fields took {round((stop-start), 2)} seconds.")
     
-    crops_max = data.groupby([crop_col, "collection"])["value_mm"].max()
+    crops_max = data.groupby(["field_id", "collection"])["value_mm"].max()
     crops_max.reset_index().to_csv(f"{filename}_etof_maxes_{year}.csv")
     
     return
