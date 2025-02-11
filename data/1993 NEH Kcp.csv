@@ -1,0 +1,14 @@
+crop,cdl_code,kcp
+Alfalfa,36,1.05
+Grass/Pasture,176,1.05
+Fallow/Idle Cropland,61,1
+Shrubland,152,1
+Other Hay/Non Alfalfa,37,1.05
+Pecans,74,1.15
+Herbaceous Wetlands,195,1
+Dbl Crop Corn/Soybeans,241,1.15
+Citrus,72,0.7
+Almonds,75,1.15
+Grapes,69,0.8
+Walnuts,76,1.25
+Rice,3,1.3
