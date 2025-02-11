@@ -1,14 +1,257 @@
-crop,cdl_code,kcp
-Alfalfa,36,1.05
-Grass/Pasture,176,1.05
-Fallow/Idle Cropland,61,1
-Shrubland,152,1
-Other Hay/Non Alfalfa,37,1.05
-Pecans,74,1.15
-Herbaceous Wetlands,195,1
-Dbl Crop Corn/Soybeans,241,1.15
-Citrus,72,0.7
-Almonds,75,1.15
-Grapes,69,0.8
-Walnuts,76,1.25
-Rice,3,1.3
+crop,cdl_code,kcp,reference
+Alfalfa,36,1.15,"NEH 2-77, 1993"
+Almonds,75,1.15,"NEH 2-79, 1993"
+Apples,68,1.25,"NEH 2-79, 1993"
+Apricots,223,1.15,"NEH 2-79, 1993"
+Aquaculture,92,-9999,
+Asparagus,207,-9999,
+Avocados,215,-9999,
+Background,0,-9999,
+Barley,21,1.15,"NEH 2-73, 1993"
+Barren,65,-9999,
+Barren,131,-9999,
+Blueberries,242,-9999,
+Broccoli,214,1.05,"NEH 2-74, 1993"
+Buckwheat,39,-9999,
+Cabbage,243,1.05,"NEH 2-74, 1993"
+Camelina,38,-9999,
+Caneberries,55,-9999,
+Canola,31,-9999,
+Cantaloupes,209,-9999,
+Carrots,206,1.1,"NEH 2-73, 1993"
+Cauliflower,244,1.05,"NEH 2-74, 1993"
+Celery,245,1.1,"NEH 2-74, 1993"
+Cherries,66,-9999,
+Chick Peas,51,-9999,
+Christmas Trees,70,-9999,
+Citrus,72,0.85,"NEH 2-78, 1993"
+Clouds/No Data,81,-9999,
+Clover/Wildflowers,58,-9999,
+Corn,1,1.15,"NEH 2-74, 1993"
+Cotton,2,1.2,"NEH 2-74, 1993"
+Cranberries,250,-9999,
+Cucumbers,50,0.95,"NEH 2-74, 1993"
+Dbl Crop Barley/Corn,237,1.15,"NEH 2-73/74, 1993"
+Dbl Crop Barley/Sorghum,235,-9999,
+Dbl Crop Barley/Soybeans,254,-9999,
+Dbl Crop Corn/Soybeans,241,1.15,
+Dbl Crop Durum Wht/Sorghum,234,-9999,
+Dbl Crop Lettuce/Barley,233,-9999,
+Dbl Crop Lettuce/Cantaloupe,231,-9999,
+Dbl Crop Lettuce/Cotton,232,-9999,
+Dbl Crop Lettuce/Durum Wht,230,-9999,
+Dbl Crop Oats/Corn,226,-9999,
+Dbl Crop Soybeans/Cotton,239,-9999,
+Dbl Crop Soybeans/Oats,240,-9999,
+Dbl Crop Triticale/Corn,228,-9999,
+Dbl Crop WinWht/Corn,225,-9999,
+Dbl Crop WinWht/Cotton,238,-9999,
+Dbl Crop WinWht/Sorghum,236,-9999,
+Dbl Crop WinWht/Soybeans,26,-9999,
+Deciduous Forest,141,-9999,
+Developed,82,-9999,
+Developed/High Intensity,124,-9999,
+Developed/Low Intensity,122,-9999,
+Developed/Med Intensity,123,-9999,
+Developed/Open Space,121,-9999,
+Dry Beans,42,1.15,"NEH 2-73, 1993"
+Durum Wheat,22,-9999,
+Eggplants,248,1.05,"NEH 2-74, 1993"
+Evergreen Forest,142,-9999,
+Fallow/Idle Cropland,61,-9999,
+Flaxseed,32,1.1,"NEH 2-74, 1993"
+Forest,63,-9999,
+Garlic,208,-9999,
+Gourds,249,-9999,
+Grapes,69,0.9,"NEH 2-80, 1993"
+Grass/Pasture,176,1.1,"NEH 2-77, 1993"
+Greens,219,-9999,
+Herbaceous Wetlands,195,-9999,
+Herbs,57,-9999,
+Honeydew Melons,213,-9999,
+Hops,56,1.5,"NEH 2-81, 1993"
+Lentils,52,1.15,"NEH 2-74, 1993"
+Lettuce,227,1,"NEH 2-74, 1993"
+Millet,29,1.1,"NEH 2-75, 1993"
+Mint,14,1.2,"NEH 2-81, 1993"
+Misc Vegs & Fruits,47,-9999,
+Mixed Forest,143,-9999,
+Mustard,35,-9999,
+Nectarines,218,-9999,
+Nonag/Undefined,88,-9999,
+Oats,28,1.15,"NEH 2-75, 1993"
+Olives,211,-9999,
+Onions,49,1.25,"NEH 2-75, 1993 (Avg of Dry/Green)"
+Open Water,111,-9999,
+Oranges,212,-9999,
+Other Crops,44,-9999,
+Other Hay/Non Alfalfa,37,1.05,"NEH 2-77, 1993"
+Other Small Grains,25,-9999,
+Other Tree Crops,71,-9999,
+Peaches,67,1.15,"NEH 2-79, 1993"
+Peanuts,10,1.05,"NEH 2-75, 1993"
+Pears,77,1.15,"NEH 2-79, 1993"
+Peas,53,1.15,"NEH 2-75, 1993"
+Pecans,74,1.15,"NEH 2-79, 1993"
+Peppers,216,1.05,"NEH 2-75, 1993"
+Perennial Ice/Snow,112,-9999,
+Pistachios,204,-9999,
+Plums,220,1.15,"NEH 2-79, 1993"
+Pomegranates,217,-9999,
+Pop or Orn Corn,13,-9999,
+Potatoes,43,1.15,"NEH 2-75, 1993"
+Prunes,210,-9999,
+Pumpkins,229,0.95,"NEH 2-75, 1993"
+Radishes,246,0.85,"NEH 2-75, 1993"
+Rape Seed,34,-9999,
+Rice,3,1.25,"NEH 2-81, 1993"
+Rye,27,-9999,
+Safflower,33,1.15,"NEH 2-75, 1993"
+Shrubland,64,-9999,
+Shrubland,152,-9999,
+Sod/Grass Seed,59,-9999,
+Sorghum,4,1.1,"NEH 2-75, 1993"
+Soybeans,5,1.1,"NEH 2-75, 1993"
+Speltz,30,-9999,
+Spring Wheat,23,1.15,"NEH 2-76, 1993"
+Squash,222,0.95,"NEH 2-75, 1993"
+Strawberries,221,0.8,"NEH 2-76, 1993"
+Sugarbeets,41,1.15,"NEH 2-76, 1993"
+Sugarcane,45,1.25,"NEH 2-80, 1993"
+Sunflower,6,1.15,"NEH 2-76, 1993"
+Sweet Corn,12,1.15,"NEH 2-74, 1993"
+Sweet Potatoes,46,-9999,
+Switchgrass,60,-9999,
+Tobacco,11,-9999,
+Tomatoes,54,1.2,"NEH 2-76, 1993"
+Triticale,205,-9999,
+Turnips,247,-9999,
+Vetch,224,-9999,
+Walnuts,76,1.25,"NEH 2-79, 1993"
+Water,83,-9999,
+Watermelons,48,-9999,
+Wetlands,87,-9999,
+Winter Wheat,24,1.15,"NEH 2-76, 1993"
+Woody Wetlands,190,-9999,
+,7,-9999,
+,8,-9999,
+,9,-9999,
+,15,-9999,
+,16,-9999,
+,17,-9999,
+,18,-9999,
+,19,-9999,
+,20,-9999,
+,40,-9999,
+,62,-9999,
+,73,-9999,
+,78,-9999,
+,79,-9999,
+,80,-9999,
+,84,-9999,
+,85,-9999,
+,86,-9999,
+,89,-9999,
+,90,-9999,
+,91,-9999,
+,93,-9999,
+,94,-9999,
+,95,-9999,
+,96,-9999,
+,97,-9999,
+,98,-9999,
+,99,-9999,
+,100,-9999,
+,101,-9999,
+,102,-9999,
+,103,-9999,
+,104,-9999,
+,105,-9999,
+,106,-9999,
+,107,-9999,
+,108,-9999,
+,109,-9999,
+,110,-9999,
+,113,-9999,
+,114,-9999,
+,115,-9999,
+,116,-9999,
+,117,-9999,
+,118,-9999,
+,119,-9999,
+,120,-9999,
+,125,-9999,
+,126,-9999,
+,127,-9999,
+,128,-9999,
+,129,-9999,
+,130,-9999,
+,132,-9999,
+,133,-9999,
+,134,-9999,
+,135,-9999,
+,136,-9999,
+,137,-9999,
+,138,-9999,
+,139,-9999,
+,140,-9999,
+,144,-9999,
+,145,-9999,
+,146,-9999,
+,147,-9999,
+,148,-9999,
+,149,-9999,
+,150,-9999,
+,151,-9999,
+,153,-9999,
+,154,-9999,
+,155,-9999,
+,156,-9999,
+,157,-9999,
+,158,-9999,
+,159,-9999,
+,160,-9999,
+,161,-9999,
+,162,-9999,
+,163,-9999,
+,164,-9999,
+,165,-9999,
+,166,-9999,
+,167,-9999,
+,168,-9999,
+,169,-9999,
+,170,-9999,
+,171,-9999,
+,172,-9999,
+,173,-9999,
+,174,-9999,
+,175,-9999,
+,177,-9999,
+,178,-9999,
+,179,-9999,
+,180,-9999,
+,181,-9999,
+,182,-9999,
+,183,-9999,
+,184,-9999,
+,185,-9999,
+,186,-9999,
+,187,-9999,
+,188,-9999,
+,189,-9999,
+,191,-9999,
+,192,-9999,
+,193,-9999,
+,194,-9999,
+,196,-9999,
+,197,-9999,
+,198,-9999,
+,199,-9999,
+,200,-9999,
+,201,-9999,
+,202,-9999,
+,203,-9999,
+,251,-9999,
+,252,-9999,
+,253,-9999,
+,255,-9999,
