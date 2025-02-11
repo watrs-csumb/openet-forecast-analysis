@@ -253,6 +253,10 @@ def main():
         print("Failed to get timeseries data.")
         return None
     
+    # Filter data for peak season.
+    data["time"] = pd.to_datetime(data["time"])
+    data = data[(data["time"].dt.month >= s_peak) & (data["time"].dt.month <= e_peak)]
+    
     data.to_csv(f"{filename}_values_{year}.csv")
     
     print(f"{metadata['field_id'].agg('count')} fields took {round((stop-start), 2)} seconds.")
