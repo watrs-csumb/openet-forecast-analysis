@@ -51,8 +51,8 @@ parser.add_argument("-p", "--peak", nargs=2, default=(4,8), type=int, help="Star
 parser.add_argument("-k", "--key", required=True, help="OpenET API Key")
 
 group = parser.add_mutually_exclusive_group()
-group.add_argument("-e", "--exclude", nargs='*', default=[], help="List of USDS CDL codes to exclude for EToF maxes")
-group.add_argument("-i", "--include", nargs='*', default=[], help="List of USDS CDL codes to search for EToF maxes")
+group.add_argument("-e", "--exclude", nargs='*', default=[], help="List of USDA CDL codes to exclude for EToF maxes")
+group.add_argument("-i", "--include", nargs='*', default=[], help="List of USDA CDL codes to search for EToF maxes")
 
 # Graphical
 parser.add_argument("--box", action="store_true", help="Save boxplots for EToF")
@@ -294,7 +294,7 @@ def main():
     
     print(f"{metadata['field_id'].agg('count')} fields took {round((stop-start), 2)} seconds.")
     
-    # Calculate max EToF for each crop.
+    # Calculate max EToF for each field per model during the peak season.
     crops_max = data.groupby(['field_id', crop_col, "collection"])["value_mm"].agg('max')
     crops_max.round(2).reset_index().to_csv(f"{filename}_etof_maxes_{year}.csv", index=False)
     
@@ -327,6 +327,8 @@ def main():
         n_wrap = int(np.ceil(np.sqrt(data_plotter["Class_Names"].nunique())))
         
         with sns.axes_style("darkgrid"): # type: ignore
+            # Generate FacetGrid showing the interquartile range of max EToF by crop. 
+            # Each facet contains a boxplot showcasing each model.
             boxplot = sns.catplot(  # type: ignore
                 data=data_plotter.reset_index(),
                 kind="box",
@@ -348,17 +350,19 @@ def main():
             boxplot.set_ylabels("EToF$_{max}$ | Kc$_{MAX}$")
             boxplot.set_xlabels("Model")
             
+            # Goes through each facet.
             for (row, col, hue), data_rch in boxplot.facet_data():
                 try:
-                    # Get kcp value.
+                    # Get kcp value for current facet's crop.
                     kcp_val = data_rch["kcp"].unique()[0]
-                    
+
+                    # Draw a horizontal line showing the documented kcMAX for the crop.
                     ax = boxplot.facet_axis(row, col)
-                    
                     ax.axhline(y=kcp_val, linestyle="dotted")
                 except Exception:
                     print(f"Failed to plot KCP line. Crop code {data_rch[crop_col].unique()[0]} likely undocumented.")
             
+            # Refits grid to clean up appearance.
             plt.tight_layout() # type: ignore
             
             plt.suptitle(f"{watershed} (n={data_plotter.reset_index()['field_id'].nunique()})", y=1.02) # type: ignore
