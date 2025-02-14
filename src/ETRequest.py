@@ -4,7 +4,7 @@ import time
 
 # ONLY CHANGE IF YOU KNOW WHAT YOU ARE DOING
 status_whitelist = [200]
-timeout_s = 15*60 # 150 seconds
+timeout_s = 5*60 # 5 minutes
 class ETRequest:
     """
     ET API Request Handling.
@@ -46,12 +46,21 @@ class ETRequest:
     def set_request_params(self, request_params: dict = {}) -> None:
         self.request_params = request_params
 
+    def retry(self, attempts, logger) -> None:
+        while self._current_attempt < attempts and self.success() is False:
+            if logger is not None:
+                logger.warning(f"Reattempting request ({self._current_attempt}/{attempts})..")
+            
+            time.sleep(2**self._current_attempt)
+            self._current_attempt += 1
+            self.response = self.send(logger=logger)
+
     def send(
         self,
         *,
         num_retries: int = 3,
         ignore_fails: bool = False,
-        logger: logging.Logger = None,
+        logger: logging.Logger | None = None,
     ) -> requests.Response | None:
         """
         Send POST request and returns response.
@@ -129,6 +138,11 @@ class ETRequest:
                 raise ValueError
             # Only reachable if ignore_fails is True
             return self.response
+        
+        except requests.exceptions.Timeout:
+            if logger is not None:
+                logger.warning("Request timed out. Retrying request..")
+            self.retry(num_retries, logger)
 
         # Allow keyboard interruption
         except KeyboardInterrupt:
@@ -136,13 +150,7 @@ class ETRequest:
             return None
 
         except Exception:
-            while self._current_attempt < num_retries and self.success() is False:
-                if logger is not None:
-                    logger.warning("Reattempting request..")
-
-                time.sleep(2**self._current_attempt)
-                self._current_attempt += 1
-                self.response = self.send(logger=logger)
+            self.retry(num_retries, logger)
 
         finally:
             # This branch will only happen if all reattempts failed. Likely due to an outage.
@@ -152,7 +160,7 @@ class ETRequest:
                 # A detailed message would not be provided in the event of an outage.
                 prompt_info = ""
                 try:
-                    prompt_info = f"[{self.response.status_code}]: {self.response.text}"
+                    prompt_info = f"[{self.response.status_code}]: {self.response.text}" # type: ignore
                 except Exception:
                     prompt_info = "No response. Please check your connection."
                 if logger is not None:
@@ -186,6 +194,6 @@ class ETRequest:
         * The status_whitelist only contains 200 for request success.
         """
         try:
-            return self.response.status_code in status_whitelist
+            return self.response.status_code in status_whitelist # type: ignore
         except Exception:
             return False
