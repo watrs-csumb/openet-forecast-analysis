@@ -1,199 +1,118 @@
-import logging
-import requests
 import time
+import warnings
 
-# ONLY CHANGE IF YOU KNOW WHAT YOU ARE DOING
-status_whitelist = [200]
-timeout_s = 5*60 # 5 minutes
-class ETRequest:
-    """
-    ET API Request Handling.
-    
-    Parameters
-    ----------
-    request_endpoint : str
-        OpenET API endpoint
+from logging import Logger, WARNING, ERROR, addLevelName
+from requests import Response, post
+from requests.exceptions import Timeout
+from typing import Optional
 
-    request_params : dict
-        Dict of request parameters for API endpoint
+STATUS_ALLOWED = [200]
+TIMEOUT = 60 * 5
 
-    key : str
-        User API key for OpenET API. User restrictions apply.
-    
-    Notes
-    -----
-    None provided.
-    
-    Examples
-    --------
-    None provided.
-    """
+HELPFUL = 25
+addLevelName(HELPFUL, "HELPFUL")
+
+class Request:
     def __init__(
-        self, request_endpoint: str = '', request_params: dict = {}, key: str = ""
+        self, endpoint: Optional[str], params: Optional[dict], key: Optional[str], logger: Optional[Logger] = None
     ) -> None:
-        """Creates ETRequest object"""
-        self.request_endpoint = request_endpoint
-        self.request_params = request_params
+        self.endpoint = endpoint
+        self.params = params
         self.header = {"Authorization": key}
-        self._current_attempt = 0
+        self.logger = logger
 
-    def set_api_key(self, key: str) -> None:
-        self.header = {"Authorization": key}
+        self._attempt: int = 1
+        self.response: Response | None = None
 
-    def set_endpoint(self, request_endpoint: str = "") -> None:
-        self.request_endpoint = request_endpoint
+    def _retry(self, attempts: int) -> None:
+        while not self.success() and self._attempt <= attempts:
+            self._log(WARNING, f"Reattempting request ({self._attempt}/{attempts})..")
+            time.sleep(2**self._attempt)
+            self._attempt += 1
+            self.response = self.send()
 
-    def set_request_params(self, request_params: dict = {}) -> None:
-        self.request_params = request_params
+    def _log(self, level: int, message: str, **kwargs) -> None:
+        if not self.logger:
+            return
 
-    def retry(self, attempts, logger) -> None:
-        while self._current_attempt < attempts and self.success() is False:
-            if logger is not None:
-                logger.warning(f"Reattempting request ({self._current_attempt}/{attempts})..")
-            
-            time.sleep(2**self._current_attempt)
-            self._current_attempt += 1
-            self.response = self.send(logger=logger)
+        self.logger.log(level, message, **kwargs)
 
     def send(
-        self,
-        *,
-        num_retries: int = 3,
-        ignore_fails: bool = False,
-        logger: logging.Logger | None = None,
-    ) -> requests.Response | None:
-        """
-        Send POST request and returns response.
+        self, max_retries: int = 3, ignore_fails: bool = False
+    ) -> Optional[Response]:
+        if not self.endpoint:
+            self._log(ERROR, "Request has no endpoint.")
+            return
+        if not self.params:
+            self._log(ERROR, "Request has no parameters.")
+            return
+        if not self.header["Authorization"]:
+            self._log(ERROR, "Request has no API key.")
+            return
         
-        Parameters
-        ----------
-        num_retries : int, default 3
-            Number of times to retry if request fails.
-        
-        ignore_fails : bool, default False
-            Whether to ignore failures. If True, failures will return None and not reattempt.
-        
-        logger : logging.Logger, default None
-            If logger is provided, logs request success and failure activity.
-            Recommended for debugging.
-            
-        Returns
-        -------
-        requests.Response, or None
-            `Response <Response` object or `None`.
-        
-        Notes
-        -----
-        * Success is determined if status code is contained within a whitelist, containing only 200 (Success).
-        * Request can be keyboard interrupted. Will return `None` immediately.
-        * Reattempts are done in 2^(1, ...n) second increments
-        * On failure, reattempt prompt is shown. 
-            * 'yi' will reattempt and ignore future failures for current request.
-            * Thread will hang until there is a response.
-            
-        Examples
-        --------
-        Send request to raster timeseries endpoint.
-        >>> endpoint = "https://developer.openet-api.org/raster/timeseries/point"
-        >>> args = {
-                "date_range": [
-                    "2020-01-01",
-                    "2020-12-31"
-                ],
-                "file_format": "CSV",
-                "geometry": [
-                    -121.36322,
-                    38.87626
-                ],
-                "interval": "monthly",
-                "model": "Ensemble",
-                "reference_et": "gridMET",
-                "units": "mm",
-                "variable": "ET"
-            }
-        >>> req = ETRequest(endpoint, args, 'xxx...')
-        >>> res = req.send() # Uses default parameters.
-        >>> res.content
-        time,et
-        '2020-01-01',27.0
-        '2020-02-01',58.0
-        '2020-03-01',70.0
-        '2020-04-01',110.0
-        '2020-05-01',69.0
-        '2020-06-01',25.0
-        '2020-07-01',13.0
-        '2020-08-01',22.0
-        '2020-09-01',22.0
-        '2020-10-01',7.0
-        '2020-11-01',17.0
-        '2020-12-01',21.0
-        """
-        try:
-            self.response = requests.post(
-                headers=self.header, url=self.request_endpoint, json=self.request_params, timeout=timeout_s
+        try:            
+            self.response = post(
+                url=self.endpoint,
+                json=self.params,
+                headers=self.header,
+                timeout=TIMEOUT,
             )
 
-            # Only a 200 Response will return the right data
-            if ignore_fails is False and self.success() is False:
-                raise ValueError
-            # Only reachable if ignore_fails is True
-            return self.response
-        
-        except requests.exceptions.Timeout:
-            if logger is not None:
-                logger.warning("Request timed out. Retrying request..")
-            self.retry(num_retries, logger)
+            if not ignore_fails and not self.success():
+                if self.response:
+                    self._log(HELPFUL, f"Response[{self.response.status_code}]: {self.response.text}")
+                raise ValueError("Request did not succeed with a 200 status code.")
 
-        # Allow keyboard interruption
+        except Timeout:
+            # Automatically reattempts after timeout.
+            self._log(ERROR, "Request timed out.")
+            self._retry(max_retries)
+
         except KeyboardInterrupt:
-            num_retries = 0
-            return None
+            # Allow manually skipping query right away.
+            ignore_fails = True
+            max_retries = 0
+            return
 
-        except Exception:
-            self.retry(num_retries, logger)
+        except Exception as err:
+            self._log(ERROR, f"Request failed.\n{err}")
+            self._retry(max_retries)
 
         finally:
-            # This branch will only happen if all reattempts failed. Likely due to an outage.
-            if self.success() is False and ignore_fails is False:
-                # Attempt to build a detailed prompt.
-                # Shows status_code and message if properties exist on response. Otherwise, no additional details.
-                # A detailed message would not be provided in the event of an outage.
-                prompt_info = ""
-                try:
-                    prompt_info = f"[{self.response.status_code}]: {self.response.text}" # type: ignore
-                except Exception:
-                    prompt_info = "No response. Please check your connection."
-                if logger is not None:
-                    logger.error(prompt_info)
-                    logger.info(self.request_params)
-                reattempt_prompt = input(
-                    f"Fetch failed{prompt_info}\nWould you like to reattempt (Y/n)? "
-                )
-                if reattempt_prompt.lower() in ["y", ""]:
-                    return self.send(logger=logger)
-                # In this case, yi means "yes and ignore"
-                elif reattempt_prompt.lower() == "yi":
-                    return self.send(logger=logger, ignore_fails=True)
+            if not self.success() and not ignore_fails:
+                req_feedback = ""
+                if not self.response:
+                    req_feedback = "Received no response from server. Please check your internet connection."
                 else:
-                    num_retries = 0
-                    self.response = None
+                    status = self.response.status_code
+                    msg = self.response.text
+                    req_feedback = f"Request failed with status code {status}. {msg}"
+
+                self._log(ERROR, req_feedback)
+                self._log(HELPFUL, str(self.params))
+
+                will_reattempt = input(f"{req_feedback}\nReattempt request? (Y/n): ")
+
+                if will_reattempt.lower() in ["y", ""]:
+                    return self.send()
 
             return self.response
 
     def success(self) -> bool:
-        """
-        Whether request succeeded.
-        
-        Returns
-        -------
-        bool
-            Returns True if status_code is in status_whitelist.
-            
-        Notes
-        -----
-        * The status_whitelist only contains 200 for request success.
-        """
+        # Returns true in the event that a response is returned and its status code is in STATUS_ALLOWED.
         try:
-            return self.response.status_code in status_whitelist # type: ignore
+            return self.response.status_code in STATUS_ALLOWED  # type: ignore
         except Exception:
             return False
+
+class ETRequest(Request):
+    def __init__(self, request_endpoint=None, request_params=None, key=None) -> None:
+        warnings.warn(
+            "ETRequest is deprecated. Use Request instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        super().__init__(endpoint=request_endpoint, params=request_params, key=key)
+        
+    def send(self, logger=None, *args, **kwargs):
+        super().send(*args, **kwargs)

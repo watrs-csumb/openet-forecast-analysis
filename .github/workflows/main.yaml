@@ -16,7 +16,12 @@ jobs:
     - name: Python Setup
       uses: actions/setup-python@v5
       with:
-        python-version: '3.12' 
+        python-version: '3.12'
+    - name: Read repo secret for stress tests and save into .env file
+      shell: bash
+      env:
+        ET_KEY: ${{ secrets.ET_KEY }}
+      run: echo "ET_KEY=$ET_KEY" >> .env
     # Install venv-run to easily run a virtualenv
     - name: virtualenv setup
       run: |

@@ -10,3 +10,4 @@ mock
 google-cloud-storage
 gcp-storage-emulator
 earthengine-api
+python-dotenv
