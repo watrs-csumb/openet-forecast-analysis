@@ -14,7 +14,7 @@ def ETRequest_successful(requests_mock):
         key='1234567890'
     )
     
-    requests_mock.post(res.endpoint, status_code=STATUS_ALLOWED[0])
+    requests_mock.post(res.endpoint, status_code=200)
     
     res.send()
     

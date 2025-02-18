@@ -25,14 +25,16 @@ class Request:
         self.response: Response | None = None
 
     def _retry(self, attempts: int) -> None:
-        while not self.success() and self._attempt <= attempts:
+        while self._attempt <= attempts and not self.success():
             self._log(WARNING, f"Reattempting request ({self._attempt}/{attempts})..")
-            time.sleep(2**self._attempt)
+            
+            sleep_time = (2**self._attempt) % 10
+            time.sleep(sleep_time)
             self._attempt += 1
             self.response = self.send()
 
     def _log(self, level: int, message: str, **kwargs) -> None:
-        if not self.logger:
+        if not self.logger or not isinstance(self.logger, Logger):
             return
 
         self.logger.log(level, message, **kwargs)
