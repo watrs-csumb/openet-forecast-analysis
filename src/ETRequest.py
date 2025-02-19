@@ -4,7 +4,6 @@ import warnings
 from logging import Logger, WARNING, ERROR, addLevelName
 from requests import Response, post
 from requests.exceptions import Timeout
-from typing import Optional
 
 STATUS_ALLOWED = [200]
 TIMEOUT = 60 * 5
@@ -14,7 +13,11 @@ addLevelName(HELPFUL, "HELPFUL")
 
 class Request:
     def __init__(
-        self, endpoint: Optional[str], params: Optional[dict], key: Optional[str], logger: Optional[Logger] = None
+        self, 
+        endpoint: str | None = None, 
+        params: dict | None = {}, 
+        key: str | None = None, 
+        logger: Logger | None = None
     ) -> None:
         self.endpoint = endpoint
         self.params = params
@@ -25,7 +28,7 @@ class Request:
         self.response: Response | None = None
 
     def _retry(self, attempts: int) -> None:
-        while self._attempt <= attempts and not self.success():
+        while not self.success() and self._attempt <= attempts:
             self._log(WARNING, f"Reattempting request ({self._attempt}/{attempts})..")
             
             sleep_time = (2**self._attempt) % 10
@@ -41,16 +44,13 @@ class Request:
 
     def send(
         self, max_retries: int = 3, ignore_fails: bool = False
-    ) -> Optional[Response]:
+    ) -> Response | None:
         if not self.endpoint:
-            self._log(ERROR, "Request has no endpoint.")
-            return
+            raise AttributeError("Request has no endpoint.")
         if not self.params:
-            self._log(ERROR, "Request has no parameters.")
-            return
+            raise AttributeError("Request has no parameters.")
         if not self.header["Authorization"]:
-            self._log(ERROR, "Request has no API key.")
-            return
+            raise AttributeError("Request has no API key.")
         
         try:            
             self.response = post(
@@ -64,6 +64,10 @@ class Request:
                 if self.response:
                     self._log(HELPFUL, f"Response[{self.response.status_code}]: {self.response.text}")
                 raise ValueError("Request did not succeed with a 200 status code.")
+
+        except AttributeError as err:
+            self._log(ERROR, f"Request failed.\n{err}")
+            return
 
         except Timeout:
             # Automatically reattempts after timeout.

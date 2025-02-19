@@ -1,16 +1,16 @@
-from src.ETRequest import Request, STATUS_ALLOWED
+from src.ETRequest import Request
 
+import logging
 import pytest
 import requests
 
 from dotenv import dotenv_values
-
-# todo cases: timeout, keyboard interrupt, random exception, bad connection
+from requests.exceptions import Timeout
 
 def ETRequest_successful(requests_mock):
     res = Request(
         endpoint='https://developer.openet.org/awesome_endpoint',
-        params={},
+        params={"param": "val"},
         key='1234567890'
     )
     
@@ -23,7 +23,7 @@ def ETRequest_successful(requests_mock):
 def ETRequest_unsuccessful(requests_mock, monkeypatch):
     res = Request(
         endpoint="https://developer.openet.org/awesome_endpoint",
-        params={},
+        params={"param": "val"},
         key="1234567890",
     )
     
@@ -37,7 +37,7 @@ def ETRequest_unsuccessful(requests_mock, monkeypatch):
 def ETRequest_retry_successful(requests_mock):
     res = Request(
         endpoint="https://developer.openet.org/awesome_endpoint",
-        params={},
+        params={"param": "val"},
         key="1234567890",
     )
     
@@ -49,10 +49,9 @@ def ETRequest_retry_successful(requests_mock):
     assert res.success() is True        # Explicit for sanity check.
     
 def ETRequest_prompt_successful(requests_mock, monkeypatch):
-    # todo: check calls to res.send()
     res = Request(
         endpoint="https://developer.openet.org/awesome_endpoint",
-        params={},
+        params={"param": "val"},
         key="1234567890",
     )
 
@@ -63,6 +62,70 @@ def ETRequest_prompt_successful(requests_mock, monkeypatch):
     
     assert res.success() is True
 
+def ETRequest_timed_out(caplog, requests_mock):
+    res = Request(
+        endpoint="https://developer.openet.org/awesome_endpoint",
+        params={"param": "val"},
+        key="1234567890",
+        logger=logging.getLogger(__name__),
+    )
+    
+    assert type(res.endpoint) is str
+    
+    requests_mock.post(res.endpoint, response_list=[{"exc": Timeout}, {"status_code": 200}])
+    
+    res.send()
+    
+    assert res.success() is True
+    assert res._attempt == 2
+    assert "Request timed out." in caplog.text
+
+def ETRequest_keyboard_interrupt(requests_mock):
+    res = Request(
+        endpoint="https://developer.openet.org/awesome_endpoint",
+        params={"param": "val"},
+        key="1234567890",
+    )
+    
+    assert type(res.endpoint) is str
+    
+    requests_mock.post(res.endpoint, response_list=[{"exc": KeyboardInterrupt}])
+    
+    res.send()
+    
+    assert not res.success()
+
+def ETRequest_bad_connection(requests_mock, monkeypatch):
+    res = Request(
+        endpoint="https://developer.openet.org/awesome_endpoint",
+        params={"param": "val"},
+        key="1234567890",
+    )
+    
+    assert type(res.endpoint) is str
+    
+    requests_mock.post(res.endpoint, response_list=[{"exc": requests.exceptions.ConnectionError}])
+    monkeypatch.setattr('builtins.input', lambda _: 'n')
+    
+    res.send()
+    
+    assert not res.success()
+    assert res._attempt == 4    # Exhausted all retries.
+
+def ETRequest_missing_attributes():
+    with pytest.raises(AttributeError) as endpoint_err:
+        Request().send()
+    assert "Request has no endpoint." in str(endpoint_err.value)
+    
+    with pytest.raises(AttributeError) as params_err:
+        Request(endpoint="https://developer.openet.org/awesome_endpoint").send()
+    assert "Request has no parameters." in str(params_err.value)
+    
+    with pytest.raises(AttributeError) as key_err:
+        Request(endpoint="https://developer.openet.org/awesome_endpoint", 
+                params={"param": "val"}).send()
+    assert "Request has no API key." in str(key_err.value)
+    
 
 ###--- Stress Test ---###
 @pytest.mark.skipif(
