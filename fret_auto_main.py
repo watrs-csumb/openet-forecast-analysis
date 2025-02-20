@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Mon Sep 9 18:42:18 2024
-next check: 2/20/2025
+
 @author: Robin Fishman
 """
 from collections import deque
@@ -84,10 +84,10 @@ def main():
                     deepcopy(monterey_queue), monterey_fields, api_key=api_key
                 )  # type: ignore
                 monterey_fret.start(request_args=[eto_arg], logger=logger, packets=True, frequency='daily')
-                # storage_client.fetch_save(
-                #     monterey_fret,
-                #     f"forecasts/fret/monterey_fret_{export_date_format}.csv",
-                # )
+                storage_client.fetch_save(
+                    monterey_fret,
+                    f"forecasts/fret/monterey_fret_{export_date_format}.csv",
+                )
                 
                 # -- Kern FRET -- #
                 kern_fret = ETFetch(
@@ -95,9 +95,9 @@ def main():
                 )  # type: ignore
                 
                 kern_fret.start(request_args=[eto_arg], logger=logger, packets=True, frequency='daily')
-                # storage_client.fetch_save(
-                #     kern_fret, f"forecasts/fret/kern_fret_{export_date_format}.csv"
-                # )
+                storage_client.fetch_save(
+                    kern_fret, f"forecasts/fret/kern_fret_{export_date_format}.csv"
+                )
                 
                 logger.info(
                     f"FRET fetched on: {check_time}. Next check will be on: {upcoming_check_time}"
