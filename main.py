@@ -171,8 +171,8 @@ def get_forecasts(
 ):
     # Gather predictions at weekly intervals.
     # Forecast begins predictions from the end_range. So to start predictions for Jan 1, set to Dec 31
-    forecasting_date = datetime(2024, 1, 1)
-    end_date = datetime.strptime(end_date, '%Y-%m-%d')
+    forecasting_date = datetime(2024, 10, 28)
+    end_date_s = datetime.strptime(end_date, '%Y-%m-%d')
     interval_delta = timedelta(weeks=1)  # weekly interval
 
     # Create dir if it doesn't exist.
@@ -181,7 +181,7 @@ def get_forecasts(
         file_dir.mkdir(parents=True)
 
     logger.info("Getting forecast data.")
-    while forecasting_date < end_date:
+    while forecasting_date < end_date_s:
         process = ETFetch(
             deepcopy(fields_queue),
             reference,
@@ -251,6 +251,10 @@ def get_forecasts(
         forecasting_date = forecasting_date + interval_delta
 
 def main():
+    if not api_key:
+        print("Please set ET_KEY in the .env file.")
+        sys.exit(1)
+    
     storage_client = CloudStorage(
         "openet", credentials=Authenticate("./gapi_credentials.json"), logger=logger
     )
