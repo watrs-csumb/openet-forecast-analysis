@@ -1,15 +1,38 @@
+import contextlib
+import threading
 import time
 import warnings
 
 from logging import Logger, WARNING, ERROR, addLevelName
 from requests import Response, post
 from requests.exceptions import Timeout
+from collections.abc import Callable
 
 STATUS_ALLOWED = [200]
 TIMEOUT = 60 * 5
 
 HELPFUL = 25
 addLevelName(HELPFUL, "HELPFUL")
+
+INTERRUPT_N = 0
+INTERRUPT_LIMIT = 2
+interruptlock = threading.Lock()
+
+@contextlib.contextmanager
+def interrupt_handler(): 
+    global INTERRUPT_N, INTERRUPT_LIMIT
+    with interruptlock:
+        INTERRUPT_N = 0
+    try:
+        yield
+    except KeyboardInterrupt:
+        with interruptlock:
+            INTERRUPT_N += 1
+        if INTERRUPT_N >= INTERRUPT_LIMIT:
+            raise
+        else:
+            print("KeyboardInterrupt detected. Press Ctrl+C again to quit.")
+            raise KeyboardInterrupt # Workround so this handler doesn't need a larger scope and still letting the send() function handle the KeyboardInterrupt.
 
 class Request:
     def __init__(
@@ -52,33 +75,36 @@ class Request:
         if not self.header["Authorization"]:
             raise AttributeError("Request has no API key.")
         
-        try:            
-            self.response = post(
-                url=self.endpoint,
-                json=self.params,
-                headers=self.header,
-                timeout=TIMEOUT,
-            )
+        try:
+            with interrupt_handler() as interrupted:
+                self.response = post(
+                    url=self.endpoint,
+                    json=self.params,
+                    headers=self.header,
+                    timeout=TIMEOUT,
+                )
+                
+            if interrupted or INTERRUPT_N >= INTERRUPT_LIMIT:
+                return
 
             if not ignore_fails and not self.success():
                 if self.response:
                     self._log(HELPFUL, f"Response[{self.response.status_code}]: {self.response.text}")
                 raise ValueError("Request did not succeed with a 200 status code.")
 
+        except KeyboardInterrupt:
+            ignore_fails = True
+            return
+
         except AttributeError as err:
             self._log(ERROR, f"Request failed.\n{err}")
+            ignore_fails = True
             return
 
         except Timeout:
             # Automatically reattempts after timeout.
             self._log(ERROR, "Request timed out.")
             self._retry(max_retries)
-
-        except KeyboardInterrupt:
-            # Allow manually skipping query right away.
-            ignore_fails = True
-            max_retries = 0
-            return
 
         except Exception as err:
             self._log(ERROR, f"Request failed.\n{err}")
