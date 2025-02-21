@@ -223,6 +223,8 @@ def main():
         try:
             import seaborn as sns
             import matplotlib.pyplot as plt
+            
+            sns.set_context("paper", font_scale=1.75)
         except ImportError:
             print("To generate boxplot, install seaborn using `pip install seaborn`.")
             sys.exit(1)
@@ -340,7 +342,7 @@ def main():
                 errorbar=("pi", 50),
                 sharex=False,
                 showfliers=False,
-                width=0.2,
+                width=0.25,
                 formatter=lambda x: x.split("_")[0].capitalize(),
             )
 
