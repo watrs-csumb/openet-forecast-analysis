@@ -146,8 +146,4 @@ class ETRequest(Request):
         super().__init__(endpoint=request_endpoint, params=request_params, key=key)
         
     def send(self, logger=None, *args, **kwargs):
-        # Use a singleton approach to attach a logger to the request object.
-        if logger and not super().logger:
-            super().logger = logger
-
         super().send(*args, **kwargs)
