@@ -304,11 +304,11 @@ def main():
         print("Generating boxplot...")
         # Import CDL lookup table.
         cdl_lookup = pd.read_csv(
-            "https://media.githubusercontent.com/media/aetriusgx/openet/refs/heads/main/data/cdl_codes.csv",
+            "https://media.githubusercontent.com/media/watrs-csumb/openet-forecast-analysis/refs/heads/main/data/cdl_codes.csv",
             index_col="Codes"
         )["Class_Names"]
         kcp_lookup = pd.read_csv(
-            "https://raw.githubusercontent.com/aetriusgx/openet/refs/heads/main/data/1993%20NEH%20Kcp.csv",
+            "https://raw.githubusercontent.com/watrs-csumb/openet-forecast-analysis/refs/heads/main/data/1993%20NEH%20Kcp.csv",
             index_col="cdl_code", na_values={'kcp': KCP_NULL} # type: ignore
         )[['kcp']]
         
