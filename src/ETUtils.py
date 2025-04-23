@@ -3,11 +3,15 @@ from pathlib import Path
 from google.oauth2 import (
     service_account,
 )  # https://google-auth.readthedocs.io/en/latest/reference/google.oauth2.credentials.html
-from src.ETFetch import ETFetch
+from .ETFetch import ETFetch
 
+import json
 import logging
 import pandas as pd
 import sys
+
+def parse_geo(series_like_obj: pd.Series) -> pd.Series:
+    return pd.Series([json.loads(row) for row in series_like_obj])
 
 class CloudStorage:
     def __init__(self, project_id, credentials=None, logger=None):
