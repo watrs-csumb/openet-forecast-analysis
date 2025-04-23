@@ -1,9 +1,9 @@
 from collections import deque
 from datetime import datetime
-from src.ETRequest import ETRequest
-from src.ETArg import ETArg
+from .ETRequest import ETRequest
+from .ETArg import ETArg
 from pathlib import Path
-from typing import List, Dict
+from typing import Any
 
 import json
 import logging
@@ -43,7 +43,7 @@ class ETFetch:
     >>> df = pd.DataFrame(data=ref)
     >>> e = ETFetch(fields_queue = deque(df['fields']), points_ref = df, api_key = 'xxxxxx...')
     """
-    def __init__(self, fields_queue: deque, points_ref: any, *, api_key: str) -> None:
+    def __init__(self, fields_queue: deque, points_ref: Any, *, api_key: str) -> None:
         self.fields_queue = fields_queue
         self.points_ref = points_ref
         self.data_table = pd.DataFrame(columns=['field_id', 'crop', 'time'])
@@ -53,6 +53,7 @@ class ETFetch:
         self.__names__ = []
         self.__start_time__ = datetime.now()
         self.__timestamp__ = self.__start_time__.strftime('%Y%m%d_%H%M%S')
+        self.__temp_bin__ = f'data/bin/{self.__timestamp__}/'
 
     def __compile_packets__(self) -> None:
         # Create empty tables for each column name. Will all be merged at the end.
@@ -61,7 +62,7 @@ class ETFetch:
         for item in range(0, len(self.__names__)):
             name = self.__names__[item]
             # Collect list of files whose name contains the current column name
-            files = Path(f'data/bin/{self.__timestamp__}/').glob(f'*.{name}.csv')
+            files = Path(self.__temp_bin__).glob(f'*.{name}.csv')
 
             # Iterate through each file through Generator iterator
             for file in files:
@@ -87,10 +88,10 @@ class ETFetch:
     def set_queue(self, queue: deque) -> None:
         self.fields_queue = queue
         
-    def set_reference(self, ref: any) -> None:
+    def set_reference(self, ref: Any) -> None:
         self.points_ref = ref
 
-    def export(self, filename = None, file_format: str = 'csv', **kwargs) -> None|str:
+    def export(self, filename: str = "", file_format: str = 'csv', **kwargs) -> None|str:
         """
         Export data in provided file format. CSV by default. Passes kwargs to matching pandas export function.
         
@@ -115,18 +116,18 @@ class ETFetch:
             case 'csv':
                 return self.data_table.to_csv(filename, index=False, **kwargs) 
             case 'pickle':
-                self.data_table.to_pickle(filename, index=False, **kwargs)
+                self.data_table.to_pickle(filename, **kwargs)
             case 'json':
                 self.data_table.to_json(filename, index=False, **kwargs)
             case _:
                 raise ValueError(f'Provided file_format "{file_format}" is not supported.')
     
     def start(self, *, 
-            request_args: List[ETArg], 
+            request_args: list[ETArg], 
             frequency: str, 
             packets: bool = True,
             crop_col: str = 'CROP_2023',
-            logger: logging.Logger = None) -> int:
+            logger: logging.Logger | None = None) -> int:
         """
         Begin gathering ET data from listed arguments.
 
@@ -192,8 +193,21 @@ class ETFetch:
             current_crop = self.points_ref[crop_col][current_field_id]
 
             # Creates container to track each request to be made.
-            results: List[ETRequest] = [ETRequest() for item in request_args]
+            results: list[ETRequest] = [ETRequest() for item in request_args]
             self.__names__ = [item.name for item in request_args]
+            
+            # Path used for data dumping uses timestamp of initial program run.
+            # Or if a continued run, starts where it left off.
+            path = Path(self.__temp_bin__)
+            # Check if data bin exists, if not then create it
+            if path.exists() is False:
+                path.mkdir(parents=True)
+            
+            if len(list(path.glob(f'{current_field_id}.{current_crop}.*'))) == len(self.__names__):
+                if logger:
+                    logger.info(f"Field {current_field_id} already exists. Skipping...")
+                self.fields_queue.popleft()
+                continue
             
             if logger:
                 logger.info(f"Now analyzing field ID {current_field_id}")
@@ -236,20 +250,17 @@ class ETFetch:
             if False not in [item.success() for item in results]:
                 for entry in range(0, len(results)):
                     res = results[entry]
+                    assert res.response
                     name = request_args[entry].name
                     # Data returns as a list containing dict{'time': str, '$variable': float}
-                    content: List[Dict] = json.loads(res.response.content.decode('utf-8'))
+                    content: list[dict] = json.loads(res.response.content.decode('utf-8'))
 
                     # Begin nth-field data composition
                     if packets:
-                        # Path used for data dumping uses timestamp of initial program run.
-                        path = Path(f'data/bin/{self.__timestamp__}')
-                        # Check if data bin exists, if not then create it
-                        if path.exists() is False:
-                            path.mkdir(parents=True)
                         # Converts decoded JSON string to DataFrame, then exports as csv file
                         # Filename e.g. CA_270812.27.actual_eto.csv
-                        pd.json_normalize(content).to_csv(f'{path}/{current_field_id}.{current_crop}.{name}.csv', index=False)
+                        prospective_file_output = f'{path}/{current_field_id}.{current_crop}.{name}.csv'
+                        pd.json_normalize(content).to_csv(prospective_file_output, index=False)
                     else:
                         # item: {'time': str, '$variable': float}
                         for item in content:
