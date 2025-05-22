@@ -43,6 +43,7 @@ kern_fields = pd.read_csv("./data/kern_polygons.csv", low_memory=False).set_inde
 monterey_fields = pd.read_csv("./data/monterey_polygons.csv", low_memory=False).set_index("OPENET_ID")
 # Drop fields with too large of polygons
 monterey_fields.drop(index=['CA_244144', 'CA_244402'], inplace=True)
+kansas_fields = pd.read_csv("./data/finney_county_ks.csv", low_memory=False).set_index("OPENET_ID")
 
 def main():
     if not api_key:
@@ -57,6 +58,7 @@ def main():
 
     monterey_queue = deque(monterey_fields.index.to_list())
     kern_queue = deque(kern_fields.index.to_list())
+    kansas_queue = deque(kansas_fields.index.to_list())
 
     eto_arg = ETArg(
         "fret_eto",
@@ -99,6 +101,15 @@ def main():
                     kern_fret, f"forecasts/fret/kern_fret_{export_date_format}.csv"
                 )
                 
+                # -- Kansas FRET -- #
+                kansas_fret = ETFetch(
+                    deepcopy(kansas_queue), kansas_fields, api_key=api_key
+                )
+                kansas_fret.start(request_args=[eto_arg], logger=logger, packets=True, frequency='daily')
+                storage_client.fetch_save(
+                    kansas_fret, f"forecasts/fret/kansas_fret_{export_date_format}.csv"
+                )
+                
                 logger.info(
                     f"FRET fetched on: {check_time}. Next check will be on: {upcoming_check_time}"
                 )
@@ -111,6 +122,7 @@ def main():
                 check_time = datetime.now()
                 upcoming_check_time = check_time + check_interval
                 run_fetch = True
+                eto_arg.date_range = [check_time.strftime("%Y-%m-%d"), (check_time + timedelta(weeks=1)).strftime("%Y-%m-%d")]
                 logger.info(
                     f"FRET fetched on: {check_time}. Next check will be on: {upcoming_check_time}"
                 )

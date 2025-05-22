@@ -1,6 +1,6 @@
 from collections import deque
 from datetime import datetime
-from .ETRequest import ETRequest
+from .ETRequest_old import ETRequest
 from .ETArg import ETArg
 from pathlib import Path
 from typing import Any
@@ -91,7 +91,7 @@ class ETFetch:
     def set_reference(self, ref: Any) -> None:
         self.points_ref = ref
 
-    def export(self, filename: str = "", file_format: str = 'csv', **kwargs) -> None|str:
+    def export(self, filename: str | None = None, file_format: str = 'csv', **kwargs) -> None | str:
         """
         Export data in provided file format. CSV by default. Passes kwargs to matching pandas export function.
         
@@ -116,6 +116,8 @@ class ETFetch:
             case 'csv':
                 return self.data_table.to_csv(filename, index=False, **kwargs) 
             case 'pickle':
+                if filename is None:
+                    raise ValueError('Filename must be provided for pickle export.')
                 self.data_table.to_pickle(filename, **kwargs)
             case 'json':
                 self.data_table.to_json(filename, index=False, **kwargs)
