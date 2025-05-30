@@ -1,7 +1,10 @@
 import argparse
+import contextlib
 import gzip
 import pathlib
 import sys
+
+cdl_allowlist = [1, 28, 36, 21, 4, 27, 5, 37]
 
 if sys.version_info < (3, 11):
     print("Python 3.11+ is supported. Please update to use this script.")
@@ -37,8 +40,24 @@ _TQDM_ENABLED = False
 
 try:
     from tqdm import tqdm
-    tqdm.pandas()
+    from tqdm.contrib import DummyTqdmFile
+    
+    @contextlib.contextmanager
+    def std_out_err_redirect():
+        out_err = sys.stdout, sys.stderr
+        try:
+            sys.stdout, sys.stderr = map(DummyTqdmFile, out_err)
+            yield out_err[0]
+        except Exception as e:
+            raise e
+        finally:
+            sys.stdout, sys.stderr = out_err
+    
+    with std_out_err_redirect() as out:
+        tqdm.pandas(file=out)
+    
     _TQDM_ENABLED = True
+    
 except ImportError:
     pass
 
@@ -69,14 +88,16 @@ ee.Initialize()
 
 def request_handler(**kwargs) -> Response | None:
     try:
-        req = post(timeout=260, **kwargs)
-        
-        if req.status_code != 200:
+        req = None
+        for i in range(0, 3):
+            req = post(timeout=260, **kwargs)
+            
+            if req.ok:
+                return req
+            
+        if req is not None and req.status_code != 200:
             print(f"Error {req.status_code}: {req.text}")
-            sys.exit(1)
-            return
         
-        return req
     except KeyboardInterrupt:
         sys.exit(1)
 
@@ -94,16 +115,21 @@ def fetch_counties(state: str) -> Collection:
     )
 
 def get_timeseries(outer: list[float], year: int, api_key: str, **kwargs) -> pd.DataFrame:
-    fields_req = post(
+    fields_req = request_handler(
         url = endpoints["fieldId"],
         headers = {"Authorization": api_key},
         json = {"geometry": outer}
     )
     
-    if not fields_req.ok:
-        raise Exception(fields_req.json()["detail"])
+    if fields_req is None:
+        print("Could not fetch fields")
+        sys.exit(1)
     
     field_ids = eval(gzip.decompress(fields_req.content).decode())
+    
+    if len(field_ids) == 0:
+        print("No fields found within county boundary. Skipping...")
+        return pd.DataFrame()
     
     metadata_req = post(
         url = endpoints["fieldProps"],
@@ -118,10 +144,17 @@ def get_timeseries(outer: list[float], year: int, api_key: str, **kwargs) -> pd.
     
     properties = pd.DataFrame.from_records(metadata_res)
     crop_years = [col for col in list(properties.columns) if col.startswith("crop_")]
+    crop_col = (crop_years if f"crop_{year}" in crop_years else [crop_years[-1]])[0]
     # Filter crop_year for just the request year, if not available use the last available.
-    properties = properties[["field_id"] + (crop_years if f"crop_{year}" in crop_years else [crop_years[-1]])]
+    properties = properties[["field_id"] + [crop_col]]
+    properties = properties[properties[crop_col].isin(cdl_allowlist)]
+    field_ids = properties["field_id"].tolist()
     
-    timeseries_req = post(
+    if len(field_ids) == 0:
+        print("No fields found containing crops in allowlist. Skipping...")
+        return pd.DataFrame()
+    
+    timeseries_req = request_handler(
         url = endpoints["timeseries"],
         headers = {"Authorization": api_key},
         json = {
@@ -142,8 +175,9 @@ def get_timeseries(outer: list[float], year: int, api_key: str, **kwargs) -> pd.
         }
     )
     
-    if not timeseries_req.ok:
-        raise Exception(timeseries_req.json()["detail"])
+    if timeseries_req is None:
+        print("Could not fetch timeseries")
+        return pd.DataFrame()
     
     data = eval(gzip.decompress(timeseries_req.content).decode())
     
@@ -169,22 +203,21 @@ def main():
     gdf = gpd.GeoDataFrame.from_features(counties)
     
     def timeseries(x: pd.DataFrame) -> pd.DataFrame:
-        return get_timeseries(list(get_coordinates(x["geometry"]).flatten()), year, key, county=x["NAME"])
+        return get_timeseries(list(get_coordinates(x["geometry"]).flatten()), year, key)
     
     print("Fetching timeseries ET data for each county...")
     if _TQDM_ENABLED:
-        counties_timeseries = gdf.groupby(["NAME", "geometry"]).progress_apply(timeseries) # type: ignore
+        counties_timeseries = gdf.groupby(["NAME", "geometry"]).progress_apply(timeseries).reset_index() # type: ignore
     else:
-        counties_timeseries = gdf.groupby(["NAME", "geometry"]).apply(timeseries)
+        counties_timeseries = gdf.groupby(["NAME", "geometry"]).apply(timeseries).reset_index()
     
-    print(counties_timeseries)
     crop_col = [col for col in counties_timeseries.columns if col.startswith("crop_")][0]
     
     print("Aggregating averages per county by crop type...")
     if _TQDM_ENABLED:
-        averages = counties_timeseries.groupby(["county", crop_col]).progress_apply(np_mean) # type: ignore
+        averages = counties_timeseries.groupby(["NAME", crop_col, "collection"])["value_mm"].progress_apply(np_mean) # type: ignore
     else:
-        averages = counties_timeseries.groupby(["county", crop_col]).mean()
+        averages = counties_timeseries.groupby(["NAME", crop_col, "collection"])["value_mm"].mean()
     
     print("Exporting to CSV...")
     averages.to_csv(f"{output}/{state}_{year}_county_timeseries_avg_by_crop_type.csv")
