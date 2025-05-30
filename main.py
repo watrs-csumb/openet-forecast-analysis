@@ -54,7 +54,7 @@ kern_polygon_fields = pd.read_csv(
 monterey_polygon_fields = pd.read_csv(
     "./data/monterey_polygons.csv", low_memory=False
 ).set_index("OPENET_ID")
-
+finney_polygon_fields = pd.read_csv("./data/finney_county_ks.csv", low_memory=False).set_index("OPENET_ID")
 
 def get_historical_data(
     fields_queue,
@@ -294,15 +294,15 @@ def main():
     kern_queue = deque(kern_polygon_fields.index.to_list())
 
     logger.info("Getting polygon data for Monterey County")
-    get_forecasts(
-        monterey_queue,
-        monterey_polygon_fields,
-        dir=f"{version_prompt}/polygon/monterey/sampled",
-        endpoint=polygon_forecast_endpoint,
-        polygon=True,
-        use_cloud=storage_client,
-        end_date="2024-12-14",
-    )
+    # get_forecasts(
+    #     monterey_queue,
+    #     monterey_polygon_fields,
+    #     dir=f"{version_prompt}/polygon/monterey/sampled",
+    #     endpoint=polygon_forecast_endpoint,
+    #     polygon=True,
+    #     use_cloud=storage_client,
+    #     end_date="2024-12-14",
+    # )
     get_historical_data(
         monterey_queue,
         monterey_polygon_fields,
@@ -310,19 +310,19 @@ def main():
         endpoint=polygon_timeseries_endpoint,
         polygon=True,
         use_cloud=storage_client,
-        end_date='2024-12-14'
+        end_date='2025-05-20'
     )
 
     logger.info("Getting polygon data for Kern County")
-    get_forecasts(
-        kern_queue,
-        kern_polygon_fields,
-        dir=f"{version_prompt}/polygon/kern/sampled",
-        endpoint=polygon_forecast_endpoint,
-        polygon=True,
-        use_cloud=storage_client,
-        end_date="2024-12-14",
-    )
+    # get_forecasts(
+    #     kern_queue,
+    #     kern_polygon_fields,
+    #     dir=f"{version_prompt}/polygon/kern/sampled",
+    #     endpoint=polygon_forecast_endpoint,
+    #     polygon=True,
+    #     use_cloud=storage_client,
+    #     end_date="2024-12-14",
+    # )
     get_historical_data(
         kern_queue,
         kern_polygon_fields,
@@ -330,7 +330,7 @@ def main():
         endpoint=polygon_timeseries_endpoint,
         polygon=True,
         use_cloud=storage_client,
-        end_date="2024-12-14",
+        end_date='2025-05-20'
     )
 
 if __name__ == "__main__":

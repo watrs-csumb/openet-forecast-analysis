@@ -221,11 +221,12 @@ class ETFetch:
                     "variable": req.variable,
                     "file_format": "JSON"
                 }
-                arg['align'] = req.align
                 arg['model'] = req.model
                 arg['units'] = req.units
                 arg['reference_et'] = req.reference
                 # Below are optional fields. Included only if they exist
+                if req.align:
+                    arg['align'] = req.align
                 if req.date_range:
                     arg['date_range'] = req.date_range
                 if req.reducer:
@@ -238,6 +239,8 @@ class ETFetch:
                     arg['cog'] = req.cog
                 if req.encrypt:
                     arg['encrypt'] = req.encrypt
+                if req.method:
+                    arg['method'] = req.method
 
                 if frequency:
                     arg['interval'] = frequency

@@ -17,9 +17,18 @@ class ETArg:
         self._match_window = args.get("match_window", None)
         self._cog = args.get("cog", None)
         self._encrypt = args.get("encrypt", None)
+        self._method = args.get("method", None)
 
         # Polygon required
         self._reducer = args.get("reducer", None)
+
+    @property
+    def method(self) -> str:
+        return self._method
+
+    @method.setter
+    def method(self, method: str):
+        self._method = method
 
     @property
     def name(self) -> str:
