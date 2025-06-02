@@ -1,5 +1,6 @@
 import argparse
 import contextlib
+from datetime import datetime, timedelta
 import gzip
 import pathlib
 import sys
@@ -66,9 +67,10 @@ parser = argparse.ArgumentParser()
 parser.add_argument(
     "--state", "-s", required=True, help="State Abbreviation or FIPS Code"
 )
-parser.add_argument("--year", "-y", required=True, help="Year")
+parser.add_argument("--year", "-y", required=True, help="Water year to fetch (October 1st to September 30th of following year)")
 parser.add_argument("--output", "-o", required=False, help="Output directory")
 parser.add_argument("--key", "-k", required=True, help="OpenET API Key")
+parser.add_argument("--variable", "-v", required=True, default="et", help="Variable to fetch. Default: et")
 
 collections = {
     "states": "TIGER/2018/States",
@@ -122,7 +124,7 @@ def fetch_counties(state: str) -> Collection:
 
 
 def get_timeseries(
-    outer: list[float], year: int, api_key: str, **kwargs
+    outer: list[float], variable: str, year: int, api_key: str, **kwargs
 ) -> pd.DataFrame:
     fields_req = request_handler(
         url=endpoints["fieldId"],
@@ -164,15 +166,16 @@ def get_timeseries(
         print("No fields found containing crops in allowlist. Skipping...")
         return pd.DataFrame()
 
+    end_date = min(datetime(year=year+1, month=9, day=30), datetime.now() - timedelta(weeks=1))
     timeseries_req = request_handler(
         url=endpoints["timeseries"],
         headers={"Authorization": api_key},
         json={
             "field_ids": field_ids,
-            "date_range": [f"{year}-10-01", f"{year+1}-09-30"],
+            "date_range": [f"{year}-10-01", end_date.strftime("%Y-%m-%d")],
             "interval": "monthly",
             "models": ["Ensemble"],
-            "variables": ["et"],
+            "variables": [variable],
             "file_format": "JSON",
         },
     )
@@ -197,6 +200,11 @@ def main():
     year = args.year
     state = args.state
     output = args.output
+    variable = args.variable
+    
+    # Validate water year has started.
+    if datetime.now() < datetime(year=year, month=10, day=1):
+        raise ValueError("Specified water year has not started yet.")
 
     pathlib.Path(output).mkdir(parents=False, exist_ok=True)
 
@@ -207,7 +215,9 @@ def main():
 
     def timeseries(x: pd.DataFrame) -> pd.DataFrame:
         return get_timeseries(
-            get_coordinates(x["geometry"]).flatten().astype(float).tolist(), year, key
+            get_coordinates(x["geometry"]).flatten().astype(float).tolist(), 
+            variable=variable,
+            year=year, api_key=key
         )
 
     print("Fetching timeseries ET data for each county...")
@@ -242,7 +252,7 @@ def main():
     averages = averages.reset_index().merge(cdl_lookup, how="left", left_on=crop_col, right_index=True)
     # Rearrange columns.
     averages = averages[["NAME", "Class_Names", crop_col, "collection", "value_mm"]]
-    averages.to_csv(f"{output}/{state}_{year}_county_timeseries_avg_et_by_crop_type.csv", index=False)
+    averages.to_csv(f"{output}/{state}_{year}_county_timeseries_avg_{str(variable).lower()}_by_crop_type.csv", index=False)
 
 
 if __name__ == "__main__":
