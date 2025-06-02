@@ -75,9 +75,9 @@ def calculate_metrics(
                 actual
             ].values[0]
 
-            mae: float = mae.astype(float) / avg.astype(float)
-            rmse = np.sqrt(forecast_mse.astype(float) / avg.astype(float))
-            bias = bias.astype(float) / avg.astype(float)
+            mae: float = mae / avg
+            rmse = np.sqrt(forecast_mse / avg)
+            bias = bias / avg
         return pd.Series(
             {
                 "mae": mae.round(2),
