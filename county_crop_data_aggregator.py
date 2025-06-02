@@ -67,10 +67,10 @@ parser = argparse.ArgumentParser()
 parser.add_argument(
     "--state", "-s", required=True, help="State Abbreviation or FIPS Code"
 )
-parser.add_argument("--year", "-y", required=True, help="Water year to fetch (October 1st to September 30th of following year)")
+parser.add_argument("--year", "-y", type=int, required=True, help="Water year to fetch (October 1st to September 30th of following year)")
 parser.add_argument("--output", "-o", required=False, help="Output directory")
 parser.add_argument("--key", "-k", required=True, help="OpenET API Key")
-parser.add_argument("--variable", "-v", required=True, default="et", help="Variable to fetch. Default: et")
+parser.add_argument("--variable", "-v", nargs=1, default="et", help="Variable to fetch. Default: et")
 
 collections = {
     "states": "TIGER/2018/States",
