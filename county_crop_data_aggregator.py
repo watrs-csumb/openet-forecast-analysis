@@ -2,6 +2,7 @@ import argparse
 import contextlib
 from datetime import datetime, timedelta
 import gzip
+import json
 import pathlib
 import sys
 
@@ -70,7 +71,7 @@ parser.add_argument(
 parser.add_argument("--year", "-y", type=int, required=True, help="Water year to fetch (October 1st to September 30th of following year)")
 parser.add_argument("--output", "-o", required=False, help="Output directory")
 parser.add_argument("--key", "-k", required=True, help="OpenET API Key")
-parser.add_argument("--variable", "-v", nargs=1, default="et", help="Variable to fetch. Default: et")
+parser.add_argument("--variable", "-v", required=True, type=str, default="et", help="Variable to fetch. Default: et")
 
 collections = {
     "states": "TIGER/2018/States",
@@ -78,9 +79,9 @@ collections = {
 }
 
 endpoints = {
-    "timeseries": "https://openet-api.org/geodatabase/timeseries",
-    "fieldId": "https://openet-api.org/geodatabase/metadata/ids",
-    "fieldProps": "https://openet-api.org/geodatabase/metadata/properties",
+    "timeseries": "https://developer.openet-api.org/geodatabase/timeseries",
+    "fieldId": "https://developer.openet-api.org/geodatabase/metadata/ids",
+    "fieldProps": "https://developer.openet-api.org/geodatabase/metadata/properties",
 }
 
 ee.Authenticate()
@@ -176,7 +177,7 @@ def get_timeseries(
             "interval": "monthly",
             "models": ["Ensemble"],
             "variables": [variable],
-            "file_format": "JSON",
+            "file_format": "CSV",
         },
     )
 
@@ -184,9 +185,9 @@ def get_timeseries(
         print("Could not fetch timeseries")
         return pd.DataFrame()
 
-    data = eval(gzip.decompress(timeseries_req.content).decode())
+    data = json.loads(timeseries_req.content.decode())
 
-    df = pd.DataFrame(data).merge(properties, how="left", on="field_id")
+    df = pd.json_normalize(data).merge(properties, how="left", on="field_id")
 
     for key, value in kwargs.items():
         df[key] = value
