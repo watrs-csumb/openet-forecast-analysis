@@ -34,8 +34,8 @@ def main():
     fips = pd.read_csv("https://raw.githubusercontent.com/watrs-csumb/openet-forecast-analysis/refs/heads/main/data/fips_lookup.csv", dtype=str)
     
     def append_fips_code(df: pd.Series):
-        fips_code = fips[fips["abbr"] == df.name.split("_")[0]]["fips"].values[0]
-        normalized_name = fips_code + df.name.split("_")[1]
+        fips_code = fips[fips["abbr"] == df.name.split("_")[0]]["fips"].values[0] # type: ignore
+        normalized_name = fips_code + df.name.split("_")[1] # type: ignore
         return normalized_name
     
     fields = fields.apply(append_fips_code, axis=1)
@@ -58,7 +58,7 @@ def main():
         
     data = data.apply(append_abbr, axis=1)
     
-    data.to_csv(f"{output}{fn.split(".csv")[0]}_properties.csv", index=False)
+    data.to_csv(f"{output}{pathlib.Path(fn).stem}_properties.csv", index=False)
 
 
 if __name__ == "__main__":
