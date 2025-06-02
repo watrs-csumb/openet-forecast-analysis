@@ -2,7 +2,6 @@ import argparse
 import contextlib
 from datetime import datetime, timedelta
 import gzip
-import json
 import pathlib
 import sys
 
@@ -79,9 +78,9 @@ collections = {
 }
 
 endpoints = {
-    "timeseries": "https://developer.openet-api.org/geodatabase/timeseries",
-    "fieldId": "https://developer.openet-api.org/geodatabase/metadata/ids",
-    "fieldProps": "https://developer.openet-api.org/geodatabase/metadata/properties",
+    "timeseries": "https://openet-api.org/geodatabase/timeseries",
+    "fieldId": "https://openet-api.org/geodatabase/metadata/ids",
+    "fieldProps": "https://openet-api.org/geodatabase/metadata/properties",
 }
 
 ee.Authenticate()
@@ -177,7 +176,7 @@ def get_timeseries(
             "interval": "monthly",
             "models": ["Ensemble"],
             "variables": [variable],
-            "file_format": "CSV",
+            "file_format": "JSON",
         },
     )
 
@@ -185,9 +184,9 @@ def get_timeseries(
         print("Could not fetch timeseries")
         return pd.DataFrame()
 
-    data = json.loads(timeseries_req.content.decode())
+    data = eval(gzip.decompress(timeseries_req.content).decode())
 
-    df = pd.json_normalize(data).merge(properties, how="left", on="field_id")
+    df = pd.DataFrame(data).merge(properties, how="left", on="field_id")
 
     for key, value in kwargs.items():
         df[key] = value
