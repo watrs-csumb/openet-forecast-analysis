@@ -61,8 +61,8 @@ def calculate_metrics(
 
         climatology = climatology_ref[field_mask & crop_mask & date_mask][actual]
         climatology_mse = np.square(root_mean_squared_error(data[actual], climatology))
-        climatology_mae = mean_absolute_error(data[actual], climatology)
-        climatology_bias: float = np.mean(climatology - data[actual])
+        # climatology_mae = mean_absolute_error(data[actual], climatology)
+        # climatology_bias: float = np.mean(climatology - data[actual])
 
         # Positive skill score indicates the error in climatology is greater than forecast.
         # This means that forecast is outperforming climatology.
@@ -85,8 +85,8 @@ def calculate_metrics(
                 "corr": cor.round(2),
                 "bias": bias.round(2),
                 "skill_score": skill_score.round(2),
-                "c_mae": climatology_mae,
-                "c_bias": climatology_bias,
+                # "c_mae": climatology_mae,
+                # "c_bias": climatology_bias,
             }
         )
     except Exception as err:
@@ -185,6 +185,8 @@ def timeseries_rel(
     x="forecasting_date",
     y,
     twin_y=None,
+    twin_y_share_y=False,
+    twin_y_ylabels="",
     plot="rel",
     col=None,
     row=None,
@@ -198,6 +200,7 @@ def timeseries_rel(
     errorbar=None,
     export_img: bool | str = None,
     title_template={},
+    x_formatter=mdates.DateFormatter("%B"),
     **kwargs,
 ):
     match plot:
@@ -255,26 +258,39 @@ def timeseries_rel(
     if twin_y:
         for row_col, ax in rel.axes_dict.items():
             bx = ax.twinx()
-            locator = data[(data[row] == row_col[0]) & (data[col] == row_col[1])]
+            if row and not col:
+                locator = data[data[row] == row_col]    
+            elif col and not row:
+                locator = data[data[col] == row_col]    
+            else:
+                locator = data[(data[row] == row_col[0]) & (data[col] == row_col[1])]
             sns.lineplot(
                 locator,
-                x="forecasting_date",
+                x=x,
                 y=twin_y,
-                estimator=np.median,
+                estimator=None,
                 errorbar=None,
                 ax=bx,
-                color="k",
-                ls=":",
+                color="grey",
+                ls="-",
+                lw=0.2,
             )
             bx.tick_params(
                 left=False,
-                right=False,
                 labelleft=False,
-                labelright=False,
             )
-            bx.set_ylabel("")
-            bx.set(ylim=ax.get_ylim())
             bx.grid(None)
+            
+            if twin_y_share_y:
+                bx.tick_params(
+                    right=False,
+                    labelright=False,
+                )
+                bx.set_ylabel("")
+                bx.set(ylim=ax.get_ylim())
+            
+            if twin_y_ylabels:
+                bx.set_ylabel(twin_y_ylabels)
 
     if as_percent is True:
         for ax in rel.axes.flat:
@@ -283,7 +299,7 @@ def timeseries_rel(
     if plot != "dis":
         rel.set_xlabels("Forecasting Date")
         for ax in rel.axes.flat:
-            ax.xaxis.set_major_formatter(mdates.DateFormatter("%B"))
+            ax.xaxis.set_major_formatter(x_formatter)
 
     if tighten:
         rel.figure.subplots_adjust(wspace=0, hspace=0.1)
