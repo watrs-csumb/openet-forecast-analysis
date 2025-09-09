@@ -15,7 +15,7 @@ parser.add_argument(
 parser.add_argument("--key", "-k", required=True, help="OpenET API Key.")
 parser.add_argument("--output", "-o", nargs="?", help="Output directory.")
 
-properties_endpoint = "https://developer.openet-api.org/geodatabase/metadata/properties"
+properties_endpoint = "http://localhost:8080/geodatabase/metadata/properties"
 
 
 def main():

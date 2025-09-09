@@ -121,6 +121,8 @@ class ETFetch:
                 self.data_table.to_pickle(filename, **kwargs)
             case 'json':
                 self.data_table.to_json(filename, index=False, **kwargs)
+            case 'pq':
+                self.data_table.to_parquet(filename, index=False, **kwargs)
             case _:
                 raise ValueError(f'Provided file_format "{file_format}" is not supported.')
     
@@ -241,7 +243,8 @@ class ETFetch:
                     arg['encrypt'] = req.encrypt
                 if req.method:
                     arg['method'] = req.method
-
+                if req.overpass:
+                    arg['overpass'] = req.overpass
                 if frequency:
                     arg['interval'] = frequency
 

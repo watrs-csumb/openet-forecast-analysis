@@ -11,6 +11,7 @@ class ETArg:
         self._model = args.get("model", "Ensemble")  # Default model is Ensemble
         self._units = args.get("units", "mm")  # Default units are mm
         self._reference = args.get("reference", "gridMET")  # Default reference is gridMET
+        self._overpass = args.get('overpass', False)
 
         # Experimental
         self._match_variable = args.get("match_variable", None)
@@ -21,9 +22,17 @@ class ETArg:
 
         # Polygon required
         self._reducer = args.get("reducer", None)
+        
+    @property
+    def overpass(self) -> bool:
+        return self._overpass
+    
+    @overpass.setter
+    def overpass(self, doOverpass: bool):
+        self._overpass = doOverpass
 
     @property
-    def method(self) -> str:
+    def method(self) -> str | None:
         return self._method
 
     @method.setter

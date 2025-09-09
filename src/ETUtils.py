@@ -75,12 +75,10 @@ class CloudStorage:
         """
         
         # Locally, save to data/ sub-folder
-        local_path = Path(f"data/{file_path}.csv")
+        if parents and not Path(file_path).parent.exists():
+            Path(file_path).parent.mkdir(parents=True)
         
-        if parents and not local_path.parent.exists():
-            local_path.parent.mkdir(parents=True)
-        
-        fetch.export(f'data/{file_path}')
+        fetch.export(f'data/{file_path}.parquet', file_format='pq')
         
         try:
             return self.pd_write(file_path, fetch.export())

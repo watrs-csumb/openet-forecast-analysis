@@ -43,17 +43,10 @@ polygon_timeseries_endpoint = (
 forecast_endpoint = "https://developer.openet-api.org/experimental/raster/timeseries/forecasting/seasonal"
 polygon_forecast_endpoint = "https://developer.openet-api.org/experimental/raster/timeseries/forecasting/seasonal_polygon"
 
-kern_fields = pd.read_csv("./data/Kern.csv", low_memory=False).set_index("OPENET_ID")
-monterey_fields = pd.read_csv("./data/Monterey.csv", low_memory=False).set_index(
-    "OPENET_ID"
-)
+kern_polygon_fields = pd.read_csv("./data/kern_polygons.csv", low_memory=False)
+monterey_polygon_fields = pd.read_csv("./data/monterey_polygons.csv", low_memory=False)
+cali_fields = pd.concat([kern_polygon_fields, monterey_polygon_fields]).set_index("OPENET_ID")
 
-kern_polygon_fields = pd.read_csv(
-    "./data/kern_polygons.csv", low_memory=False
-).set_index("OPENET_ID")
-monterey_polygon_fields = pd.read_csv(
-    "./data/monterey_polygons.csv", low_memory=False
-).set_index("OPENET_ID")
 finney_polygon_fields = pd.read_csv("./data/finney_county_ks.csv", low_memory=False).set_index("OPENET_ID")
 
 def get_historical_data(
@@ -63,7 +56,7 @@ def get_historical_data(
     filename,
     end_date: str,
     endpoint=timeseries_endpoint,
-    polygon=False,
+    overpass=False,
     use_cloud: bool | CloudStorage = False,
 ):
     et_data = ETFetch(
@@ -78,6 +71,8 @@ def get_historical_data(
             "endpoint": endpoint,
             "date_range": ["2016-01-01", end_date],
             "variable": "ET",
+            "reducer": "mean",
+            "overpass": overpass
         },
     )
 
@@ -87,6 +82,7 @@ def get_historical_data(
             "endpoint": endpoint,
             "date_range": ["2016-01-01", end_date],
             "variable": "ETo",
+            "reducer": "mean"
         },
     )
 
@@ -96,26 +92,36 @@ def get_historical_data(
             "endpoint": endpoint,
             "date_range": ["2016-01-01", end_date],
             "variable": "ETof",
+            "reducer": "mean"
         },
     )
+    timeseries_ndvi = ETArg(
+        "ndvi",
+        args={
+            "endpoint": endpoint,
+            "date_range": ["2016-01-01", end_date],
+            "variable": "ndvi",
+            "reducer": "mean"
+        }
+    )
 
-    if polygon:
-        timeseries_et.reducer = "mean"
-        timeseries_eto.reducer = "mean"
-        timeseries_etof.reducer = "mean"
+    arg_list = [timeseries_et]
+    if not overpass:
+        arg_list = arg_list + [timeseries_eto, timeseries_etof, timeseries_ndvi]
 
     et_data.start(
-        request_args=[timeseries_et, timeseries_eto, timeseries_etof],
+        request_args=arg_list,
         frequency="daily",
         logger=logger,
         packets=True,
     )
 
     if isinstance(use_cloud, CloudStorage):
-        use_cloud.fetch_save(et_data, filename, parents=True)
+        use_cloud.fetch_save(et_data, f"{filename}.parquet", parents=True)
     else:
-        et_data.export(f"data/{filename}")
-    
+        et_data.export(f"data/{filename}.parquet", file_format="pq")
+    if overpass:
+        return
     # Climatology compilation
     et_data.data_table["time"] = pd.to_datetime(et_data.data_table["time"])
     # Create a column for day of year
@@ -171,7 +177,7 @@ def get_forecasts(
 ):
     # Gather predictions at weekly intervals.
     # Forecast begins predictions from the end_range. So to start predictions for Jan 1, set to Dec 31
-    forecasting_date = datetime(2024, 10, 28)
+    forecasting_date = datetime(2025, 4, 1)
     end_date_s = datetime.strptime(end_date, '%Y-%m-%d')
     interval_delta = timedelta(weeks=1)  # weekly interval
 
@@ -188,7 +194,7 @@ def get_forecasts(
             api_key=api_key,  # type: ignore
         )
         api_date_format = forecasting_date.strftime("%Y-%m-%d")
-        filename = f"{file_dir}/{api_date_format}_forecast.csv"
+        filename = f"{file_dir}/{api_date_format}_forecast.parquet"
         
         # If skip_exists is True, skips operation if the output path already exists.
         if skip_exists and Path(filename).exists():
@@ -239,7 +245,7 @@ def get_forecasts(
             logger=logger,
         )
         
-        process.export(filename)
+        process.export(filename, file_format="pq")
 
         # If the use_cloud flag is a CloudStorage object, export to the bucket contained in the object.
         if isinstance(use_cloud, CloudStorage):
@@ -258,80 +264,57 @@ def main():
     storage_client = CloudStorage(
         "openet", credentials=Authenticate("./gapi_credentials.json"), logger=logger
     )
-    
-    version_prompt = input("What version of DTW is this?: ")
-
-    kern_queue = deque(kern_fields.index.to_list())
-    monterey_queue = deque(monterey_fields.index.to_list())
-
-    # point forecasting
-    # logger.info("Getting point data for Monterey County")
-    # Monterey Data
-    # get_historical_data(monterey_queue, monterey_fields, filename="monterey_historical", use_cloud=storage_client,
-    #     end_date="2024-12-14",)
-    # get_forecasts(
-    #     monterey_queue,
-    #     monterey_fields,
-    #     dir="/monterey",
-    #     use_cloud=storage_client,
-    #     end_date="2024-12-14",
-    # )
-
-    # logger.info("Getting point data for Kern County")
-    # Kern Data
-    # get_historical_data(kern_queue, kern_fields, filename="kern_historical", use_cloud=storage_client,
-    #     end_date="2024-12-14",)
-    # get_forecasts(
-    #     kern_queue,
-    #     kern_fields,
-    #     dir="/kern",
-    #     use_cloud=storage_client,
-    #     end_date="2024-12-14",
-    # )
-
     # polygon forecasting
-    monterey_queue = deque(monterey_polygon_fields.index.to_list())
-    kern_queue = deque(kern_polygon_fields.index.to_list())
+    ca_queue = deque(cali_fields.index.to_list())
+    kansas_queue = deque(finney_polygon_fields.index.to_list())
 
-    logger.info("Getting polygon data for Monterey County")
-    # get_forecasts(
-    #     monterey_queue,
-    #     monterey_polygon_fields,
-    #     dir=f"{version_prompt}/polygon/monterey/sampled",
-    #     endpoint=polygon_forecast_endpoint,
-    #     polygon=True,
-    #     use_cloud=storage_client,
-    #     end_date="2024-12-14",
-    # )
+    logger.info("Getting historical data")
+
     get_historical_data(
-        monterey_queue,
-        monterey_polygon_fields,
-        filename="monterey_polygon_historical",
+        ca_queue,
+        cali_fields,
+        filename="central_valley_historical",
         endpoint=polygon_timeseries_endpoint,
+        overpass=False,
+        use_cloud=storage_client,
+        end_date='2025-09-20'
+    )
+    
+    get_historical_data(
+        kansas_queue,
+        finney_polygon_fields,
+        filename="finney_polygon_historical_overpass",
+        endpoint=polygon_timeseries_endpoint,
+        overpass=True,
+        use_cloud=storage_client,
+        end_date='2025-08-20'
+    )
+    
+    logger.info("Getting DTW forecasts")
+    get_forecasts(
+        ca_queue,
+        cali_fields,
+        dir="dtw/central_valley/",
+        endpoint=polygon_forecast_endpoint,
         polygon=True,
         use_cloud=storage_client,
-        end_date='2025-05-20'
+        end_date="2025-09-30",
+        align=True,
+        make_parents=True
     )
-
-    logger.info("Getting polygon data for Kern County")
-    # get_forecasts(
-    #     kern_queue,
-    #     kern_polygon_fields,
-    #     dir=f"{version_prompt}/polygon/kern/sampled",
-    #     endpoint=polygon_forecast_endpoint,
-    #     polygon=True,
-    #     use_cloud=storage_client,
-    #     end_date="2024-12-14",
-    # )
-    get_historical_data(
-        kern_queue,
-        kern_polygon_fields,
-        filename="kern_polygon_historical",
-        endpoint=polygon_timeseries_endpoint,
+    
+    get_forecasts(
+        kansas_queue,
+        finney_polygon_fields,
+        dir="dtw/kansas/",
+        endpoint=polygon_forecast_endpoint,
         polygon=True,
         use_cloud=storage_client,
-        end_date='2025-05-20'
+        end_date="2025-09-30",
+        align=True,
+        make_parents=True
     )
+
 
 if __name__ == "__main__":
     main()

@@ -187,76 +187,82 @@ def timeseries_rel(
     twin_y=None,
     twin_y_share_y=False,
     twin_y_ylabels="",
-    plot="rel",
+    plot="line",
     col=None,
     row=None,
     hue=None,
-    kind="line",
     refline=None,
+    share_legend=True,
     title="",
     ylabel="",
     as_percent=False,
     tighten=False,
     errorbar=None,
     export_img: bool | str = None,
+    facet_kwargs={},
     title_template={},
     x_formatter=mdates.DateFormatter("%B"),
     **kwargs,
 ):
-    match plot:
-        case "rel":
-            rel = sns.relplot(
-                data=data,
-                x=x,
-                y=y,
-                col=col,
-                row=row,
-                hue=hue,
-                kind=kind,
-                errorbar=errorbar,
-                **kwargs,
-            )
-        case "dis":
-            rel = sns.displot(
-                data=data, x=y, col=col, row=row, hue=hue, kind=kind, **kwargs
-            )
-        case "cat":
-            rel = sns.catplot(
-                data=data,
-                x=x,
-                y=y,
-                col=col,
-                row=row,
-                hue=hue,
-                kind=kind,
-                errorbar=errorbar,
-                **kwargs,
-            )
-        case "lm":
-            rel = sns.lmplot(
-                data=data,
-                x=x,
-                y=y,
-                col=col,
-                row=row,
-                hue=hue,
-                kind=kind,
-                errorbar=errorbar,
-                **kwargs,
-            )
-        case _:
-            raise Exception("Not a valid plot type.")
+    if not share_legend:
+        g = sns.FacetGrid(data, row=row, col=col, **facet_kwargs)
+        grouping = []
+        if row: grouping.append(row)
+        if col: grouping.append(col)
+        
+        for idx, facet_df in data.groupby(grouping):
+            if len(idx) == 1:
+                i = idx[0]
+            else:
+                i = list(idx)
+            
+            ax = g.axes_dict[i]
+            match plot:
+                case "line":
+                    sns.lineplot(
+                        data=facet_df,
+                        x=x,
+                        y=y,
+                        hue=hue,
+                        errorbar=errorbar,
+                        ax=ax,
+                        **kwargs,
+                    )
+                    sns.move_legend(
+                        ax, "center right",
+                        bbox_to_anchor=(1.1, 0.5), ncol=1, frameon=True,
+                    );
+                case _:
+                    raise Exception("Not a supported plot type.")
+    else:
+        kind = ""
+        kind = "rel" if plot in ["line"] else ""
+        match kind:
+            case "rel":
+                g = sns.relplot(
+                    data=data,
+                    x=x,
+                    y=y,
+                    col=col,
+                    row=row,
+                    hue=hue,
+                    kind=plot,
+                    errorbar=errorbar,
+                    **kwargs
+                )
+            case _:
+                raise Exception("Not a supported Facet type")
 
     # Relabel y axis
     if ylabel:
-        rel.set_ylabels(ylabel)
+        g.set_ylabels(ylabel)
     # Relabel x axis
-    rel.tick_params(axis="x", rotation=90)
+    g.tick_params(axis="x", rotation=90)
     plt.suptitle(title, y=1.02)
-    rel.set_titles(**title_template)
+    g.set_titles(**title_template)
 
     if twin_y:
-        for row_col, ax in rel.axes_dict.items():
+        for row_col, ax in g.axes_dict.items():
             bx = ax.twinx()
             if row and not col:
                 locator = data[data[row] == row_col]    
@@ -293,26 +299,26 @@ def timeseries_rel(
                 bx.set_ylabel(twin_y_ylabels)
 
     if as_percent is True:
-        for ax in rel.axes.flat:
+        for ax in g.axes.flat:
             ax.yaxis.set_major_formatter(mtick.PercentFormatter(1.0))
 
     if plot != "dis":
-        rel.set_xlabels("Forecasting Date")
-        for ax in rel.axes.flat:
+        g.set_xlabels("Forecasting Date")
+        for ax in g.axes.flat:
             ax.xaxis.set_major_formatter(x_formatter)
 
     if tighten:
-        rel.figure.subplots_adjust(wspace=0, hspace=0.1)
+        g.figure.subplots_adjust(wspace=0, hspace=0.1)
 
     if refline:
-        rel.refline(**refline)
+        g.refline(**refline)
 
     if type(export_img) is bool and export_img is True:
-        rel.savefig(fname=f"../images/{str(title)}")
+        g.savefig(fname=f"../images/{str(title)}")
     elif type(export_img) is str:
-        rel.savefig(fname=f"../images/{export_img}")
+        g.savefig(fname=f"../images/{export_img}")
 
-    return rel
+    return g
 
 
 ### trim_extremes

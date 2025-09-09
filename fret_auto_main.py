@@ -55,6 +55,8 @@ def main():
     check_interval = timedelta(days=6)
     upcoming_check_time = check_time + check_interval
     run_fetch = True
+    historical_fetch = False
+    historical_fetch_time = datetime.now() + timedelta(days=30)
 
     monterey_queue = deque(monterey_fields.index.to_list())
     kern_queue = deque(kern_fields.index.to_list())
@@ -75,31 +77,30 @@ def main():
     storage_client = CloudStorage("openet", Authenticate("./gapi_credentials.json"), logger=logger)
 
     logger.info(f"FRET automation started on: {check_time}")
-    try:
-        while True:
-            # This method performs a do-while loop. Initially running the FRET data fetch, and does so when the run_fetch toggle is True.
-            if run_fetch is True:
+    while True:
+        # This method performs a do-while loop. Initially running the FRET data fetch, and does so when the run_fetch toggle is True.
+        if run_fetch is True:
                 export_date_format = check_time.strftime("%Y-%m-%d")
                 
                 # -- Monterey FRET -- #
-                monterey_fret = ETFetch(
-                    deepcopy(monterey_queue), monterey_fields, api_key=api_key
-                )  # type: ignore
-                monterey_fret.start(request_args=[eto_arg], logger=logger, packets=True, frequency='daily')
-                storage_client.fetch_save(
-                    monterey_fret,
-                    f"forecasts/fret/monterey_fret_{export_date_format}.csv",
-                )
+                #monterey_fret = ETFetch(
+                #    deepcopy(monterey_queue), monterey_fields, api_key=api_key
+                #)  # type: ignore
+                #monterey_fret.start(request_args=[eto_arg], logger=logger, packets=True, frequency='daily')
+                #storage_client.fetch_save(
+                #    monterey_fret,
+                #    f"forecasts/fret/monterey_fret_{export_date_format}.csv",
+                #)
                 
                 # -- Kern FRET -- #
-                kern_fret = ETFetch(
-                    deepcopy(kern_queue), kern_fields, api_key=api_key
-                )  # type: ignore
+                #kern_fret = ETFetch(
+                #    deepcopy(kern_queue), kern_fields, api_key=api_key
+                #)  # type: ignore
                 
-                kern_fret.start(request_args=[eto_arg], logger=logger, packets=True, frequency='daily')
-                storage_client.fetch_save(
-                    kern_fret, f"forecasts/fret/kern_fret_{export_date_format}.csv"
-                )
+                #kern_fret.start(request_args=[eto_arg], logger=logger, packets=True, frequency='daily')
+                #storage_client.fetch_save(
+                #    kern_fret, f"forecasts/fret/kern_fret_{export_date_format}.csv"
+                #)
                 
                 # -- Kansas FRET -- #
                 kansas_fret = ETFetch(
@@ -116,81 +117,84 @@ def main():
 
                 run_fetch = False
                 continue
+        if historical_fetch:
+            # Calculate correct end date as actual data is only reported up three days prior
+            final_fetch_time_api_format = deepcopy(check_time)
+            final_fetch_time_api_format -= timedelta(days=7)
+            # Lastly, update date format so it's proper api date format.
+            final_fetch_time_api_format = final_fetch_time_api_format.strftime("%Y-%m-%d")
 
-            # When the next check time has passed, toggle the run fetch variable and update the check time
-            if datetime.now() >= upcoming_check_time:
-                check_time = datetime.now()
-                upcoming_check_time = check_time + check_interval
-                run_fetch = True
-                eto_arg.date_range = [check_time.strftime("%Y-%m-%d"), (check_time + timedelta(weeks=1)).strftime("%Y-%m-%d")]
-                logger.info(
-                    f"FRET fetched on: {check_time}. Next check will be on: {upcoming_check_time}"
-                )
-            else:
-                # Wait for one minute before checking again.
-                time.sleep(60)
-    except KeyboardInterrupt:
-        # When fetching is complete, gather historical data for evaluation.
+            logger.info(f"Now getting historical data up to: {final_fetch_time_api_format}")
 
-        # Calculate correct end date as actual data is only reported up three days prior
-        final_fetch_time_api_format = deepcopy(check_time)
-        final_fetch_time_api_format -= timedelta(days=4)
-        # Lastly, update date format so it's proper api date format.
-        final_fetch_time_api_format = final_fetch_time_api_format.strftime("%Y-%m-%d")
+            historical_arg_et = ETArg(
+                "actual_et",
+                args={
+                    "endpoint": timeseries_endpoint,
+                    "variable": "ET",
+                    "date_range": ["2016-01-01", final_fetch_time_api_format],
+                    "reducer": "mean"
+                },
+            )
+            historical_arg_eto = ETArg(
+                "actual_eto",
+                args={
+                    "endpoint": timeseries_endpoint,
+                    "variable": "ETo",
+                    "date_range": ["2016-01-01", final_fetch_time_api_format],
+                    "reducer": "mean"
+                },
+            )
+            historical_arg_etof = ETArg(
+                "actual_etof",
+                args={
+                    "endpoint": timeseries_endpoint,
+                    "variable": "ETof",
+                    "date_range": ["2016-01-01", final_fetch_time_api_format],
+                    "reducer": "mean"
+                },
+            )
 
-        logger.info(f"Now getting historical data up to: {final_fetch_time_api_format}")
+            logger.info("Fetching Monterey County historical data.")
+            mo_historical_fetch = ETFetch(
+                monterey_queue, monterey_fields, api_key=api_key
+            )  # type: ignore
+            mo_historical_fetch.start(
+                request_args=[historical_arg_et, historical_arg_eto, historical_arg_etof],
+                frequency="daily",
+                packets=True,
+                logger=logger,
+            )
+            storage_client.fetch_save(
+                mo_historical_fetch, "monterey_polygon_historical.csv"
+            )
 
-        historical_arg_et = ETArg(
-            "actual_et",
-            args={
-                "endpoint": timeseries_endpoint,
-                "variable": "ET",
-                "date_range": ["2016-01-01", final_fetch_time_api_format],
-                "reducer": "mean"
-            },
-        )
-        historical_arg_eto = ETArg(
-            "actual_eto",
-            args={
-                "endpoint": timeseries_endpoint,
-                "variable": "ETo",
-                "date_range": ["2016-01-01", final_fetch_time_api_format],
-                "reducer": "mean"
-            },
-        )
-        historical_arg_etof = ETArg(
-            "actual_etof",
-            args={
-                "endpoint": timeseries_endpoint,
-                "variable": "ETof",
-                "date_range": ["2016-01-01", final_fetch_time_api_format],
-                "reducer": "mean"
-            },
-        )
-
-        logger.info("Fetching Monterey County historical data.")
-        mo_historical_fetch = ETFetch(
-            monterey_queue, monterey_fields, api_key=api_key
-        )  # type: ignore
-        mo_historical_fetch.start(
-            request_args=[historical_arg_et, historical_arg_eto, historical_arg_etof],
-            frequency="daily",
-            packets=True,
-            logger=logger,
-        )
-        storage_client.fetch_save(
-            mo_historical_fetch, "monterey_polygon_historical.csv"
-        )
-
-        logger.info("Fetching Kern County historical data.")
-        ke_historical_fetch = ETFetch(kern_queue, kern_fields, api_key=api_key)  # type: ignore
-        ke_historical_fetch.start(
-            request_args=[historical_arg_et, historical_arg_eto, historical_arg_etof],
-            frequency="daily",
-            packets=True,
-            logger=logger,
-        )
-        storage_client.fetch_save(ke_historical_fetch, "kern_polygon_historical.csv")
-
+            logger.info("Fetching Kern County historical data.")
+            ke_historical_fetch = ETFetch(kern_queue, kern_fields, api_key=api_key)  # type: ignore
+            ke_historical_fetch.start(
+                request_args=[historical_arg_et, historical_arg_eto, historical_arg_etof],
+                frequency="daily",
+                packets=True,
+                logger=logger,
+            )
+            storage_client.fetch_save(ke_historical_fetch, "kern_polygon_historical.csv")
+            historical_fetch = False
+        
+        # Historical fetch should conduct every 30 days.
+        if datetime.now() >= historical_fetch_time:
+            historical_fetch = True
+            historical_fetch_time = historical_fetch_time + timedelta(days=30)
+        
+        # When the next check time has passed, toggle the run fetch variable and update the check time
+        if datetime.now() >= upcoming_check_time:
+            check_time = datetime.now()
+            upcoming_check_time = check_time + check_interval
+            run_fetch = True
+            eto_arg.date_range = [check_time.strftime("%Y-%m-%d"), (check_time + timedelta(weeks=1)).strftime("%Y-%m-%d")]
+            logger.info(
+                f"FRET fetched on: {check_time}. Next check will be on: {upcoming_check_time}"
+            )
+        else:
+            # Wait for one minute before checking again.
+            time.sleep(60)
 if __name__ == "__main__":
 	main()

@@ -40,11 +40,13 @@ monterey_fields = pd.read_csv(
     "./data/monterey_polygons.csv", low_memory=False
 ).set_index("OPENET_ID")
 # Drop fields with too large of polygons
-monterey_fields.drop(index=["CA_244144", "CA_244402"], inplace=True)
+monterey_fields.drop(index=["CA_244144", "CA_244402", "CA_244429"], inplace=True)
 kansas_fields = pd.read_csv("./data/finney_county_ks.csv", low_memory=False).set_index(
     "OPENET_ID"
 )
-
+kings_fields = pd.read_csv("./data/kings_ca.csv", low_memory=False).set_index(
+    "OPENET_ID"
+)
 
 def get_fae(
     data: pd.DataFrame, date_range: list[str], export_name: str, storage_client: CloudStorage
@@ -90,12 +92,25 @@ def get_fae(
             "method": "climatology_median"
         },
     )
+    crop_curve_et = ETArg(
+        "crop_curve",
+        args={
+            "endpoint": fae_endpoint,
+            "date_range": date_range,
+            "reference_et": "gridMET",
+            "variable": "ET",
+            "api_key": api_key,
+            "reducer": "mean",
+            "method": "crop_curve"
+        },
+    )
+    
 
     queue = deque(data.index.to_list())
     job = ETFetch(deepcopy(queue), data, api_key=api_key)
 
     job.start(
-        request_args=[ff_et, avg_et, med_et],
+        request_args=[ff_et, avg_et, med_et, crop_curve_et],
         frequency="daily",
         packets=True,
         logger=logger
@@ -120,14 +135,17 @@ def main():
     try:
         while True:
             if run_fetch:
-                #-- Monterey --#
+                # #-- Monterey --#
                 get_fae(monterey_fields, date_range, f"monterey/fae_{date_range[0]}", storage_client)
                 
-                #-- Kern --#
-                get_fae(kern_fields, date_range, f"kern/fae_{date_range[0]}", storage_client)
+                # #-- Kern --#
+                # get_fae(kern_fields, date_range, f"kern/fae_{date_range[0]}", storage_client)
                 
                 #-- Kansas --#
-                get_fae(kansas_fields, date_range, f"kansas/fae_{date_range[0]}", storage_client)
+                # get_fae(kansas_fields, date_range, f"kansas/fae_{date_range[0]}", storage_client)
+
+                #-- Kings --#
+                # get_fae(kings_fields, date_range, f"kings/fae_{date_range[0]}", storage_client)
                 
                 logger.info(
                     f"FAE automation finished on: {check_time}. Next check at: {upcoming_check_time}"
