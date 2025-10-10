@@ -35,9 +35,9 @@ logger = logging.getLogger(__name__)
 # END LOGGING CONFIG
 
 api_key = dotenv_values(".env").get("ET_KEY")
-timeseries_endpoint = "https://developer.openet-api.org/raster/timeseries/point"
+timeseries_endpoint = "https://openet-api.org/raster/timeseries/point"
 polygon_timeseries_endpoint = (
-    "https://developer.openet-api.org/raster/timeseries/polygon"
+    "https://openet-api.org/raster/timeseries/polygon"
 )
 
 forecast_endpoint = "https://developer.openet-api.org/experimental/raster/timeseries/forecasting/seasonal"
@@ -69,7 +69,7 @@ def get_historical_data(
         "actual_et",
         args={
             "endpoint": endpoint,
-            "date_range": ["2016-01-01", end_date],
+            "date_range": ["2025-01-01", end_date],
             "variable": "ET",
             "reducer": "mean",
             "overpass": overpass
@@ -80,9 +80,9 @@ def get_historical_data(
         "actual_eto",
         args={
             "endpoint": endpoint,
-            "date_range": ["2016-01-01", end_date],
+            "date_range": ["2025-01-01", end_date],
             "variable": "ETo",
-            "reducer": "mean"
+            "reducer": "mean",
         },
     )
 
@@ -90,7 +90,7 @@ def get_historical_data(
         "actual_etof",
         args={
             "endpoint": endpoint,
-            "date_range": ["2016-01-01", end_date],
+            "date_range": ["2025-01-01", end_date],
             "variable": "ETof",
             "reducer": "mean"
         },
@@ -99,7 +99,7 @@ def get_historical_data(
         "ndvi",
         args={
             "endpoint": endpoint,
-            "date_range": ["2016-01-01", end_date],
+            "date_range": ["2025-01-01", end_date],
             "variable": "ndvi",
             "reducer": "mean"
         }
@@ -107,7 +107,7 @@ def get_historical_data(
 
     arg_list = [timeseries_et]
     if not overpass:
-        arg_list = arg_list + [timeseries_eto, timeseries_etof, timeseries_ndvi]
+        arg_list = arg_list + [timeseries_eto, timeseries_etof]#, timeseries_ndvi]
 
     et_data.start(
         request_args=arg_list,
@@ -268,52 +268,54 @@ def main():
     ca_queue = deque(cali_fields.index.to_list())
     kansas_queue = deque(finney_polygon_fields.index.to_list())
 
-    logger.info("Getting historical data")
+    # logger.info("Getting historical data")
 
     get_historical_data(
         ca_queue,
         cali_fields,
-        filename="central_valley_historical",
+        filename="central_valley_historical_2025",
         endpoint=polygon_timeseries_endpoint,
         overpass=False,
         use_cloud=storage_client,
-        end_date='2025-09-20'
+        end_date='2025-09-29'
     )
     
-    get_historical_data(
-        kansas_queue,
-        finney_polygon_fields,
-        filename="finney_polygon_historical_overpass",
-        endpoint=polygon_timeseries_endpoint,
-        overpass=True,
-        use_cloud=storage_client,
-        end_date='2025-08-20'
-    )
+    # get_historical_data(
+    #     kansas_queue,
+    #     finney_polygon_fields,
+    #     filename="finney_polygon_historical_overpass",
+    #     endpoint=polygon_timeseries_endpoint,
+    #     overpass=True,
+    #     use_cloud=storage_client,
+    #     end_date='2025-08-20'
+    # )
     
-    logger.info("Getting DTW forecasts")
-    get_forecasts(
-        ca_queue,
-        cali_fields,
-        dir="dtw/central_valley/",
-        endpoint=polygon_forecast_endpoint,
-        polygon=True,
-        use_cloud=storage_client,
-        end_date="2025-09-30",
-        align=True,
-        make_parents=True
-    )
+    # logger.info("Getting DTW forecasts")
+    # get_forecasts(
+    #     ca_queue,
+    #     cali_fields,
+    #     dir="dtw/central_valley/",
+    #     endpoint=polygon_forecast_endpoint,
+    #     polygon=True,
+    #     use_cloud=storage_client,
+    #     end_date="2025-09-30",
+    #     align=True,
+    #     make_parents=True,
+    #     skip_exists=True
+    # )
     
-    get_forecasts(
-        kansas_queue,
-        finney_polygon_fields,
-        dir="dtw/kansas/",
-        endpoint=polygon_forecast_endpoint,
-        polygon=True,
-        use_cloud=storage_client,
-        end_date="2025-09-30",
-        align=True,
-        make_parents=True
-    )
+    # get_forecasts(
+    #     kansas_queue,
+    #     finney_polygon_fields,
+    #     dir="dtw/kansas/",
+    #     endpoint=polygon_forecast_endpoint,
+    #     polygon=True,
+    #     use_cloud=storage_client,
+    #     end_date="2025-09-30",
+    #     align=True,
+    #     make_parents=True,
+    #     skip_exists=True
+    # )
 
 
 if __name__ == "__main__":

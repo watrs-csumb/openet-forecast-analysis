@@ -97,42 +97,40 @@ def main():
     while True:
         # This method performs a do-while loop. Initially running the FRET data fetch, and does so when the run_fetch toggle is True.
         if run_fetch is True:
-            export_date_format = check_time.strftime("%Y-%m-%d")
-
-            # -- Monterey FRET -- #
-            monterey_fret = ETFetch(
-                deepcopy(monterey_queue), monterey_fields, api_key=api_key
-            )  # type: ignore
-            monterey_fret.start(
-                request_args=[eto_arg], logger=logger, packets=True, frequency="daily"
-            )
-            storage_client.fetch_save(
-                monterey_fret,
-                f"forecasts/fret/monterey_fret_{export_date_format}",
-            )
-
-            # -- Kern FRET -- #
-            # kern_fret = ETFetch(
-            #    deepcopy(kern_queue), kern_fields, api_key=api_key
-            # )  # type: ignore
-
-            # kern_fret.start(request_args=[eto_arg], logger=logger, packets=True, frequency='daily')
-            # storage_client.fetch_save(
-            #    kern_fret, f"forecasts/fret/kern_fret_{export_date_format}"
-            # )
-
-            # -- Kansas FRET -- #
-            # kansas_fret = ETFetch(
-            #     deepcopy(kansas_queue), kansas_fields, api_key=api_key
-            # )
-            # kansas_fret.start(request_args=[eto_arg], logger=logger, packets=True, frequency='daily')
-            # storage_client.fetch_save(
-            #     kansas_fret, f"forecasts/fret/kansas_fret_{export_date_format}"
-            # )
-
-            # logger.info(
-            #     f"FRET fetched on: {check_time}. Next check will be on: {upcoming_check_time}"
-            # )
+                export_date_format = check_time.strftime("%Y-%m-%d")
+                
+                # -- Monterey FRET -- #
+                #monterey_fret = ETFetch(
+                #    deepcopy(monterey_queue), monterey_fields, api_key=api_key
+                #)  # type: ignore
+                #monterey_fret.start(request_args=[eto_arg], logger=logger, packets=True, frequency='daily')
+                #storage_client.fetch_save(
+                #    monterey_fret,
+                #    f"forecasts/fret/monterey_fret_{export_date_format}.csv",
+                #)
+                
+                # -- Kern FRET -- #
+                #kern_fret = ETFetch(
+                #    deepcopy(kern_queue), kern_fields, api_key=api_key
+                #)  # type: ignore
+                
+                #kern_fret.start(request_args=[eto_arg], logger=logger, packets=True, frequency='daily')
+                #storage_client.fetch_save(
+                #    kern_fret, f"forecasts/fret/kern_fret_{export_date_format}.csv"
+                #)
+                
+                # -- Kansas FRET -- #
+                kansas_fret = ETFetch(
+                    deepcopy(kansas_queue), kansas_fields, api_key=api_key
+                )
+                kansas_fret.start(request_args=[eto_arg], logger=logger, packets=True, frequency='daily')
+                storage_client.fetch_save(
+                    kansas_fret, f"forecasts/fret/kansas_fret_{export_date_format}.csv"
+                )
+                
+                logger.info(
+                    f"FRET fetched on: {check_time}. Next check will be on: {upcoming_check_time}"
+                )
 
             run_fetch = False
             continue

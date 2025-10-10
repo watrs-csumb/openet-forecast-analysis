@@ -153,6 +153,8 @@ class ETRequest:
                 prompt_info = ""
                 try:
                     prompt_info = f"[{self.response.status_code}]: {self.response.text}"
+                    if "Memory limit reached" in self.response.text:
+                        return self.response
                 except Exception:
                     prompt_info = "No response. Please check your connection."
                 if logger is not None:

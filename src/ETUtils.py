@@ -78,10 +78,10 @@ class CloudStorage:
         if parents and not Path(file_path).parent.exists():
             Path(file_path).parent.mkdir(parents=True)
         
-        fetch.export(f'data/{file_path}.parquet', file_format='pq')
+        fetch.export(f'data/{file_path}', file_format='pq')
         
         try:
-            return self.pd_write(file_path, fetch.export())
+            return self.pd_write(file_path, fetch.export(file_format="pq"))
         except Exception as err:
             if self.__logger__:
                 self.__logger__.warning("Could not upload to StorageClient: ", err)
